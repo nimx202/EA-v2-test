@@ -1,9 +1,12 @@
 package view;
 
+// Datei kodiert in UTF-8
+
 import controler.WindkraftanlageRepository;
 import model.Windkraftanlage;
 import util.Konstanten;
-
+import util.ZeitStatistiken;
+import util.KoordinatenValidierungsService;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,9 +45,18 @@ public class Main {
             int geladenCount = ladeUndMesseRepository(repo, csvPfad);
             List<Windkraftanlage> alleAnlagen = repo.getAll();
 
+            // Koordinaten-Validierung und -Korrektur mit separatem Service
+            long startValidierung = System.nanoTime();
+            KoordinatenValidierungsService.validiereUndKorrigiere(repo);
+            double validierungMillis = (System.nanoTime() - startValidierung) / Konstanten.NANOS_ZU_MILLIS;
+            ZeitStatistiken.zeichneZeitAuf("Validierung und Korrektur (gesamt)", validierungMillis);
+
             gebeStatistikenAus(alleAnlagen);
             gebeTopWindparksAus(alleAnlagen);
             gebeBeispielDatensätzeAus(alleAnlagen);
+
+            // Gesamte Zusammenfassung am Ende anzeigen
+            ZeitStatistiken.druckeZusammenfassung();
 
         } catch (Exception e) {
             gebeFehlerAus(Konstanten.FEHLER_PREFIX + e.getMessage());
@@ -74,6 +86,10 @@ public class Main {
         System.out.printf(Konstanten.DATENSÄTZE_ANZAHL, count);
         System.out.printf(Konstanten.VERSTRICHENE_ZEIT, verstrricheneMillis);
 
+        // Record time and stats
+        ZeitStatistiken.zeichneZeitAuf("Laden CSV", verstrricheneMillis);
+        ZeitStatistiken.zeichneStat("Geladene Datensätze", String.valueOf(count));
+
         return count;
     }
 
@@ -86,11 +102,17 @@ public class Main {
      * @param alleAnlagen Liste aller Windkraftanlagen
      */
     private static void gebeStatistikenAus(List<Windkraftanlage> alleAnlagen) {
+        long start = System.nanoTime();
         long anlagenMitKoordinaten = zähleMitKoordinaten(alleAnlagen);
         long anlagenOhneBetreiber = zähleOhneBetreiber(alleAnlagen);
 
         System.out.printf(Konstanten.MIT_KOORDINATEN, anlagenMitKoordinaten);
         System.out.printf(Konstanten.OHNE_BETREIBER, anlagenOhneBetreiber);
+
+        double ms = (System.nanoTime() - start) / Konstanten.NANOS_ZU_MILLIS;
+        ZeitStatistiken.zeichneZeitAuf("gebeStatistikenAus", ms);
+        ZeitStatistiken.zeichneStat("Anlagen mit Koordinaten", String.valueOf(anlagenMitKoordinaten));
+        ZeitStatistiken.zeichneStat("Anlagen ohne Betreiber", String.valueOf(anlagenOhneBetreiber));
     }
 
     /**
@@ -132,6 +154,7 @@ public class Main {
      * @param alleAnlagen Liste aller Windkraftanlagen
      */
     private static void gebeTopWindparksAus(List<Windkraftanlage> alleAnlagen) {
+        long start = System.nanoTime();
         Map<String, Long> parkNachName = gruppierAnlagenNachNamen(alleAnlagen);
 
         System.out.printf(Konstanten.TOP_PARKS, Konstanten.TOP_LIMIT);
@@ -140,6 +163,18 @@ public class Main {
                 .limit(Konstanten.TOP_LIMIT)
                 .forEach(e -> System.out.println(e.getKey() + Konstanten.AUSGABE_TRENNZEICHEN + e.getValue()));
         System.out.printf(Konstanten.GESAMT_PARKS, parkNachName.size());
+
+        double ms = (System.nanoTime() - start) / Konstanten.NANOS_ZU_MILLIS;
+        ZeitStatistiken.zeichneZeitAuf("gebeTopWindparksAus", ms);
+        ZeitStatistiken.zeichneStat("Anzahl Parks (einzigartig)", String.valueOf(parkNachName.size()));
+
+        // record top-n as a compact stat
+        String topN = parkNachName.entrySet().stream()
+                .sorted((a, b) -> Long.compare(b.getValue(), a.getValue()))
+                .limit(Konstanten.TOP_LIMIT)
+                .map(e -> e.getKey() + "(" + e.getValue() + ")")
+                .collect(java.util.stream.Collectors.joining(", "));
+        ZeitStatistiken.zeichneStat("Top " + Konstanten.TOP_LIMIT + " Parks", topN);
     }
 
     /**
@@ -166,10 +201,16 @@ public class Main {
      * @param alleAnlagen Liste aller Windkraftanlagen
      */
     private static void gebeBeispielDatensätzeAus(List<Windkraftanlage> alleAnlagen) {
+        long start = System.nanoTime();
         System.out.println(Konstanten.BEISPIEL_DATENSÄTZE);
         alleAnlagen.stream()
                 .limit(Konstanten.BEISPIEL_LIMIT)
                 .forEach(System.out::println);
+        long count = Math.min(alleAnlagen.size(), Konstanten.BEISPIEL_LIMIT);
+
+        double ms = (System.nanoTime() - start) / Konstanten.NANOS_ZU_MILLIS;
+        ZeitStatistiken.zeichneZeitAuf("gebeBeispielDatensätzeAus", ms);
+        ZeitStatistiken.zeichneStat("Anzahl Beispiel-Datensätze ausgegeben", String.valueOf(count));
     }
 
     /**

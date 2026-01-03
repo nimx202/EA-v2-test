@@ -115,4 +115,101 @@ public final class Konstanten {
 
     /** Einzelnes Anführungszeichen als String */
     public static final String EINZELNES_ANFÜHRUNGSZEICHEN = "\"";
+
+    // ==================== Koordinaten-Validierung ====================
+
+    /** Minimaler gültiger Breitengrad für Deutschland */
+    public static final double MIN_BREITENGRAD_DE = 47.0;
+
+    /** Maximaler gültiger Breitengrad für Deutschland */
+    public static final double MAX_BREITENGRAD_DE = 55.0;
+
+    /** Minimaler gültiger Längengrad für Deutschland */
+    public static final double MIN_LÄNGENGRAD_DE = 5.0;
+
+    /** Maximaler gültiger Längengrad für Deutschland */
+    public static final double MAX_LÄNGENGRAD_DE = 16.0;
+
+    /** Fehlerschwelle für Breitengrad-Korrektur (Faktor 1000) */
+    public static final double BREITENGRAD_FEHLERFAKTOR = 1000.0;
+
+    /** Fehlerschwelle für Längengrad-Korrektur (Faktor 1000) */
+    public static final double LÄNGENGRAD_FEHLERFAKTOR = 1000.0;
+
+    // ==================== Baujahr-Validierung ====================
+
+    /** Minimales gültiges Baujahr (erste Windkraftanlagen in Deutschland) */
+    public static final int MIN_BAUJAHR = 1980;
+
+    /** Maximales gültiges Baujahr (aktuelles Jahr) */
+    public static final int MAX_BAUJAHR = 2026;
+
+    /** Fehlerfaktor für Baujahr-Korrektur (überzählige Ziffer) */
+    public static final int BAUJAHR_FEHLERFAKTOR = 10;
+
+    // ==================== Gesamtleistung-Validierung ====================
+
+    /** Minimale gültige Gesamtleistung in MW (keine negativen Werte) */
+    public static final double MIN_GESAMTLEISTUNG_MW = 0.0;
+
+    /** Maximale gültige Gesamtleistung in MW (realistischer Wert für Einzelanlage) */
+    public static final double MAX_GESAMTLEISTUNG_MW = 200.0;
+
+    /** Fehlerfaktor für Gesamtleistung-Korrektur (fehlendes Komma) */
+    public static final double GESAMTLEISTUNG_FEHLERFAKTOR = 100.0;
+
+    // ==================== Ausgabetexte Koordinaten-Korrektur ====================
+
+    /** Überschrift: Koordinaten-Validierung */
+    public static final String VALIDIERUNG_ÜBERSCHRIFT = "\n=== Überprüfung und Korrektur der Koordinaten ===";
+
+    /** Format: Validierungszeit */
+    public static final String VALIDIERUNG_ZEIT = "Dauer der Überprüfung: %.3f ms%n";
+
+    /** Format: Korrekturzeit */
+    public static final String KORREKTUR_ZEIT = "Dauer der Korrektur: %.3f ms%n";
+
+    /** Format: Anzahl fehlerhafte Koordinaten */
+    public static final String FEHLERHAFTE_KOORDINATEN = "Anzahl Datensätze mit fehlerhaften Koordinaten: %d%n";
+
+    /** Format: Anzahl korrigierte Koordinaten */
+    public static final String KORRIGIERTE_KOORDINATEN = "Anzahl korrigierte Datensätze: %d%n";
+
+    /** Überschrift: Fehlerhafte Datensätze */
+    public static final String FEHLERHAFTE_DATENSÄTZE = "\nFehlerhafte Datensätze (vor Korrektur):";
+
+    /** Format: Fehlerhafter Datensatz */
+    public static final String FEHLER_DATENSATZ = "ID %d | %s | Breitengrad: %.4f | Längengrad: %.4f%n";
+
+    /** Überschrift: Korrigierte Datensätze */
+    public static final String KORRIGIERTE_DATENSÄTZE = "\nKorrigierte Datensätze (nach Korrektur):";
+
+    /** Format: Korrigierter Datensatz */
+    public static final String KORREKTUR_DATENSATZ = "ID %d | %s | Alt: (%.4f, %.4f) -> Neu: (%.4f, %.4f)%n";
+
+    // ==================== Ausgabetexte Baujahr/Leistung-Korrektur ====================
+
+    /** Format: Anzahl fehlerhafte Baujahre */
+    public static final String FEHLERHAFTE_BAUJAHRE = "Anzahl Datensätze mit fehlerhaftem Baujahr: %d%n";
+
+    /** Format: Anzahl korrigierte Baujahre */
+    public static final String KORRIGIERTE_BAUJAHRE = "Anzahl korrigierte Baujahre: %d%n";
+
+    /** Format: Fehlerhaftes Baujahr */
+    public static final String FEHLER_BAUJAHR = "ID %d | %s | Baujahr: %d%n";
+
+    /** Format: Korrigiertes Baujahr */
+    public static final String KORREKTUR_BAUJAHR = "ID %d | %s | Alt: %d -> Neu: %s%n";
+
+    /** Format: Anzahl fehlerhafte Gesamtleistung */
+    public static final String FEHLERHAFTE_LEISTUNGEN = "Anzahl Datensätze mit fehlerhafter Gesamtleistung: %d%n";
+
+    /** Format: Anzahl korrigierte Gesamtleistung */
+    public static final String KORRIGIERTE_LEISTUNGEN = "Anzahl korrigierte Gesamtleistungen: %d%n";
+
+    /** Format: Fehlerhafte Gesamtleistung */
+    public static final String FEHLER_LEISTUNG = "ID %d | %s | Gesamtleistung: %.2f MW%n";
+
+    /** Format: Korrigierte Gesamtleistung */
+    public static final String KORREKTUR_LEISTUNG = "ID %d | %s | Alt: %.2f MW -> Neu: %s%n";
 }
