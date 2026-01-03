@@ -58,4 +58,4 @@ generate-merged-code-pdf.ps1
 *.ps1
 =======
 *.ps1
->>>>>>> 4f9bb4d (Update .gitignore to exclude additional PowerShell script files)
+*.txt
