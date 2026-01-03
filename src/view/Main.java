@@ -1,5 +1,7 @@
 package view;
 
+// Datei kodiert in UTF-8
+
 /**
  * Hauptklasse der Anwendung.
  * Delegiert den Ablauf an {@link AnwendungsAblaufKoordinator}.
