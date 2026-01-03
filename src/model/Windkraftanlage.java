@@ -75,98 +75,170 @@ public class Windkraftanlage {
         this.bemerkungen = bemerkungen;
     }
 
+    /**
+     * @return eindeutige Objekt-ID
+     */
     public int getObjektId() {
         return objektId;
     }
 
+    /**
+     * @param objektId eindeutige Objekt-ID
+     */
     public void setObjektId(int objektId) {
         this.objektId = objektId;
     }
 
+    /**
+     * @return Name der Anlage
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name Name der Anlage
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return Baujahr (kann null sein)
+     */
     public Integer getBaujahr() {
         return baujahr;
     }
 
+    /**
+     * @param baujahr Baujahr (kann null sein)
+     */
     public void setBaujahr(Integer baujahr) {
         this.baujahr = baujahr;
     }
 
+    /**
+     * @return Gesamtleistung in MW (kann null sein)
+     */
     public Double getGesamtLeistungMW() {
         return gesamtLeistungMW;
     }
 
+    /**
+     * @param gesamtLeistungMW Gesamtleistung in MW (kann null sein)
+     */
     public void setGesamtLeistungMW(Double gesamtLeistungMW) {
         this.gesamtLeistungMW = gesamtLeistungMW;
     }
 
+    /**
+     * @return Anzahl der Einheiten (kann null sein)
+     */
     public Integer getAnzahl() {
         return anzahl;
     }
 
+    /**
+     * @param anzahl Anzahl der Einheiten (kann null sein)
+     */
     public void setAnzahl(Integer anzahl) {
         this.anzahl = anzahl;
     }
 
+    /**
+     * @return Typ der Anlage
+     */
     public String getTyp() {
         return typ;
     }
 
+    /**
+     * @param typ Typ der Anlage
+     */
     public void setTyp(String typ) {
         this.typ = typ;
     }
 
+    /**
+     * @return Ortschaft der Anlage
+     */
     public String getOrt() {
         return ort;
     }
 
+    /**
+     * @param ort Ortschaft der Anlage
+     */
     public void setOrt(String ort) {
         this.ort = ort;
     }
 
+    /**
+     * @return Landkreis/Bezirk
+     */
     public String getLandkreis() {
         return landkreis;
     }
 
+    /**
+     * @param landkreis Landkreis/Bezirk
+     */
     public void setLandkreis(String landkreis) {
         this.landkreis = landkreis;
     }
 
+    /**
+     * @return Breitengrad (kann null sein)
+     */
     public Double getBreitengrad() {
         return breitengrad;
     }
 
+    /**
+     * @param breitengrad Breitengrad (kann null sein)
+     */
     public void setBreitengrad(Double breitengrad) {
         this.breitengrad = breitengrad;
     }
 
+    /**
+     * @return Längengrad (kann null sein)
+     */
     public Double getLaengengrad() {
         return laengengrad;
     }
 
+    /**
+     * @param laengengrad Längengrad (kann null sein)
+     */
     public void setLaengengrad(Double laengengrad) {
         this.laengengrad = laengengrad;
     }
 
+    /**
+     * @return Betreiber
+     */
     public String getBetreiber() {
         return betreiber;
     }
 
+    /**
+     * @param betreiber Betreiber
+     */
     public void setBetreiber(String betreiber) {
         this.betreiber = betreiber;
     }
 
+    /**
+     * @return Bemerkungen
+     */
     public String getBemerkungen() {
         return bemerkungen;
     }
 
+    /**
+     * @param bemerkungen Bemerkungen
+     */
     public void setBemerkungen(String bemerkungen) {
         this.bemerkungen = bemerkungen;
     }
