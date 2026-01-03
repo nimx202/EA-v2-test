@@ -53,3 +53,4 @@ generate-code-pdf.ps1
 generate-code-pdf.py
 generate-code-pdf.bat
 *.html
+*.ps1
