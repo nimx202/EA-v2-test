@@ -42,10 +42,7 @@ public final class StatistikBerechner {
         int anzahl = 0;
 
         for (Windkraftanlage anlage : anlagen) {
-            boolean hatBreitengrad = anlage.getBreitengrad() != null;
-            boolean hatLaengengrad = anlage.getLaengengrad() != null;
-
-            if (hatBreitengrad && hatLaengengrad) {
+            if (anlage.hatKoordinaten()) {
                 anzahl++;
             }
         }

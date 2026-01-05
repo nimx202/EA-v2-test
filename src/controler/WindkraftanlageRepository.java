@@ -1,5 +1,6 @@
 package controler;
 
+import model.GeoKoordinaten;
 import model.Windkraftanlage;
 import util.CsvParser;
 import util.FeldParser;
@@ -130,9 +131,11 @@ public class WindkraftanlageRepository {
             String betreiber = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
             String bemerkungen = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
 
+            GeoKoordinaten geoKoordinaten = new GeoKoordinaten(breitengrad, laengengrad);
+
             // Erstelle neue Anlage
             return new Windkraftanlage(objektId, name, baujahr, gesamtLeistungMW,
-                anzahl, typ, ort, landkreis, breitengrad, laengengrad,
+                anzahl, typ, ort, landkreis, geoKoordinaten,
                 betreiber, bemerkungen);
                 
         } catch (Exception fehler) {
