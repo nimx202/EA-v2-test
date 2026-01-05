@@ -43,13 +43,8 @@ public class KoordinatenKorrekturTracker {
     * @param neuerLaengengrad Neuer Längengrad (nach Korrektur)
      */
     public void zeichneKorrekturAuf(Windkraftanlage anlage, 
-<<<<<<< HEAD
                                      Float alterBreitengrad, Float alterLaengengrad,
                                      Float neuerBreitengrad, Float neuerLaengengrad) {
-=======
-                                     Double alterBreitengrad, Double alterLaengengrad,
-                                     Double neuerBreitengrad, Double neuerLaengengrad) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         KorrekturEintrag eintrag = new KorrekturEintrag(
             anlage.getObjektId(),
             anlage.getName(),
@@ -157,11 +152,7 @@ public class KoordinatenKorrekturTracker {
     }
 
     /**
-<<<<<<< HEAD
     * Formatiert einen Float-Wert für die Ausgabe.
-=======
-     * Formatiert einen Double-Wert für die Ausgabe.
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
      * 
      * Pre: keine
      * Post: Rückgabe: formatierter String
@@ -169,11 +160,7 @@ public class KoordinatenKorrekturTracker {
      * @param wert Der zu formatierende Wert
      * @return Formatierter String
      */
-<<<<<<< HEAD
     private String formatiereDoppelWert(Float wert) {
-=======
-    private String formatiereDoppelWert(Double wert) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         if (wert == null) {
             return Konstanten.ANZEIGE_UNBEKANNT;
         }
@@ -187,7 +174,6 @@ public class KoordinatenKorrekturTracker {
     private static class KorrekturEintrag {
         final int objektId;
         final String name;
-<<<<<<< HEAD
         final Float alterBreitengrad;
         final Float alterLaengengrad;
         final Float neuerBreitengrad;
@@ -196,16 +182,6 @@ public class KoordinatenKorrekturTracker {
         KorrekturEintrag(int objektId, String name,
                         Float alterBreitengrad, Float alterLaengengrad,
                         Float neuerBreitengrad, Float neuerLaengengrad) {
-=======
-        final Double alterBreitengrad;
-        final Double alterLaengengrad;
-        final Double neuerBreitengrad;
-        final Double neuerLaengengrad;
-
-        KorrekturEintrag(int objektId, String name,
-                        Double alterBreitengrad, Double alterLaengengrad,
-                        Double neuerBreitengrad, Double neuerLaengengrad) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
             this.objektId = objektId;
             this.name = name;
             this.alterBreitengrad = alterBreitengrad;

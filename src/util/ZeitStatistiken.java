@@ -14,6 +14,7 @@ import java.util.Map;
 public final class ZeitStatistiken {
 
     private static final Map<String, Float> ZEITEN = new LinkedHashMap<>();
+    private static final Map<String, Float> ZEITEN = new LinkedHashMap<>();
     private static final Map<String, String> STATS = new LinkedHashMap<>();
 
     private ZeitStatistiken() { }
@@ -27,6 +28,7 @@ public final class ZeitStatistiken {
      * @param name Name der Messung
      * @param millis Zeit in Millisekunden
      */
+    public static void zeichneZeitAuf(String name, float millis) {
     public static void zeichneZeitAuf(String name, float millis) {
         ZEITEN.put(name, millis);
     }
@@ -53,17 +55,10 @@ public final class ZeitStatistiken {
      */
     public static void druckeZusammenfassung() {
         AusgabeManager.gebeAus(Konstanten.ZUSAMMENFASSUNG_UEBERSCHRIFT);
-<<<<<<< HEAD
         float gesamt = 0.0f;
         if (!ZEITEN.isEmpty()) {
             AusgabeManager.gebeAus(Konstanten.ZEITEN_UEBERSCHRIFT);
             for (Map.Entry<String, Float> e : ZEITEN.entrySet()) {
-=======
-        double gesamt = 0.0;
-        if (!ZEITEN.isEmpty()) {
-            AusgabeManager.gebeAus(Konstanten.ZEITEN_UEBERSCHRIFT);
-            for (Map.Entry<String, Double> e : ZEITEN.entrySet()) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
                 AusgabeManager.gebeAusFormat(Konstanten.ZEIT_FORMAT, e.getKey(), e.getValue());
                 gesamt += e.getValue();
             }

@@ -25,8 +25,7 @@ public class Windkraftanlage {
     private Float gesamtLeistungMW;
 =======
     private String baujahr;
-    private Double gesamtLeistungMW;
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
+    private Float gesamtLeistungMW;
     private Integer anzahl;
     private String typ;
     private String ort;
@@ -62,11 +61,7 @@ public class Windkraftanlage {
      * @param betreiber Betreiber der Anlage
      * @param bemerkungen weitere Bemerkungen
      */
-<<<<<<< HEAD
-    public Windkraftanlage(int objektId, String name, Integer baujahr, Float gesamtLeistungMW,
-=======
-    public Windkraftanlage(int objektId, String name, String baujahr, Double gesamtLeistungMW,
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
+    public Windkraftanlage(int objektId, String name, String baujahr, Float gesamtLeistungMW,
                            Integer anzahl, String typ, String ort, String landkreis,
                            GeoKoordinaten geoKoordinaten, String betreiber, String bemerkungen) {
         this.objektId = objektId;

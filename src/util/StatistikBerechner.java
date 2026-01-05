@@ -112,19 +112,11 @@ public final class StatistikBerechner {
      * @param anlagen Liste aller Windkraftanlagen
      * @return Gesamt-Leistung in Megawatt
      */
-<<<<<<< HEAD
     public static float berechneGesamtLeistung(List<Windkraftanlage> anlagen) {
         float gesamt = 0.0f;
         
         for (Windkraftanlage anlage : anlagen) {
             Float leistung = anlage.getGesamtLeistungMW();
-=======
-    public static double berechneGesamtLeistung(List<Windkraftanlage> anlagen) {
-        double gesamt = 0.0;
-        
-        for (Windkraftanlage anlage : anlagen) {
-            Double leistung = anlage.getGesamtLeistungMW();
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
             if (leistung != null) {
                 gesamt = gesamt + leistung;
             }

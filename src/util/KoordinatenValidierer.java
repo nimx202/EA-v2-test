@@ -6,11 +6,7 @@ package util;
  * Design-Prinzipien:
  * - Single Responsibility: Nur Koordinaten-Validierung und -Korrektur
  * - KISS: Einfache if-Bedingungen statt komplexer Logik
-<<<<<<< HEAD
  * - Keine Abhängigkeiten: Arbeitet nur mit Float-Werten
-=======
- * - Keine Abhängigkeiten: Arbeitet nur mit Double-Werten
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
  * 
  * Verantwortlichkeiten:
  * - Prüfen ob Koordinaten im gültigen Bereich für Deutschland liegen
@@ -43,11 +39,7 @@ public final class KoordinatenValidierer {
      * @param breitengrad Der zu prüfende Breitengrad
      * @return true wenn gültig oder null, false sonst
      */
-<<<<<<< HEAD
     public static boolean istBreitengradGueltig(Float breitengrad) {
-=======
-    public static boolean istBreitengradGueltig(Double breitengrad) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         if (breitengrad == null) {
             return true;
         }
@@ -68,11 +60,7 @@ public final class KoordinatenValidierer {
     * @param laengengrad Der zu prüfende Laengengrad
      * @return true wenn gültig oder null, false sonst
      */
-<<<<<<< HEAD
     public static boolean istLaengengradGueltig(Float laengengrad) {
-=======
-    public static boolean istLaengengradGueltig(Double laengengrad) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         if (laengengrad == null) {
             return true;
         }
@@ -94,29 +82,17 @@ public final class KoordinatenValidierer {
      * @param breitengrad Der zu korrigierende Breitengrad
      * @return Korrigierter Breitengrad oder null
      */
-<<<<<<< HEAD
     public static Float korrigiereBreitengrad(Float breitengrad) {
-=======
-    public static Double korrigiereBreitengrad(Double breitengrad) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         if (breitengrad == null) {
             return null;
         }
         
-<<<<<<< HEAD
         if (breitengrad == 0.0f) {
-=======
-        if (breitengrad == 0.0) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
             return null;
         }
         
         // Teile durch 1000
-<<<<<<< HEAD
         float korrigierterWert = breitengrad / Konstanten.BREITENGRAD_FEHLERFAKTOR;
-=======
-        double korrigierterWert = breitengrad / Konstanten.BREITENGRAD_FEHLERFAKTOR;
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         
         // Pruefe ob korrigierter Wert gueltig ist
         if (istBreitengradGueltig(korrigierterWert)) {
@@ -137,29 +113,17 @@ public final class KoordinatenValidierer {
     * @param laengengrad Der zu korrigierende Laengengrad
      * @return Korrigierter Längengrad oder null
      */
-<<<<<<< HEAD
     public static Float korrigiereLaengengrad(Float laengengrad) {
-=======
-    public static Double korrigiereLaengengrad(Double laengengrad) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         if (laengengrad == null) {
             return null;
         }
         
-<<<<<<< HEAD
         if (laengengrad == 0.0f) {
-=======
-        if (laengengrad == 0.0) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
             return null;
         }
         
         // Teile durch 1000
-<<<<<<< HEAD
         float korrigierterWert = laengengrad / Konstanten.LAENGENGRAD_FEHLERFAKTOR;
-=======
-        double korrigierterWert = laengengrad / Konstanten.LAENGENGRAD_FEHLERFAKTOR;
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         
         // Pruefe ob korrigierter Wert gueltig ist
         if (istLaengengradGueltig(korrigierterWert)) {

@@ -12,11 +12,7 @@ package util;
  * Verwendung:
  * ZeitMessung timer = ZeitMessung.starte();
  * // ... Code ausführen ...
-<<<<<<< HEAD
  * float millis = timer.stoppeUndGibMillis();
-=======
- * double millis = timer.stoppeUndGibMillis();
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
  */
 public final class ZeitMessung {
 
@@ -57,15 +53,9 @@ public final class ZeitMessung {
      * 
      * @return Verstrichene Zeit in Millisekunden
      */
-<<<<<<< HEAD
     public float stoppeUndGibMillis() {
         if (!laeuft) {
             return 0.0f;
-=======
-    public double stoppeUndGibMillis() {
-        if (!laeuft) {
-            return 0.0;
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         }
         endZeit = System.nanoTime();
         laeuft = false;
@@ -80,11 +70,7 @@ public final class ZeitMessung {
      * 
      * @return Dauer in Millisekunden
      */
-<<<<<<< HEAD
     private float berechneDauerInMillis() {
-=======
-    private double berechneDauerInMillis() {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         return (endZeit - startZeit) / Konstanten.NANOS_ZU_MILLIS;
     }
 
@@ -122,11 +108,7 @@ public final class ZeitMessung {
      * @param nanos Zeit in Nanosekunden
      * @return Zeit in Millisekunden
      */
-<<<<<<< HEAD
     public static float nanoZuMillis(long nanos) {
-=======
-    public static double nanoZuMillis(long nanos) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         return nanos / Konstanten.NANOS_ZU_MILLIS;
     }
 }

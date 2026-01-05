@@ -2,11 +2,7 @@ package util;
 
 /**
  * Einfache Klasse zum Umwandeln von Text in Zahlen.
-<<<<<<< HEAD
  * Wandelt CSV-Felder in Integer und Float um.
-=======
- * Wandelt CSV-Felder in Integer und Double um.
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
  *
  * Pre: Methoden können mit null-Werten umgehen
  * Post: Gibt konvertierte Werte oder null zurück
@@ -78,22 +74,14 @@ public class FeldParser {
      * @param textWert Der zu wandelnde Text
      * @return Kommazahl oder null
      */
-<<<<<<< HEAD
     public static Float parseGleitkommaZahlNullbar(String textWert) {
-=======
-    public static Double parseGleitkommaZahlNullbar(String textWert) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         String bereinigterText = bereinigeZahlText(textWert);
         if (bereinigterText == null) {
             return null;
         }
 
         try {
-<<<<<<< HEAD
             return Float.parseFloat(bereinigterText);
-=======
-            return Double.parseDouble(bereinigterText);
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         } catch (NumberFormatException fehler) {
             return null;
         }
