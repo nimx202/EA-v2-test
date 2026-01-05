@@ -1,198 +1,216 @@
 package controler;
 
 import model.Windkraftanlage;
-import util.Konstanten;
-import util.KonstantenParser;
+import util.CsvParser;
 import util.FeldParser;
+import util.KoordinatenValidierer;
+import util.KoordinatenKorrekturTracker;
+import util.Konstanten;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
- * Repository zum Einlesen und Verwalten von Windkraftanlagen-Daten.
- * Verwendet nur Java I/O Streams aus der Standardbibliothek und delegiert
- * CSV-Parsing an spezialisierte Klassen (Separation of Concerns).
- *
- * Vertrag:
- * Pre: CSV-Datei muss existieren und lesbar sein
- * Post: getAll() liefert unveränderliche Liste aller eingelesenen Datensätze
+ * Repository für Windkraftanlagen-Daten.
+ * Verwaltet das Einlesen und Speichern von Windkraftanlagen aus CSV-Dateien.
+ * 
+ * Design-Prinzipien:
+ * - Single Responsibility: Nur Datenverwaltung
+ * - Encapsulation: Private Liste, öffentliche Methoden
+ * - KISS: Einfaches Laden und Speichern
+ * 
+ * Pre: CSV-Datei muss existieren und korrekt formatiert sein
+ * Post: Liefert Liste aller Windkraftanlagen
  */
 public class WindkraftanlageRepository {
 
-    private final List<Windkraftanlage> anlagen = new ArrayList<>();
+    private final List<Windkraftanlage> alleAnlagen = new ArrayList<>();
 
     /**
-     * Konstruktor erstellt ein leeres Repository.
-     *
-     * Post: Leeres Repository mit 0 Datensätzen
+     * Erstellt ein leeres Repository.
+     * 
+     * Pre: keine
+     * Post: Leeres Repository erstellt
      */
     public WindkraftanlageRepository() {
-        // Leerer Konstruktor
     }
 
     /**
-     * Liest die CSV-Datei ein und füllt das Repository.
-     *
-     * Pre: dateipfad existiert und ist lesbar; muss nicht null sein
-     * Post: getAll() liefert alle eingelesenen Datensätze;
-     *       Rückgabe: Anzahl eingelesener Datensätze
-     *
-     * @param dateipfad Pfad zur CSV-Datei
-     * @return Anzahl eingelesener Datensätze
-     * @throws Exception bei I/O-Fehlern
+     * Liest CSV-Datei ein und füllt das Repository.
+     * Überspringt die Kopfzeile und leere Zeilen.
+     * 
+     * Pre: csvDateipfad nicht null; Datei existiert
+     * Post: Repository gefüllt mit geladenen Anlagen
+     * 
+     * @param csvDateipfad Pfad zur CSV-Datei
+     * @return Anzahl geladener Datensätze
+     * @throws Exception bei Lesefehlern
      */
-    public int ladeAusCsv(String dateipfad) throws Exception {
-        Objects.requireNonNull(dateipfad, "dateipfad must not be null");
+    public int ladeAusCsv(String csvDateipfad) throws Exception {
+        alleAnlagen.clear();
 
-        anlagen.clear();
+        BufferedReader csvLeser = new BufferedReader(
+            new InputStreamReader(
+                new FileInputStream(csvDateipfad),
+                StandardCharsets.UTF_8));
 
-        try (BufferedReader leser = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream(dateipfad),
-                        StandardCharsets.UTF_8))) {
-
-            // Lese Header (erste Zeile)
-            String kopfzeile = KonstantenParser.leseNächstenDatensatz(leser);
-            if (kopfzeile == null) {
+        try {
+            // Überspringe Kopfzeile
+            String kopfZeile = CsvParser.leseNaechstenDatensatz(csvLeser);
+            if (kopfZeile == null) {
+                csvLeser.close();
                 return 0;
             }
 
-            // Lese Datensätze
-            List<Windkraftanlage> geparsteDatensätze = leseAlleeDatensätze(leser);
-            anlagen.addAll(geparsteDatensätze);
-            return anlagen.size();
-        }
-    }
-
-    /**
-     * Liest alle Datensätze aus dem Reader bis EOF.
-     *
-     * Pre: leser ist nicht null und positioniert nach Header
-     * Post: Rückgabe Liste mit allen gültigen Windkraftanlage-Objekten
-     *
-     * @param leser BufferedReader positioniert nach Header
-     * @return Liste mit eingelesenen Anlagen
-     * @throws Exception bei I/O-Fehlern
-     */
-    private List<Windkraftanlage> leseAlleeDatensätze(BufferedReader leser) throws Exception {
-        List<Windkraftanlage> datensätze = new ArrayList<>();
-        String datensatzZeile;
-
-        while ((datensatzZeile = KonstantenParser.leseNächstenDatensatz(leser)) != null) {
-            String gekürzt = datensatzZeile.trim();
-            if (!gekürzt.isEmpty()) {
-                Windkraftanlage anlage = parsenCsvZeile(datensatzZeile);
-                if (anlage != null) {
-                    datensätze.add(anlage);
+            // Lese alle Datenzeilen
+            String datenZeile;
+            while ((datenZeile = CsvParser.leseNaechstenDatensatz(csvLeser)) != null) {
+                String zeileOhneLeerzeichen = datenZeile.trim();
+                
+                if (!zeileOhneLeerzeichen.isEmpty()) {
+                    Windkraftanlage neueAnlage = erstelleAnlageAusZeile(datenZeile);
+                    
+                    if (neueAnlage != null) {
+                        alleAnlagen.add(neueAnlage);
+                    }
                 }
             }
+        } finally {
+            csvLeser.close();
         }
 
-        return datensätze;
+        return alleAnlagen.size();
     }
 
     /**
-     * Parst eine CSV-Zeile in ein Windkraftanlage-Objekt.
-     *
-     * Pre: zeile ist nicht null
-     * Post: Rückgabe Windkraftanlage-Objekt oder null bei Parsing-Fehler
-     *
-     * @param zeile CSV-Zeile
-     * @return Windkraftanlage oder null
+     * Erstellt ein Windkraftanlage-Objekt aus einer CSV-Zeile.
+     * Parst alle Felder und erstellt ein neues Objekt.
+     * 
+     * Pre: csvZeile nicht null
+     * Post: Rückgabe: Windkraftanlage oder null bei Fehler
+     * 
+     * @param csvZeile Die CSV-Zeile
+     * @return Windkraftanlage oder null bei Fehler
      */
-    private Windkraftanlage parsenCsvZeile(String zeile) {
-        if (zeile == null) {
+    private Windkraftanlage erstelleAnlageAusZeile(String csvZeile) {
+        if (csvZeile == null) {
             return null;
         }
 
-        String[] teile = KonstantenParser.teileZeileRespektivierAnführungszeichen(zeile);
-        if (!istGültigZeilenlänge(teile)) {
+        // Teile Zeile in Felder
+        String[] csvFelder = CsvParser.teileZeileInFelder(csvZeile);
+        
+        // Prüfe ob genug Felder vorhanden sind
+        if (csvFelder == null || csvFelder.length < Konstanten.ERWARTET_FELDANZAHL) {
             return null;
         }
 
         try {
-            return erstelleWindkraftanlage(teile);
-        } catch (Exception e) {
-            // Ungültige Zeile wird verworfen
+            int feldIndex = 0;
+
+            // Parse jedes Feld einzeln
+            int objektId = FeldParser.parseGanzzahlSicher(csvFelder[feldIndex++]);
+            String name = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            String baujahr = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            Double gesamtLeistungMW = FeldParser.parseGleitkommaZahlNullbar(
+                CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            Integer anzahl = FeldParser.parseGanzzahlNullbar(
+                CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            String typ = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            String ort = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            String landkreis = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            Double breitengrad = FeldParser.parseGleitkommaZahlNullbar(
+                CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            Double laengengrad = FeldParser.parseGleitkommaZahlNullbar(
+                CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            String betreiber = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            String bemerkungen = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+
+            // Erstelle neue Anlage
+            return new Windkraftanlage(objektId, name, baujahr, gesamtLeistungMW,
+                anzahl, typ, ort, landkreis, breitengrad, laengengrad,
+                betreiber, bemerkungen);
+                
+        } catch (Exception fehler) {
             return null;
         }
     }
 
     /**
-     * Prüft, ob eine geparste CSV-Zeile die richtige Feldanzahl hat.
+     * Liefert alle geladenen Windkraftanlagen.
      *
-     * Pre: teile ist nicht null
-     * Post: true wenn Feldanzahl >= erwartet
-     *
-     * @param teile geparste CSV-Felder
-     * @return true wenn gültige Feldanzahl
-     */
-    private boolean istGültigZeilenlänge(String[] teile) {
-        return teile != null && teile.length >= Konstanten.ERWARTET_FELDANZAHL;
-    }
-
-    /**
-     * Erstellt ein Windkraftanlage-Objekt aus geparsten CSV-Feldern.
-     *
-     * Pre: teile hat mindestens ERWARTET_FELDANZAHL Elemente
-     * Post: Rückgabe vollständig initialisiertes Windkraftanlage-Objekt
-     *
-     * @param teile geparste CSV-Felder
-     * @return Windkraftanlage-Objekt
-     */
-    private Windkraftanlage erstelleWindkraftanlage(String[] teile) {
-        int idx = 0;
-
-        int objektId = FeldParser.parseGanzzahlSicher(teile[idx++]);
-        String name = FeldParser.leerZuNull(KonstantenParser.bereinigesFeld(teile[idx++]));
-        Integer baujahr = FeldParser.parseGanzzahlNullbar(
-                KonstantenParser.bereinigesFeld(teile[idx++]));
-        Double gesamtLeistungMW = FeldParser.parseGleitkommaZahlNullbar(
-                KonstantenParser.bereinigesFeld(teile[idx++]));
-        Integer anzahl = FeldParser.parseGanzzahlNullbar(
-                KonstantenParser.bereinigesFeld(teile[idx++]));
-        String typ = FeldParser.leerZuNull(KonstantenParser.bereinigesFeld(teile[idx++]));
-        String ort = FeldParser.leerZuNull(KonstantenParser.bereinigesFeld(teile[idx++]));
-        String landkreis = FeldParser.leerZuNull(KonstantenParser.bereinigesFeld(teile[idx++]));
-        Double breitengrad = FeldParser.parseGleitkommaZahlNullbar(
-                KonstantenParser.bereinigesFeld(teile[idx++]));
-        Double laengengrad = FeldParser.parseGleitkommaZahlNullbar(
-                KonstantenParser.bereinigesFeld(teile[idx++]));
-        String betreiber = FeldParser.leerZuNull(KonstantenParser.bereinigesFeld(teile[idx++]));
-        String bemerkungen = FeldParser.leerZuNull(KonstantenParser.bereinigesFeld(teile[idx++]));
-
-        return new Windkraftanlage(objektId, name, baujahr, gesamtLeistungMW,
-                anzahl, typ, ort, landkreis, breitengrad, laengengrad,
-                betreiber, bemerkungen);
-    }
-
-    /**
-     * Liefert eine unveränderliche Liste aller eingelesenen Windkraftanlagen.
-     *
-     * Pre: keine
-     * Post: Rückgabe nicht-null, unveränderliche Liste
-     *
-     * @return Liste der Windkraftanlagen
+     * @return Liste aller Anlagen
      */
     public List<Windkraftanlage> getAll() {
-        return Collections.unmodifiableList(anlagen);
+        return new ArrayList<>(alleAnlagen);
     }
 
     /**
-     * Liefert die Anzahl der aktuell geladenen Datensätze.
+     * Liefert Anzahl der geladenen Datensätze.
      *
-     * Pre: keine
-     * Post: Rückgabe Anzahl >= 0
-     *
-     * @return Anzahl Datensätze
+     * @return Anzahl Anlagen
      */
     public int count() {
-        return anlagen.size();
+        return alleAnlagen.size();
+    }
+
+    /** und zeichnet Änderungen auf.
+     * Teilt zu große Werte durch 1000.
+     *
+     * Pre: Repository wurde geladen
+     * Post: Fehlerhafte Koordinaten wurden korrigiert oder auf null gesetzt
+     *
+     * @param tracker Tracker zum Aufzeichnen der Korrekturen
+     * @return Anzahl korrigierter Datensätze
+     */
+    public int korrigiereKoordinaten(KoordinatenKorrekturTracker tracker) {
+        int anzahlKorrigiert = 0;
+        
+        for (Windkraftanlage anlage : alleAnlagen) {
+            boolean wurdeKorrigiert = false;
+            
+            Double alterBreitengrad = anlage.getBreitengrad();
+            Double alterLaengengrad = anlage.getLaengengrad();
+            Double neuerBreitengrad = alterBreitengrad;
+            Double neuerLaengengrad = alterLaengengrad;
+            
+            // Korrigiere Breitengrad wenn ungültig
+            if (!KoordinatenValidierer.istBreitengradGueltig(alterBreitengrad)) {
+                neuerBreitengrad = KoordinatenValidierer.korrigiereBreitengrad(alterBreitengrad);
+                if (neuerBreitengrad != null) {
+                    anlage.setBreitengrad(neuerBreitengrad);
+                    wurdeKorrigiert = true;
+                } else {
+                    anlage.setBreitengrad(null);
+                    neuerBreitengrad = null;
+                }
+            }
+            
+            // Korrigiere Längengrad wenn ungültig
+            if (!KoordinatenValidierer.istLaengengradGueltig(alterLaengengrad)) {
+                neuerLaengengrad = KoordinatenValidierer.korrigiereLaengengrad(alterLaengengrad);
+                if (neuerLaengengrad != null) {
+                    anlage.setLaengengrad(neuerLaengengrad);
+                    wurdeKorrigiert = true;
+                } else {
+                    anlage.setLaengengrad(null);
+                    neuerLaengengrad = null;
+                }
+            }
+            
+            // Zeichne Korrektur auf wenn etwas korrigiert wurde
+            if (wurdeKorrigiert) {
+                tracker.zeichneKorrekturAuf(anlage, 
+                    alterBreitengrad, alterLaengengrad,
+                    neuerBreitengrad, neuerLaengengrad);
+                anzahlKorrigiert++;
+            }
+        }
+        
+        return anzahlKorrigiert;
     }
 }

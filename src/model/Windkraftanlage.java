@@ -1,6 +1,7 @@
 package model;
 
 import util.FeldParser;
+import util.Konstanten;
 
 /**
  * Modellklasse für eine Windkraftanlage (Windenergieanlage).
@@ -19,7 +20,7 @@ public class Windkraftanlage {
 
     private int objektId;
     private String name;
-    private Integer baujahr;
+    private String baujahr;
     private Double gesamtLeistungMW;
     private Integer anzahl;
     private String typ;
@@ -58,7 +59,7 @@ public class Windkraftanlage {
      * @param betreiber Betreiber der Anlage
      * @param bemerkungen weitere Bemerkungen
      */
-    public Windkraftanlage(int objektId, String name, Integer baujahr, Double gesamtLeistungMW,
+    public Windkraftanlage(int objektId, String name, String baujahr, Double gesamtLeistungMW,
                            Integer anzahl, String typ, String ort, String landkreis,
                            Double breitengrad, Double laengengrad, String betreiber, String bemerkungen) {
         this.objektId = objektId;
@@ -106,14 +107,14 @@ public class Windkraftanlage {
     /**
      * @return Baujahr (kann null sein)
      */
-    public Integer getBaujahr() {
+    public String getBaujahr() {
         return baujahr;
     }
 
     /**
      * @param baujahr Baujahr (kann null sein)
      */
-    public void setBaujahr(Integer baujahr) {
+    public void setBaujahr(String baujahr) {
         this.baujahr = baujahr;
     }
 
@@ -246,6 +247,7 @@ public class Windkraftanlage {
     /**
      * Liefert eine aussagekräftige Textrepräsentation der Windkraftanlage.
      * Null-Werte werden als "unbekannt" dargestellt.
+     * Verwendet Konstanten für alle Textbausteine.
      *
      * Pre: keine
      * Post: Rückgabe nicht-null String mit allen Attributen
@@ -254,20 +256,46 @@ public class Windkraftanlage {
      */
     @Override
     public String toString() {
-        return "Windkraftanlage{" +
-                "objektId=" + objektId +
-                ", name='" + name + '\'' +
-                ", baujahr=" + FeldParser.formatiereFürAnzeige(baujahr) +
-                ", gesamtLeistungMW=" + FeldParser.formatiereFürAnzeige(gesamtLeistungMW) +
-                ", anzahl=" + FeldParser.formatiereFürAnzeige(anzahl) +
-                ", typ='" + typ + '\'' +
-                ", ort='" + ort + '\'' +
-                ", landkreis='" + landkreis + '\'' +
-                ", breitengrad=" + FeldParser.formatiereFürAnzeige(breitengrad) +
-                ", laengengrad=" + FeldParser.formatiereFürAnzeige(laengengrad) +
-                ", betreiber='" + betreiber + '\'' +
-                ", bemerkungen='" + bemerkungen + '\'' +
-                '}';
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append(Konstanten.TOSTRING_PREFIX);
+        builder.append(Konstanten.FELD_OBJEKT_ID).append(Konstanten.TOSTRING_WERTTRENNER).append(objektId);
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_NAME).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(Konstanten.TOSTRING_QUOTE).append(name).append(Konstanten.TOSTRING_QUOTE);
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_BAUJAHR).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(FeldParser.formatiereFuerAnzeige(baujahr));
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_GESAMT_LEISTUNG_MW).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(FeldParser.formatiereFuerAnzeige(gesamtLeistungMW));
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_ANZAHL).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(FeldParser.formatiereFuerAnzeige(anzahl));
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_TYP).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(Konstanten.TOSTRING_QUOTE).append(typ).append(Konstanten.TOSTRING_QUOTE);
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_ORT).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(Konstanten.TOSTRING_QUOTE).append(ort).append(Konstanten.TOSTRING_QUOTE);
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_LANDKREIS).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(Konstanten.TOSTRING_QUOTE).append(landkreis).append(Konstanten.TOSTRING_QUOTE);
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_BREITENGRAD).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(FeldParser.formatiereFuerAnzeige(breitengrad));
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_LAENGENGRAD).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(FeldParser.formatiereFuerAnzeige(laengengrad));
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_BETREIBER).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(Konstanten.TOSTRING_QUOTE).append(betreiber).append(Konstanten.TOSTRING_QUOTE);
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_BEMERKUNGEN).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(Konstanten.TOSTRING_QUOTE).append(bemerkungen).append(Konstanten.TOSTRING_QUOTE);
+        builder.append(Konstanten.TOSTRING_SUFFIX);
+        
+        return builder.toString();
     }
 }
 

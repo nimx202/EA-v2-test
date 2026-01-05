@@ -5,6 +5,11 @@ import java.util.Map;
 
 /**
  * Utility zum Sammeln von Zeit- und Statistik-Metriken während der Laufzeit.
+ * 
+ * Design-Prinzipien:
+ * - Modularisierung: Nutzt AusgabeManager für alle Ausgaben
+ * - Keine hardcodierten Strings: Alle Texte kommen aus Konstanten
+ * - Single Responsibility: Nur Sammlung und Anzeige von Statistiken
  */
 public final class ZeitStatistiken {
 
@@ -16,6 +21,9 @@ public final class ZeitStatistiken {
     /**
      * Zeichnet eine gemessene Zeit für einen Namen.
      *
+     * Pre: name nicht null; millis >= 0
+     * Post: Zeit wurde in ZEITEN gespeichert
+     * 
      * @param name Name der Messung
      * @param millis Zeit in Millisekunden
      */
@@ -26,6 +34,9 @@ public final class ZeitStatistiken {
     /**
      * Zeichnet eine Statistik-Metrik.
      *
+     * Pre: name und value nicht null
+     * Post: Statistik wurde in STATS gespeichert
+     * 
      * @param name Name der Statistik
      * @param value Wert als String
      */
@@ -35,30 +46,34 @@ public final class ZeitStatistiken {
 
     /**
      * Gibt die gesammelten Zeiten und Statistiken auf stdout aus.
+     * Nutzt AusgabeManager und Konstanten für alle Ausgaben.
+     * 
+     * Pre: keine
+     * Post: Alle gesammelten Zeiten und Statistiken wurden ausgegeben
      */
     public static void druckeZusammenfassung() {
-        System.out.println("\n=== Zusammenfassung: Zeiten und Statistiken ===");
+        AusgabeManager.gebeAus(Konstanten.ZUSAMMENFASSUNG_UEBERSCHRIFT);
         double gesamt = 0.0;
         if (!ZEITEN.isEmpty()) {
-            System.out.println("\n-- Zeiten (ms) --");
+            AusgabeManager.gebeAus(Konstanten.ZEITEN_UEBERSCHRIFT);
             for (Map.Entry<String, Double> e : ZEITEN.entrySet()) {
-                System.out.printf("%s: %.3f ms\n", e.getKey(), e.getValue());
+                AusgabeManager.gebeAusFormat(Konstanten.ZEIT_FORMAT, e.getKey(), e.getValue());
                 gesamt += e.getValue();
             }
-            System.out.printf("Gesamt gemessene Zeit (Summe): %.3f ms\n", gesamt);
+            AusgabeManager.gebeAusFormat(Konstanten.GESAMTZEIT_FORMAT, gesamt);
         } else {
-            System.out.println("(Keine Zeit-Messungen vorhanden)");
+            AusgabeManager.gebeAus(Konstanten.KEINE_ZEITMESSUNGEN);
         }
 
         if (!STATS.isEmpty()) {
-            System.out.println("\n-- Statistiken --");
+            AusgabeManager.gebeAus(Konstanten.STATISTIKEN_UEBERSCHRIFT);
             for (Map.Entry<String, String> e : STATS.entrySet()) {
-                System.out.printf("%s: %s\n", e.getKey(), e.getValue());
+                AusgabeManager.gebeAusFormat(Konstanten.STATISTIK_FORMAT, e.getKey(), e.getValue());
             }
         } else {
-            System.out.println("(Keine Statistiken vorhanden)");
+            AusgabeManager.gebeAus(Konstanten.KEINE_STATISTIKEN);
         }
 
-        System.out.println("=== Ende Zusammenfassung ===\n");
+        AusgabeManager.gebeAus(Konstanten.ENDE_ZUSAMMENFASSUNG);
     }
 }
