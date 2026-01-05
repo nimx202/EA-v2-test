@@ -26,8 +26,7 @@ public class Windkraftanlage {
     private String typ;
     private String ort;
     private String landkreis;
-    private Float breitengrad;
-    private Float laengengrad;
+    private GeoKoordinaten geoKoordinaten;
     private String betreiber;
     private String bemerkungen;
 
@@ -37,7 +36,7 @@ public class Windkraftanlage {
      * Post: Alle numerischen Felder haben Default-Wert 0/null
      */
     public Windkraftanlage() {
-        // Standard-Konstruktor
+        this.geoKoordinaten = new GeoKoordinaten();
     }
 
     /**
@@ -54,14 +53,13 @@ public class Windkraftanlage {
      * @param typ Anlagentyp
      * @param ort Ortschaft
      * @param landkreis Landkreis/Bezirk
-     * @param breitengrad geografischer Breitengrad (kann null sein)
-     * @param laengengrad geografischer Längengrad (kann null sein)
+    * @param geoKoordinaten Objekt mit Breitengrad/Längengrad (kann null sein)
      * @param betreiber Betreiber der Anlage
      * @param bemerkungen weitere Bemerkungen
      */
     public Windkraftanlage(int objektId, String name, Integer baujahr, Float gesamtLeistungMW,
                            Integer anzahl, String typ, String ort, String landkreis,
-                           Float breitengrad, Float laengengrad, String betreiber, String bemerkungen) {
+                           GeoKoordinaten geoKoordinaten, String betreiber, String bemerkungen) {
         this.objektId = objektId;
         this.name = name;
         this.baujahr = baujahr;
@@ -70,10 +68,31 @@ public class Windkraftanlage {
         this.typ = typ;
         this.ort = ort;
         this.landkreis = landkreis;
-        this.breitengrad = breitengrad;
-        this.laengengrad = laengengrad;
+        if (geoKoordinaten == null) {
+            this.geoKoordinaten = new GeoKoordinaten();
+        } else {
+            this.geoKoordinaten = geoKoordinaten;
+        }
         this.betreiber = betreiber;
         this.bemerkungen = bemerkungen;
+    }
+
+    /**
+     * @return Kapselung der geografischen Koordinaten
+     */
+    public GeoKoordinaten getGeoKoordinaten() {
+        return geoKoordinaten;
+    }
+
+    /**
+     * @param geoKoordinaten Kapselung der geografischen Koordinaten
+     */
+    public void setGeoKoordinaten(GeoKoordinaten geoKoordinaten) {
+        if (geoKoordinaten == null) {
+            this.geoKoordinaten = new GeoKoordinaten();
+        } else {
+            this.geoKoordinaten = geoKoordinaten;
+        }
     }
 
     /**
@@ -192,28 +211,61 @@ public class Windkraftanlage {
      * @return Breitengrad (kann null sein)
      */
     public Float getBreitengrad() {
-        return breitengrad;
+        if (geoKoordinaten == null) {
+            return null;
+        }
+        return geoKoordinaten.getBreitengrad();
     }
 
     /**
      * @param breitengrad Breitengrad (kann null sein)
      */
     public void setBreitengrad(Float breitengrad) {
-        this.breitengrad = breitengrad;
+        stelleGeoKoordinatenSicher().setBreitengrad(breitengrad);
     }
 
     /**
      * @return Längengrad (kann null sein)
      */
     public Float getLaengengrad() {
-        return laengengrad;
+        if (geoKoordinaten == null) {
+            return null;
+        }
+        return geoKoordinaten.getLaengengrad();
     }
 
     /**
      * @param laengengrad Längengrad (kann null sein)
      */
     public void setLaengengrad(Float laengengrad) {
-        this.laengengrad = laengengrad;
+        stelleGeoKoordinatenSicher().setLaengengrad(laengengrad);
+    }
+
+    /**
+     * Prüft, ob Koordinaten vollständig gesetzt sind.
+     *
+     * Pre: keine
+     * Post: Rückgabe true nur bei vorhandenen Koordinatenwerten
+     *
+     * @return true wenn Breitengrad und Längengrad gesetzt sind
+     */
+    public boolean hatKoordinaten() {
+        if (geoKoordinaten == null) {
+            return false;
+        }
+        return geoKoordinaten.hatBeideKoordinaten();
+    }
+
+    /**
+     * Stellt sicher, dass eine GeoKoordinaten-Instanz vorhanden ist.
+     *
+     * @return nie null
+     */
+    private GeoKoordinaten stelleGeoKoordinatenSicher() {
+        if (geoKoordinaten == null) {
+            geoKoordinaten = new GeoKoordinaten();
+        }
+        return geoKoordinaten;
     }
 
     /**
@@ -283,10 +335,10 @@ public class Windkraftanlage {
                .append(Konstanten.TOSTRING_QUOTE).append(landkreis).append(Konstanten.TOSTRING_QUOTE);
         builder.append(Konstanten.TOSTRING_FELDTRENNER);
         builder.append(Konstanten.FELD_BREITENGRAD).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(FeldParser.formatiereFuerAnzeige(breitengrad));
+               .append(FeldParser.formatiereFuerAnzeige(getBreitengrad()));
         builder.append(Konstanten.TOSTRING_FELDTRENNER);
         builder.append(Konstanten.FELD_LAENGENGRAD).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(FeldParser.formatiereFuerAnzeige(laengengrad));
+               .append(FeldParser.formatiereFuerAnzeige(getLaengengrad()));
         builder.append(Konstanten.TOSTRING_FELDTRENNER);
         builder.append(Konstanten.FELD_BETREIBER).append(Konstanten.TOSTRING_WERTTRENNER)
                .append(Konstanten.TOSTRING_QUOTE).append(betreiber).append(Konstanten.TOSTRING_QUOTE);
