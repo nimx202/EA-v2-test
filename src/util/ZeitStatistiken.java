@@ -14,7 +14,6 @@ import java.util.Map;
 public final class ZeitStatistiken {
 
     private static final Map<String, Float> ZEITEN = new LinkedHashMap<>();
-    private static final Map<String, Float> ZEITEN = new LinkedHashMap<>();
     private static final Map<String, String> STATS = new LinkedHashMap<>();
 
     private ZeitStatistiken() { }
@@ -28,7 +27,6 @@ public final class ZeitStatistiken {
      * @param name Name der Messung
      * @param millis Zeit in Millisekunden
      */
-    public static void zeichneZeitAuf(String name, float millis) {
     public static void zeichneZeitAuf(String name, float millis) {
         ZEITEN.put(name, millis);
     }

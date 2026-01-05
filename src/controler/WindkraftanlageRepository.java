@@ -1,7 +1,6 @@
 package controler;
 
 import model.GeoKoordinaten;
-import model.GeoKoordinaten;
 import model.Windkraftanlage;
 import util.CsvParser;
 import util.FeldParser;
@@ -39,6 +38,8 @@ public class WindkraftanlageRepository {
      * Post: Leeres Repository erstellt
      */
     public WindkraftanlageRepository() {
+        /* Absichtlich leer: Standardkonstruktor erlaubt einfache Instanziierung. 
+         Die Feldinitialisierung vonalleAnlagen' erfolgt bereits bei der Deklaration. */
     }
 
     /**
