@@ -15,7 +15,7 @@ package view;
 public final class Main {
 
     private Main() {
-        // Keine Instanzen erforderlich
+        // Keine Instanzen nötig
     }
 
     /**

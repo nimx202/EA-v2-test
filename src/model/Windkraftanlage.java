@@ -20,11 +20,7 @@ public class Windkraftanlage {
 
     private int objektId;
     private String name;
-<<<<<<< HEAD
     private Integer baujahr;
-    private Float gesamtLeistungMW;
-=======
-    private String baujahr;
     private Float gesamtLeistungMW;
     private Integer anzahl;
     private String typ;
@@ -61,7 +57,7 @@ public class Windkraftanlage {
      * @param betreiber Betreiber der Anlage
      * @param bemerkungen weitere Bemerkungen
      */
-    public Windkraftanlage(int objektId, String name, String baujahr, Float gesamtLeistungMW,
+    public Windkraftanlage(int objektId, String name, Integer baujahr, Float gesamtLeistungMW,
                            Integer anzahl, String typ, String ort, String landkreis,
                            GeoKoordinaten geoKoordinaten, String betreiber, String bemerkungen) {
         this.objektId = objektId;
@@ -130,14 +126,14 @@ public class Windkraftanlage {
     /**
      * @return Baujahr (kann null sein)
      */
-    public String getBaujahr() {
+    public Integer getBaujahr() {
         return baujahr;
     }
 
     /**
      * @param baujahr Baujahr (kann null sein)
      */
-    public void setBaujahr(String baujahr) {
+    public void setBaujahr(Integer baujahr) {
         this.baujahr = baujahr;
     }
 

@@ -88,7 +88,6 @@ public class FeldParser {
     }
 
     /**
-<<<<<<< HEAD
      * Wandelt Baujahr-Einträge in eine Ganzzahl um.
      * Werte mit Spannennotation (z.B. 2023-2024) werden auf das erste Jahr reduziert.
      *
@@ -109,8 +108,6 @@ public class FeldParser {
     }
 
     /**
-=======
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
      * Bereitet einen Zahlentext für die Umwandlung vor.
      * Entfernt Leerzeichen und ersetzt Komma durch Punkt.
      *
@@ -134,7 +131,6 @@ public class FeldParser {
     }
 
     /**
-<<<<<<< HEAD
      * Schneidet ggf. vorhandene Baujahr-Spannen hinter dem Trenner ab.
      *
      * @param textMitSpanne Baujahr mit optionaler Spanne
@@ -149,8 +145,6 @@ public class FeldParser {
     }
 
     /**
-=======
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
      * Formatiert einen Wert für die Anzeige.
      * null-Werte werden als "unbekannt" dargestellt.
      *
