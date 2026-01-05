@@ -2,6 +2,7 @@ package model;
 
 import util.FeldParser;
 import util.Konstanten;
+import util.WindkraftanlageFormatter;
 
 /**
  * Modellklasse für eine Windkraftanlage (Windenergieanlage).
@@ -52,8 +53,7 @@ public class Windkraftanlage {
      * @param anzahl Anzahl der Anlagen (kann null sein)
      * @param typ Anlagentyp
      * @param ort Ortschaft
-     * @param landkreis Landkreis/Bezirk
-    * @param geoKoordinaten Objekt mit Breitengrad/Längengrad (kann null sein)
+    * @param landkreis Landkreis/Bezirk
     * @param geoKoordinaten Objekt mit Breitengrad/Längengrad (kann null sein)
      * @param betreiber Betreiber der Anlage
      * @param bemerkungen weitere Bemerkungen
@@ -309,46 +309,7 @@ public class Windkraftanlage {
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        
-        builder.append(Konstanten.TOSTRING_PREFIX);
-        builder.append(Konstanten.FELD_OBJEKT_ID).append(Konstanten.TOSTRING_WERTTRENNER).append(objektId);
-        builder.append(Konstanten.TOSTRING_FELDTRENNER);
-        builder.append(Konstanten.FELD_NAME).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(Konstanten.TOSTRING_QUOTE).append(name).append(Konstanten.TOSTRING_QUOTE);
-        builder.append(Konstanten.TOSTRING_FELDTRENNER);
-        builder.append(Konstanten.FELD_BAUJAHR).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(FeldParser.formatiereFuerAnzeige(baujahr));
-        builder.append(Konstanten.TOSTRING_FELDTRENNER);
-        builder.append(Konstanten.FELD_GESAMT_LEISTUNG_MW).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(FeldParser.formatiereFuerAnzeige(gesamtLeistungMW));
-        builder.append(Konstanten.TOSTRING_FELDTRENNER);
-        builder.append(Konstanten.FELD_ANZAHL).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(FeldParser.formatiereFuerAnzeige(anzahl));
-        builder.append(Konstanten.TOSTRING_FELDTRENNER);
-        builder.append(Konstanten.FELD_TYP).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(Konstanten.TOSTRING_QUOTE).append(typ).append(Konstanten.TOSTRING_QUOTE);
-        builder.append(Konstanten.TOSTRING_FELDTRENNER);
-        builder.append(Konstanten.FELD_ORT).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(Konstanten.TOSTRING_QUOTE).append(ort).append(Konstanten.TOSTRING_QUOTE);
-        builder.append(Konstanten.TOSTRING_FELDTRENNER);
-        builder.append(Konstanten.FELD_LANDKREIS).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(Konstanten.TOSTRING_QUOTE).append(landkreis).append(Konstanten.TOSTRING_QUOTE);
-        builder.append(Konstanten.TOSTRING_FELDTRENNER);
-        builder.append(Konstanten.FELD_BREITENGRAD).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(FeldParser.formatiereFuerAnzeige(getBreitengrad()));
-        builder.append(Konstanten.TOSTRING_FELDTRENNER);
-        builder.append(Konstanten.FELD_LAENGENGRAD).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(FeldParser.formatiereFuerAnzeige(getLaengengrad()));
-        builder.append(Konstanten.TOSTRING_FELDTRENNER);
-        builder.append(Konstanten.FELD_BETREIBER).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(Konstanten.TOSTRING_QUOTE).append(betreiber).append(Konstanten.TOSTRING_QUOTE);
-        builder.append(Konstanten.TOSTRING_FELDTRENNER);
-        builder.append(Konstanten.FELD_BEMERKUNGEN).append(Konstanten.TOSTRING_WERTTRENNER)
-               .append(Konstanten.TOSTRING_QUOTE).append(bemerkungen).append(Konstanten.TOSTRING_QUOTE);
-        builder.append(Konstanten.TOSTRING_SUFFIX);
-        
-        return builder.toString();
+         return WindkraftanlageFormatter.format(this);
     }
 }
 
