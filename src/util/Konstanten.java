@@ -120,6 +120,12 @@ public final class Konstanten {
     /** Format: Hinweis wie viele Eintraege ausgegeben werden */
     public static final String SORTIERUNG_ZEIGE_ERSTE_FORMAT = "Zeige erste %d Eintraege:%n";
 
+    /** Allgemeiner Ausgabetext: Anzahl */
+    public static final String AUSGABE_ANZAHL = "Anzahl";
+
+    /** Allgemeiner Ausgabetext: Dauer in Millisekunden */
+    public static final String AUSGABE_DAUER_MS = "Dauer (ms)";
+
     /** Fehler-Präfix */
     public static final String FEHLER_PREFIX = "Fehler beim Einlesen: ";
 
