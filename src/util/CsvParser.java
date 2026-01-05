@@ -6,195 +6,148 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Spezialisierte Klasse für das Parsen von CSV-Daten.
- * Verarbeitet quoted fields mit eingebetteten Zeilenumbrüchen und escaped quotes.
- *
- * Vertrag:
- * Pre: Methoden erhalten gültige, nicht-null Eingaben (wie dokumentiert)
- * Post: Rückgabewerte entsprechen der Dokumentation
+ * Utility-Klasse zum Parsen von CSV-Dateien.
+ * 
+ * Design-Prinzipien:
+ * - Single Responsibility: Nur CSV-Parsing
+ * - KISS: Einfache Implementierung ohne externe Bibliotheken
+ * - Robustheit: Berücksichtigt Anführungszeichen und escaped Zeichen
+ * 
+ * Verantwortlichkeiten:
+ * - Lesen von CSV-Zeilen aus BufferedReader
+ * - Teilen von CSV-Zeilen in Felder unter Beachtung von Anführungszeichen
+ * - Bereinigen von Feldwerten (Entfernen von Anführungszeichen)
+ * 
+ * Pre: Reader ist nicht null und geöffnet
+ * Post: Liefert CSV-Zeilen und Felder zurück
  */
-public class CsvParser {
+public final class CsvParser {
 
+    /**
+     * Privater Konstruktor verhindert Instanziierung.
+     * Dies ist eine Utility-Klasse mit nur statischen Methoden.
+     */
     private CsvParser() {
         // Utility-Klasse, keine Instanzen
     }
 
     /**
-     * Liest aus dem Reader bis ein vollständiger CSV-Record vorliegt.
-     * Ein Record endet bei einem Zeilenumbruch, der nicht innerhalb eines zitierten Feldes liegt.
-     *
-     * Pre: reader ist nicht null
-     * Post: Rückgabe ein String mit vollständigem Record oder null bei EOF
-     *
-     * @param reader BufferedReader (nicht null)
-     * @return String mit dem vollständigen Record oder null bei EOF
-     * @throws IOException bei I/O-Fehlern
+     * Liest eine einzelne CSV-Zeile aus dem Reader.
+     * Eine Zeile endet mit Zeilenumbruch oder Dateiende.
+     * 
+     * Pre: csvLeser nicht null und geöffnet
+     * Post: Rückgabe: nächste Zeile oder null bei Dateiende
+     * 
+     * @param csvLeser BufferedReader zum Lesen der Datei
+     * @return Die nächste CSV-Zeile oder null wenn Dateiende
+     * @throws IOException bei Lesefehler
      */
-    public static String readNextRecord(BufferedReader reader) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        boolean inQuotes = false;
-        int charCode;
-        boolean readAnyChar = false;
-
-        while ((charCode = reader.read()) != -1) {
-            readAnyChar = true;
-            char c = (char) charCode;
-
-            if (c == Konstanten.ANFÜHRUNGSZEICHEN) {
-                handleQuoteCharacter(reader, sb, c);
-                inQuotes = !inQuotes;
-            } else if ((c == Konstanten.ZEILENUMBRUCH || c == Konstanten.WAGENRÜCKLAUF) && !inQuotes) {
-                handleRecordEnd(reader, c);
-                break; // Record finished
-            } else {
-                sb.append(c);
-            }
-        }
-
-        // Wenn kein Zeichen gelesen wurde und StringBuilder leer ist, EOF
-        if (!readAnyChar && sb.length() == 0) {
-            return null;
-        }
-        return sb.toString();
+    public static String leseNaechstenDatensatz(BufferedReader csvLeser) throws IOException {
+        String zeile = csvLeser.readLine();
+        return zeile;
     }
 
     /**
-     * Behandelt Quote-Zeichen in CSV-Records (escaped und normale Quotes).
-     *
-     * Pre: reader und sb sind nicht null; c ist '"'
-     * Post: Escaped Quotes werden korrekt verarbeitet
-     *
-     * @param reader BufferedReader
-     * @param sb StringBuilder für Record-Aufbau
-     * @param c das Quote-Zeichen
-     * @throws IOException bei I/O-Fehlern
+     * Teilt eine CSV-Zeile in einzelne Felder auf.
+     * Berücksichtigt Anführungszeichen und escaped Anführungszeichen.
+     * 
+     * Logik:
+     * - Felder sind durch Komma getrennt
+     * - Felder in Anführungszeichen können Kommas enthalten
+     * - Doppelte Anführungszeichen ("") sind escaped Anführungszeichen
+     * 
+     * Pre: csvZeile kann null sein
+     * Post: Rückgabe: Array mit einzelnen Feldwerten
+     * 
+     * @param csvZeile Die zu teilende CSV-Zeile
+     * @return Array mit einzelnen Feldwerten
      */
-    private static void handleQuoteCharacter(BufferedReader reader, StringBuilder sb, char c) throws IOException {
-        reader.mark(Konstanten.MARKIERUNGSABSTAND);
-        int nextCharCode = reader.read();
-
-        if (nextCharCode == Konstanten.ANFÜHRUNGSZEICHEN) {
-            // Escaped quote ("") -> ein Quote anhängen
-            sb.append(Konstanten.ANFÜHRUNGSZEICHEN);
-        } else {
-            // Normales Quote -> Position zurücksetzen, damit Toggle inQuotes passiert
-            if (nextCharCode != -1) {
-                reader.reset();
-            }
+    public static String[] teileZeileInFelder(String csvZeile) {
+        if (csvZeile == null) {
+            return new String[0];
         }
-    }
 
-    /**
-     * Behandelt das Ende eines Records (Zeilenumbruch).
-     * Unterstützt CRLF und LF Zeilenumbrüche.
-     *
-     * Pre: reader ist nicht null; c ist '\r' oder '\n'
-     * Post: Korrekte Verarbeitung von CRLF oder LF
-     *
-     * @param reader BufferedReader
-     * @param c das Zeilenumbruch-Zeichen
-     * @throws IOException bei I/O-Fehlern
-     */
-    private static void handleRecordEnd(BufferedReader reader, char c) throws IOException {
-        if (c == Konstanten.WAGENRÜCKLAUF) {
-            reader.mark(Konstanten.MARKIERUNGSABSTAND);
-            int nextCharCode = reader.read();
-            // Wenn nicht LF nach CR, zurücksetzen
-            if (nextCharCode != -1 && nextCharCode != Konstanten.ZEILENUMBRUCH) {
-                reader.reset();
-            }
-        }
-    }
+        List<String> feldListe = new ArrayList<>();
+        StringBuilder aktuellesFeld = new StringBuilder();
+        boolean istInAnfuehrungszeichen = false;
 
-    /**
-     * Teilt eine CSV-Zeile in Felder auf und respektiert Anführungszeichen.
-     * Unterstützt escaped quotes ("" -> ") und Kommata innerhalb von Anführungszeichen.
-     *
-     * Pre: line ist nicht null
-     * Post: Rückgabe Array mit Feldern (mit umschließenden Spaces)
-     *
-     * @param line die CSV-Zeile
-     * @return Array der Felder
-     */
-    public static String[] splitCsvLineRespectingQuotes(String line) {
-        List<String> fields = new ArrayList<>();
-        StringBuilder currentField = new StringBuilder();
-        boolean inQuotes = false;
-        int lineLength = line.length();
+        // Durchlaufe jeden Buchstaben der Zeile
+        for (int position = 0; position < csvZeile.length(); position++) {
+            char zeichen = csvZeile.charAt(position);
 
-        for (int i = 0; i < lineLength; i++) {
-            char c = line.charAt(i);
-
-            if (c == Konstanten.ANFÜHRUNGSZEICHEN) {
-                if (isEscapedQuote(line, i, inQuotes)) {
-                    currentField.append(Konstanten.ANFÜHRUNGSZEICHEN);
-                    i++; // Skip escaped quote
+            // Prüfe ob es ein Anführungszeichen ist
+            if (zeichen == Konstanten.ANFUEHRUNGSZEICHEN) {
+                // Prüfe ob es doppeltes Anführungszeichen ist (escaped)
+                boolean istNaechstesAuchAnfuehrungszeichen = istInAnfuehrungszeichen 
+                    && (position + 1 < csvZeile.length()) 
+                    && (csvZeile.charAt(position + 1) == Konstanten.ANFUEHRUNGSZEICHEN);
+                
+                if (istNaechstesAuchAnfuehrungszeichen) {
+                    // Füge ein einzelnes Anführungszeichen hinzu
+                    aktuellesFeld.append(Konstanten.ANFUEHRUNGSZEICHEN);
+                    position++; // Überspringe nächstes Anführungszeichen
                 } else {
-                    inQuotes = !inQuotes;
+                    // Wechsle zwischen "in Anführungszeichen" und "außerhalb"
+                    istInAnfuehrungszeichen = !istInAnfuehrungszeichen;
                 }
-            } else if (c == Konstanten.KOMMA && !inQuotes) {
-                fields.add(currentField.toString());
-                currentField.setLength(0);
-            } else {
-                currentField.append(c);
+            }
+            // Prüfe ob es ein Komma ist (nur außerhalb von Anführungszeichen)
+            else if (zeichen == Konstanten.KOMMA && !istInAnfuehrungszeichen) {
+                // Feld ist komplett, füge zur Liste hinzu
+                feldListe.add(aktuellesFeld.toString());
+                aktuellesFeld = new StringBuilder();
+            }
+            // Normales Zeichen
+            else {
+                aktuellesFeld.append(zeichen);
             }
         }
 
-        // Letzte Spalte
-        fields.add(currentField.toString());
-        return fields.toArray(new String[0]);
+        // Füge letztes Feld hinzu
+        feldListe.add(aktuellesFeld.toString());
+
+        // Konvertiere Liste zu Array
+        return feldListe.toArray(new String[0]);
     }
 
     /**
-     * Prüft, ob ein Quote-Zeichen ein escaped Quote ist ("").
-     *
-     * Pre: line nicht null; i < line.length()
-     * Post: true wenn das nächste Zeichen auch ein Quote ist (und wir in Quotes sind)
-     *
-     * @param line die CSV-Zeile
-     * @param currentIndex aktueller Index
-     * @param inQuotes ob wir aktuell in Quotes sind
-     * @return true wenn escaped quote, false sonst
+     * Entfernt Anführungszeichen am Anfang und Ende eines Feldwerts.
+     * Ersetzt doppelte Anführungszeichen durch einfache.
+     * 
+     * Pre: rohFeld kann null sein
+     * Post: Rückgabe: bereinigter Feldwert
+     * 
+     * @param rohFeld Das rohe Feld mit möglichen Anführungszeichen
+     * @return Bereinigter Feldwert
      */
-    private static boolean isEscapedQuote(String line, int currentIndex, boolean inQuotes) {
-        return inQuotes && currentIndex + 1 < line.length() && line.charAt(currentIndex + 1) == Konstanten.ANFÜHRUNGSZEICHEN;
-    }
-
-    /**
-     * Entfernt umschließende Anführungszeichen und konvertiert escaped quotes.
-     * Beispiel: '"Hallo, ""Welt"""' -> 'Hallo, "Welt"'
-     *
-     * Pre: raw kann null oder beliebig sein
-     * Post: Rückgabe bereinigtes Feld (umschließende Quotes entfernt, escaped Quotes konvertiert)
-     *
-     * @param raw rohes Feld aus der CSV
-     * @return bereinigtes Feld
-     */
-    public static String cleanField(String raw) {
-        if (raw == null) {
+    public static String bereinigesFeld(String rohFeld) {
+        if (rohFeld == null) {
             return null;
         }
 
-        String trimmed = raw.trim();
-        if (hasEnclosingQuotes(trimmed)) {
-            // Entferne äußere Quotes
-            trimmed = trimmed.substring(1, trimmed.length() - 1);
-            // Ersetze CSV-escaped quotes ("") mit "
-            trimmed = trimmed.replace(Konstanten.ESCAPED_ANFÜHRUNGSZEICHEN, Konstanten.EINZELNES_ANFÜHRUNGSZEICHEN);
-        }
-        return trimmed;
-    }
+        // Entferne Leerzeichen am Anfang und Ende
+        String bereinigtesFeld = rohFeld.trim();
 
-    /**
-     * Prüft, ob ein String mit Quotes umschlossen ist.
-     *
-     * Pre: value nicht null
-     * Post: true wenn value mit Quotes beginnt und endet
-     *
-     * @param value der zu prüfende String
-     * @return true wenn mit Quotes umschlossen
-     */
-    private static boolean hasEnclosingQuotes(String value) {
-        return value.length() >= 2 && value.charAt(0) == Konstanten.ANFÜHRUNGSZEICHEN && value.charAt(value.length() - 1) == Konstanten.ANFÜHRUNGSZEICHEN;
+        // Prüfe ob Feld mindestens 2 Zeichen lang ist
+        if (bereinigtesFeld.length() >= 2) {
+            char erstesZeichen = bereinigtesFeld.charAt(0);
+            char letztesZeichen = bereinigtesFeld.charAt(bereinigtesFeld.length() - 1);
+            
+            // Prüfe ob Feld mit Anführungszeichen umgeben ist
+            boolean beginntMitAnfuehrungszeichen = erstesZeichen == Konstanten.ANFUEHRUNGSZEICHEN;
+            boolean endetMitAnfuehrungszeichen = letztesZeichen == Konstanten.ANFUEHRUNGSZEICHEN;
+            
+            if (beginntMitAnfuehrungszeichen && endetMitAnfuehrungszeichen) {
+                // Entferne äußere Anführungszeichen
+                bereinigtesFeld = bereinigtesFeld.substring(1, bereinigtesFeld.length() - 1);
+                
+                // Ersetze doppelte Anführungszeichen durch einfache
+                bereinigtesFeld = bereinigtesFeld.replace(
+                    Konstanten.ESCAPED_ANFUEHRUNGSZEICHEN, 
+                    Konstanten.EINZELNES_ANFUEHRUNGSZEICHEN);
+            }
+        }
+
+        return bereinigtesFeld;
     }
 }

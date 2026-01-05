@@ -59,3 +59,12 @@ generate-merged-code-pdf.ps1
 =======
 *.ps1
 *.txt
+
+
+#### docs ####
+docs/
+*.html
+*.js
+temp
+save
+tools
