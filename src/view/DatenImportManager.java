@@ -75,10 +75,10 @@ public class DatenImportManager {
         int anzahlGeladen = datenSpeicher.ladeAusCsv(csvPfad.toString());
         float zeitInMillis = timer.stoppeUndGibMillis();
 
-        AusgabeManager.gebeAus(Konstanten.LADEN_ABGESCHLOSSEN);
+        AusgabeManager.gebeSektionAus(Konstanten.LADEN_ABGESCHLOSSEN);
         AusgabeManager.gebeAus(Konstanten.DATEI_INFO + csvPfad.toAbsolutePath());
-        AusgabeManager.gebeAusFormat(Konstanten.DATENSAETZE_ANZAHL, anzahlGeladen);
-        AusgabeManager.gebeAusFormat(Konstanten.VERSTRICHENE_ZEIT, zeitInMillis);
+        AusgabeManager.gebeKeyValue(Konstanten.AUSGABE_ANZAHL, anzahlGeladen);
+        AusgabeManager.gebeKeyValue(Konstanten.AUSGABE_DAUER_MS, String.format("%.3f", zeitInMillis));
 
         ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_LADEN_CSV, zeitInMillis);
         ZeitStatistiken.zeichneStat(Konstanten.STAT_GELADENE_DATENSAETZE, String.valueOf(anzahlGeladen));
@@ -96,8 +96,9 @@ public class DatenImportManager {
         float zeitInMillis = timer.stoppeUndGibMillis();
 
         if (anzahlKorrigiert > 0) {
-            AusgabeManager.gebeAusFormat(Konstanten.KOORDINATEN_KORRIGIERT,
-                anzahlKorrigiert, zeitInMillis);
+            AusgabeManager.gebeSektionAus(Konstanten.KORREKTUR_UEBERSCHRIFT);
+            AusgabeManager.gebeKeyValue(Konstanten.STAT_KOORDINATEN_KORRIGIERT, anzahlKorrigiert);
+            AusgabeManager.gebeKeyValue(Konstanten.AUSGABE_DAUER_MS, String.format("%.3f", zeitInMillis));
             korrekturTracker.gebeKorrekturenAus();
         }
 

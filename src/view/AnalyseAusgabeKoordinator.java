@@ -52,7 +52,7 @@ public class AnalyseAusgabeKoordinator {
      * @param alleAnlagen Liste aller Windkraftanlagen
      */
     private void zeigeSortierteAnlagen(List<Windkraftanlage> alleAnlagen) {
-        AusgabeManager.gebeUeberschriftAus(Konstanten.SORTIERUNGEN_UEBERSCHRIFT);
+        AusgabeManager.gebeSektionAus(Konstanten.SORTIERUNGEN_UEBERSCHRIFT);
         zeigeSortierungOrtNameId(alleAnlagen);
         zeigeSortierungLeistungBaujahrName(alleAnlagen);
         zeigeSortierungLandkreisOrtName(alleAnlagen);
@@ -114,8 +114,8 @@ public class AnalyseAusgabeKoordinator {
         int anlagenMitKoordinaten = StatistikBerechner.zaehleAnlagenMitKoordinaten(alleAnlagen);
         int anlagenOhneBetreiber = StatistikBerechner.zaehleAnlagenOhneBetreiber(alleAnlagen);
 
-        AusgabeManager.gebeAusFormat(Konstanten.MIT_KOORDINATEN, anlagenMitKoordinaten);
-        AusgabeManager.gebeAusFormat(Konstanten.OHNE_BETREIBER, anlagenOhneBetreiber);
+        AusgabeManager.gebeKeyValue(Konstanten.STAT_MIT_KOORDINATEN, anlagenMitKoordinaten);
+        AusgabeManager.gebeKeyValue(Konstanten.STAT_OHNE_BETREIBER, anlagenOhneBetreiber);
 
         float zeitInMillis = timer.stoppeUndGibMillis();
         ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_STATISTIKEN, zeitInMillis);
@@ -135,14 +135,14 @@ public class AnalyseAusgabeKoordinator {
         ZeitMessung timer = ZeitMessung.starte();
         List<WindparkEintrag> topWindparks = WindparkAnalysierer.holeTopWindparks(
             alleAnlagen, Konstanten.TOP_LIMIT);
-        AusgabeManager.gebeAusFormat(Konstanten.TOP_PARKS, Konstanten.TOP_LIMIT);
+        AusgabeManager.gebeSektionAus(String.format(Konstanten.TOP_PARKS, Konstanten.TOP_LIMIT).trim());
 
         for (WindparkEintrag eintrag : topWindparks) {
-            AusgabeManager.gebeAusMitTrennzeichen(eintrag.getName(), eintrag.getAnzahl());
+            AusgabeManager.gebeKeyValue(eintrag.getName(), eintrag.getAnzahl());
         }
 
         int gesamtAnzahl = WindparkAnalysierer.zaehleWindparks(alleAnlagen).size();
-        AusgabeManager.gebeAusFormat(Konstanten.GESAMT_PARKS, gesamtAnzahl);
+        AusgabeManager.gebeKeyValue(Konstanten.STAT_ANZAHL_PARKS, gesamtAnzahl);
 
         float zeitInMillis = timer.stoppeUndGibMillis();
         ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_TOP_WINDPARKS, zeitInMillis);
@@ -160,7 +160,7 @@ public class AnalyseAusgabeKoordinator {
          * @param alleAnlagen Liste aller Windkraftanlagen
          */
         ZeitMessung timer = ZeitMessung.starte();
-        AusgabeManager.gebeAus(Konstanten.BEISPIEL_DATENSAETZE);
+        AusgabeManager.gebeSektionAus(Konstanten.BEISPIEL_DATENSAETZE);
 
         int anzahlZeigen = Math.min(Konstanten.BEISPIEL_LIMIT, alleAnlagen.size());
         for (int i = 0; i < anzahlZeigen; i++) {
@@ -183,7 +183,7 @@ public class AnalyseAusgabeKoordinator {
      */
     private void zeigeErweiterteStatistiken(List<Windkraftanlage> alleAnlagen) {
         ZeitMessung timer = ZeitMessung.starte();
-        AusgabeManager.gebeUeberschriftAus(Konstanten.ERWEITERTE_STATISTIKEN_UEBERSCHRIFT);
+        AusgabeManager.gebeSektionAus(Konstanten.ERWEITERTE_STATISTIKEN_UEBERSCHRIFT);
 
         zeigeSuedlichsteAnlage(alleAnlagen);
         zeigeAnlageMitHoechsterLeistung(alleAnlagen);
@@ -203,11 +203,11 @@ public class AnalyseAusgabeKoordinator {
      * @param alleAnlagen Liste aller Windkraftanlagen
      */
     private void zeigeSuedlichsteAnlage(List<Windkraftanlage> alleAnlagen) {
-        AusgabeManager.gebeAusFormat(Konstanten.SUEDLICHSTE_ANLAGE_FORMAT);
+        AusgabeManager.gebeSektionAus(Konstanten.STAT_SUEDLICHSTE_ANLAGE);
         Windkraftanlage suedlichste = StatistikBerechner.findeSuedlichsteAnlage(alleAnlagen);
 
         if (suedlichste == null) {
-            AusgabeManager.gebeAusFormat(Konstanten.KEINE_ANLAGE_GEFUNDEN);
+            AusgabeManager.gebeAus(Konstanten.KEINE_ANLAGE_GEFUNDEN);
             ZeitStatistiken.zeichneStat(Konstanten.STAT_SUEDLICHSTE_ANLAGE, Konstanten.ANZEIGE_UNBEKANNT);
         } else {
             AusgabeManager.gebeAusFormat(Konstanten.ANLAGE_DETAILS_FORMAT,
@@ -236,7 +236,7 @@ public class AnalyseAusgabeKoordinator {
      * @param alleAnlagen Liste aller Windkraftanlagen
      */
     private void zeigeAnlageMitHoechsterLeistung(List<Windkraftanlage> alleAnlagen) {
-        AusgabeManager.gebeAusFormat(Konstanten.HOECHSTE_LEISTUNG_ANLAGE_FORMAT);
+        AusgabeManager.gebeSektionAus(Konstanten.STAT_HOECHSTE_LEISTUNG);
         Windkraftanlage anlage = StatistikBerechner.findeAnlageMitHoechsterLeistung(alleAnlagen);
 
         if (anlage == null) {
@@ -267,7 +267,7 @@ public class AnalyseAusgabeKoordinator {
      * @param alleAnlagen Liste aller Windkraftanlagen
      */
     private void zeigeAnlageMitMeistenWindraedern(List<Windkraftanlage> alleAnlagen) {
-        AusgabeManager.gebeAusFormat(Konstanten.MEISTE_WINDRAEDER_ANLAGE_FORMAT);
+        AusgabeManager.gebeSektionAus(Konstanten.STAT_MEISTE_WINDRAEDER);
         Windkraftanlage anlage = StatistikBerechner.findeAnlageMitMeistenWindraedern(alleAnlagen);
 
         if (anlage == null) {
@@ -312,10 +312,10 @@ public class AnalyseAusgabeKoordinator {
      * Post: Ausgabe der Datensaetze ohne Koordinaten erfolgte.
      */
     private void zeigeAnlagenOhneKoordinaten(List<Windkraftanlage> alleAnlagen) {
-        AusgabeManager.gebeUeberschriftAus(Konstanten.DATENSAETZE_OHNE_KOORDINATEN_UEBERSCHRIFT);
+        AusgabeManager.gebeSektionAus(Konstanten.DATENSAETZE_OHNE_KOORDINATEN_UEBERSCHRIFT);
 
         java.util.List<Windkraftanlage> ohneKoordinaten = StatistikBerechner.filterAnlagenOhneKoordinaten(alleAnlagen);
-        AusgabeManager.gebeAusFormat(Konstanten.DATENSAETZE_OHNE_KOORDINATEN_FORMAT, ohneKoordinaten.size());
+        AusgabeManager.gebeKeyValue(Konstanten.AUSGABE_ANZAHL, ohneKoordinaten.size());
 
         int anzahlZeigen = Math.min(Konstanten.BEISPIEL_LIMIT, ohneKoordinaten.size());
         for (int i = 0; i < anzahlZeigen; i++) {

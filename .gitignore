@@ -68,3 +68,6 @@ save
 tools
 .js
 
+### py ###
+venv
+*.py

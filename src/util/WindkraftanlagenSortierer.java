@@ -56,9 +56,9 @@ public final class WindkraftanlagenSortierer {
         List<Windkraftanlage> sortiert = sortiereNachOrtNameId(anlagen);
         float dauer = timer.stoppeUndGibMillis();
 
-        util.AusgabeManager.gebeUeberschriftAus(util.Konstanten.SORTIERUNG_ORT_NAME_ID_UEBERSCHRIFT);
-        util.AusgabeManager.gebeAusMitTrennzeichen(util.Konstanten.AUSGABE_ANZAHL, sortiert.size());
-        util.AusgabeManager.gebeAusMitTrennzeichen(util.Konstanten.AUSGABE_DAUER_MS, dauer);
+        util.AusgabeManager.gebeSektionAus(util.Konstanten.SORTIERUNG_ORT_NAME_ID_UEBERSCHRIFT);
+        util.AusgabeManager.gebeKeyValue(util.Konstanten.AUSGABE_ANZAHL, sortiert.size());
+        util.AusgabeManager.gebeKeyValue(util.Konstanten.AUSGABE_DAUER_MS, String.format("%.3f", dauer));
         util.AusgabeManager.gebeLeereZeileAus();
 
         int limit = Math.max(0, Math.min(maxAnzeigen, sortiert.size()));
@@ -95,9 +95,9 @@ public final class WindkraftanlagenSortierer {
         List<Windkraftanlage> sortiert = sortiereNachLeistungBaujahrName(anlagen);
         float dauer = timer.stoppeUndGibMillis();
 
-        util.AusgabeManager.gebeUeberschriftAus(util.Konstanten.SORTIERUNG_LEISTUNG_BAUJAHR_NAME_UEBERSCHRIFT);
-        util.AusgabeManager.gebeAusMitTrennzeichen(util.Konstanten.AUSGABE_ANZAHL, sortiert.size());
-        util.AusgabeManager.gebeAusMitTrennzeichen(util.Konstanten.AUSGABE_DAUER_MS, dauer);
+        util.AusgabeManager.gebeSektionAus(util.Konstanten.SORTIERUNG_LEISTUNG_BAUJAHR_NAME_UEBERSCHRIFT);
+        util.AusgabeManager.gebeKeyValue(util.Konstanten.AUSGABE_ANZAHL, sortiert.size());
+        util.AusgabeManager.gebeKeyValue(util.Konstanten.AUSGABE_DAUER_MS, String.format("%.3f", dauer));
         util.AusgabeManager.gebeLeereZeileAus();
 
         int limit = Math.max(0, Math.min(maxAnzeigen, sortiert.size()));
@@ -134,9 +134,9 @@ public final class WindkraftanlagenSortierer {
         List<Windkraftanlage> sortiert = sortiereNachLandkreisOrtName(anlagen);
         float dauer = timer.stoppeUndGibMillis();
 
-        util.AusgabeManager.gebeUeberschriftAus(util.Konstanten.SORTIERUNG_LANDKREIS_ORT_NAME_UEBERSCHRIFT);
-        util.AusgabeManager.gebeAusMitTrennzeichen(util.Konstanten.AUSGABE_ANZAHL, sortiert.size());
-        util.AusgabeManager.gebeAusMitTrennzeichen(util.Konstanten.AUSGABE_DAUER_MS, dauer);
+        util.AusgabeManager.gebeSektionAus(util.Konstanten.SORTIERUNG_LANDKREIS_ORT_NAME_UEBERSCHRIFT);
+        util.AusgabeManager.gebeKeyValue(util.Konstanten.AUSGABE_ANZAHL, sortiert.size());
+        util.AusgabeManager.gebeKeyValue(util.Konstanten.AUSGABE_DAUER_MS, String.format("%.3f", dauer));
         util.AusgabeManager.gebeLeereZeileAus();
 
         int limit = Math.max(0, Math.min(maxAnzeigen, sortiert.size()));

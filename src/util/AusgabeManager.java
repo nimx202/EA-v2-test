@@ -59,7 +59,7 @@ public final class AusgabeManager {
      * @param wert Der Wert
      */
     public static void gebeAusMitTrennzeichen(String schluessel, Object wert) {
-        System.out.println(schluessel + Konstanten.AUSGABE_TRENNZEICHEN + wert);
+        System.out.println(AusgabeFormatter.schluesselWert(schluessel, wert));
     }
 
     /**
@@ -109,9 +109,25 @@ public final class AusgabeManager {
     * @param ueberschrift Der Text der Überschrift
      */
     public static void gebeUeberschriftAus(String ueberschrift) {
-        int laenge = Math.max(ueberschrift.length(), Konstanten.UEBERSCHRIFT_MIN_LAENGE);
-        gebeTrennstrichAus(laenge);
-        gebeAus(ueberschrift);
-        gebeTrennstrichAus(laenge);
+        gebeAus(AusgabeFormatter.ueberschrift(ueberschrift));
+    }
+
+    /**
+     * Gibt eine Sektion/Überschrift mit einheitlicher Formatierung aus.
+     *
+     * @param titel Sektionstitel
+     */
+    public static void gebeSektionAus(String titel) {
+        gebeAus(AusgabeFormatter.ueberschrift(titel));
+    }
+
+    /**
+     * Gibt ein Schlüssel-Wert-Paar in einheitlichem Stil aus.
+     *
+     * @param schluessel Schlüssel
+     * @param wert Wert (kann null sein)
+     */
+    public static void gebeKeyValue(String schluessel, Object wert) {
+        gebeAus(AusgabeFormatter.schluesselWert(schluessel, wert));
     }
 }
