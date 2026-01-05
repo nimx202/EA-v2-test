@@ -42,14 +42,7 @@ public final class StatistikBerechner {
         int anzahl = 0;
 
         for (Windkraftanlage anlage : anlagen) {
-<<<<<<< HEAD
             if (anlage.hatKoordinaten()) {
-=======
-            boolean hatBreitengrad = anlage.getBreitengrad() != null;
-            boolean hatLaengengrad = anlage.getLaengengrad() != null;
-
-            if (hatBreitengrad && hatLaengengrad) {
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
                 anzahl++;
             }
         }
