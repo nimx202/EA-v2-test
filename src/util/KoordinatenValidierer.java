@@ -6,7 +6,7 @@ package util;
  * Design-Prinzipien:
  * - Single Responsibility: Nur Koordinaten-Validierung und -Korrektur
  * - KISS: Einfache if-Bedingungen statt komplexer Logik
- * - Keine Abhängigkeiten: Arbeitet nur mit Double-Werten
+ * - Keine Abhängigkeiten: Arbeitet nur mit Float-Werten
  * 
  * Verantwortlichkeiten:
  * - Prüfen ob Koordinaten im gültigen Bereich für Deutschland liegen
@@ -39,7 +39,7 @@ public final class KoordinatenValidierer {
      * @param breitengrad Der zu prüfende Breitengrad
      * @return true wenn gültig oder null, false sonst
      */
-    public static boolean istBreitengradGueltig(Double breitengrad) {
+    public static boolean istBreitengradGueltig(Float breitengrad) {
         if (breitengrad == null) {
             return true;
         }
@@ -60,7 +60,7 @@ public final class KoordinatenValidierer {
     * @param laengengrad Der zu prüfende Laengengrad
      * @return true wenn gültig oder null, false sonst
      */
-    public static boolean istLaengengradGueltig(Double laengengrad) {
+    public static boolean istLaengengradGueltig(Float laengengrad) {
         if (laengengrad == null) {
             return true;
         }
@@ -82,17 +82,17 @@ public final class KoordinatenValidierer {
      * @param breitengrad Der zu korrigierende Breitengrad
      * @return Korrigierter Breitengrad oder null
      */
-    public static Double korrigiereBreitengrad(Double breitengrad) {
+    public static Float korrigiereBreitengrad(Float breitengrad) {
         if (breitengrad == null) {
             return null;
         }
         
-        if (breitengrad == 0.0) {
+        if (breitengrad == 0.0f) {
             return null;
         }
         
         // Teile durch 1000
-        double korrigierterWert = breitengrad / Konstanten.BREITENGRAD_FEHLERFAKTOR;
+        float korrigierterWert = breitengrad / Konstanten.BREITENGRAD_FEHLERFAKTOR;
         
         // Pruefe ob korrigierter Wert gueltig ist
         if (istBreitengradGueltig(korrigierterWert)) {
@@ -113,17 +113,17 @@ public final class KoordinatenValidierer {
     * @param laengengrad Der zu korrigierende Laengengrad
      * @return Korrigierter Längengrad oder null
      */
-    public static Double korrigiereLaengengrad(Double laengengrad) {
+    public static Float korrigiereLaengengrad(Float laengengrad) {
         if (laengengrad == null) {
             return null;
         }
         
-        if (laengengrad == 0.0) {
+        if (laengengrad == 0.0f) {
             return null;
         }
         
         // Teile durch 1000
-        double korrigierterWert = laengengrad / Konstanten.LAENGENGRAD_FEHLERFAKTOR;
+        float korrigierterWert = laengengrad / Konstanten.LAENGENGRAD_FEHLERFAKTOR;
         
         // Pruefe ob korrigierter Wert gueltig ist
         if (istLaengengradGueltig(korrigierterWert)) {

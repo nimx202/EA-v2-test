@@ -21,13 +21,13 @@ public class Windkraftanlage {
     private int objektId;
     private String name;
     private String baujahr;
-    private Double gesamtLeistungMW;
+    private Float gesamtLeistungMW;
     private Integer anzahl;
     private String typ;
     private String ort;
     private String landkreis;
-    private Double breitengrad;
-    private Double laengengrad;
+    private Float breitengrad;
+    private Float laengengrad;
     private String betreiber;
     private String bemerkungen;
 
@@ -59,9 +59,9 @@ public class Windkraftanlage {
      * @param betreiber Betreiber der Anlage
      * @param bemerkungen weitere Bemerkungen
      */
-    public Windkraftanlage(int objektId, String name, String baujahr, Double gesamtLeistungMW,
+    public Windkraftanlage(int objektId, String name, String baujahr, Float gesamtLeistungMW,
                            Integer anzahl, String typ, String ort, String landkreis,
-                           Double breitengrad, Double laengengrad, String betreiber, String bemerkungen) {
+                           Float breitengrad, Float laengengrad, String betreiber, String bemerkungen) {
         this.objektId = objektId;
         this.name = name;
         this.baujahr = baujahr;
@@ -121,14 +121,14 @@ public class Windkraftanlage {
     /**
      * @return Gesamtleistung in MW (kann null sein)
      */
-    public Double getGesamtLeistungMW() {
+    public Float getGesamtLeistungMW() {
         return gesamtLeistungMW;
     }
 
     /**
      * @param gesamtLeistungMW Gesamtleistung in MW (kann null sein)
      */
-    public void setGesamtLeistungMW(Double gesamtLeistungMW) {
+    public void setGesamtLeistungMW(Float gesamtLeistungMW) {
         this.gesamtLeistungMW = gesamtLeistungMW;
     }
 
@@ -191,28 +191,28 @@ public class Windkraftanlage {
     /**
      * @return Breitengrad (kann null sein)
      */
-    public Double getBreitengrad() {
+    public Float getBreitengrad() {
         return breitengrad;
     }
 
     /**
      * @param breitengrad Breitengrad (kann null sein)
      */
-    public void setBreitengrad(Double breitengrad) {
+    public void setBreitengrad(Float breitengrad) {
         this.breitengrad = breitengrad;
     }
 
     /**
      * @return Längengrad (kann null sein)
      */
-    public Double getLaengengrad() {
+    public Float getLaengengrad() {
         return laengengrad;
     }
 
     /**
      * @param laengengrad Längengrad (kann null sein)
      */
-    public void setLaengengrad(Double laengengrad) {
+    public void setLaengengrad(Float laengengrad) {
         this.laengengrad = laengengrad;
     }
 
