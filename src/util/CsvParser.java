@@ -43,8 +43,8 @@ public final class CsvParser {
      * @throws IOException bei Lesefehler
      */
     public static String leseNaechstenDatensatz(BufferedReader csvLeser) throws IOException {
-        String zeile = csvLeser.readLine();
-        return zeile;
+
+        return csvLeser.readLine();
     }
 
     /**
