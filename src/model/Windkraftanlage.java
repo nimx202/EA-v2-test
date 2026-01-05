@@ -1,6 +1,7 @@
 package model;
 
 import util.FeldParser;
+import util.Konstanten;
 
 /**
  * Modellklasse für eine Windkraftanlage (Windenergieanlage).
@@ -20,13 +21,12 @@ public class Windkraftanlage {
     private int objektId;
     private String name;
     private Integer baujahr;
-    private Double gesamtLeistungMW;
+    private Float gesamtLeistungMW;
     private Integer anzahl;
     private String typ;
     private String ort;
     private String landkreis;
-    private Double breitengrad;
-    private Double laengengrad;
+    private GeoKoordinaten geoKoordinaten;
     private String betreiber;
     private String bemerkungen;
 
@@ -36,7 +36,7 @@ public class Windkraftanlage {
      * Post: Alle numerischen Felder haben Default-Wert 0/null
      */
     public Windkraftanlage() {
-        // Standard-Konstruktor
+        this.geoKoordinaten = new GeoKoordinaten();
     }
 
     /**
@@ -47,20 +47,20 @@ public class Windkraftanlage {
      *
      * @param objektId eindeutige ID der Anlage
      * @param name Name der Anlage/des Windparks
-     * @param baujahr Baujahr (kann null sein)
+    * @param baujahr Baujahr (kann null sein)
      * @param gesamtLeistungMW Gesamtleistung in MW (kann null sein)
      * @param anzahl Anzahl der Anlagen (kann null sein)
      * @param typ Anlagentyp
      * @param ort Ortschaft
      * @param landkreis Landkreis/Bezirk
-     * @param breitengrad geografischer Breitengrad (kann null sein)
-     * @param laengengrad geografischer Längengrad (kann null sein)
+    * @param geoKoordinaten Objekt mit Breitengrad/Längengrad (kann null sein)
+    * @param geoKoordinaten Objekt mit Breitengrad/Längengrad (kann null sein)
      * @param betreiber Betreiber der Anlage
      * @param bemerkungen weitere Bemerkungen
      */
-    public Windkraftanlage(int objektId, String name, Integer baujahr, Double gesamtLeistungMW,
+    public Windkraftanlage(int objektId, String name, Integer baujahr, Float gesamtLeistungMW,
                            Integer anzahl, String typ, String ort, String landkreis,
-                           Double breitengrad, Double laengengrad, String betreiber, String bemerkungen) {
+                           GeoKoordinaten geoKoordinaten, String betreiber, String bemerkungen) {
         this.objektId = objektId;
         this.name = name;
         this.baujahr = baujahr;
@@ -69,10 +69,31 @@ public class Windkraftanlage {
         this.typ = typ;
         this.ort = ort;
         this.landkreis = landkreis;
-        this.breitengrad = breitengrad;
-        this.laengengrad = laengengrad;
+        if (geoKoordinaten == null) {
+            this.geoKoordinaten = new GeoKoordinaten();
+        } else {
+            this.geoKoordinaten = geoKoordinaten;
+        }
         this.betreiber = betreiber;
         this.bemerkungen = bemerkungen;
+    }
+
+    /**
+     * @return Kapselung der geografischen Koordinaten
+     */
+    public GeoKoordinaten getGeoKoordinaten() {
+        return geoKoordinaten;
+    }
+
+    /**
+     * @param geoKoordinaten Kapselung der geografischen Koordinaten
+     */
+    public void setGeoKoordinaten(GeoKoordinaten geoKoordinaten) {
+        if (geoKoordinaten == null) {
+            this.geoKoordinaten = new GeoKoordinaten();
+        } else {
+            this.geoKoordinaten = geoKoordinaten;
+        }
     }
 
     /**
@@ -120,14 +141,14 @@ public class Windkraftanlage {
     /**
      * @return Gesamtleistung in MW (kann null sein)
      */
-    public Double getGesamtLeistungMW() {
+    public Float getGesamtLeistungMW() {
         return gesamtLeistungMW;
     }
 
     /**
      * @param gesamtLeistungMW Gesamtleistung in MW (kann null sein)
      */
-    public void setGesamtLeistungMW(Double gesamtLeistungMW) {
+    public void setGesamtLeistungMW(Float gesamtLeistungMW) {
         this.gesamtLeistungMW = gesamtLeistungMW;
     }
 
@@ -190,29 +211,62 @@ public class Windkraftanlage {
     /**
      * @return Breitengrad (kann null sein)
      */
-    public Double getBreitengrad() {
-        return breitengrad;
+    public Float getBreitengrad() {
+        if (geoKoordinaten == null) {
+            return null;
+        }
+        return geoKoordinaten.getBreitengrad();
     }
 
     /**
      * @param breitengrad Breitengrad (kann null sein)
      */
-    public void setBreitengrad(Double breitengrad) {
-        this.breitengrad = breitengrad;
+    public void setBreitengrad(Float breitengrad) {
+        stelleGeoKoordinatenSicher().setBreitengrad(breitengrad);
     }
 
     /**
      * @return Längengrad (kann null sein)
      */
-    public Double getLaengengrad() {
-        return laengengrad;
+    public Float getLaengengrad() {
+        if (geoKoordinaten == null) {
+            return null;
+        }
+        return geoKoordinaten.getLaengengrad();
     }
 
     /**
      * @param laengengrad Längengrad (kann null sein)
      */
-    public void setLaengengrad(Double laengengrad) {
-        this.laengengrad = laengengrad;
+    public void setLaengengrad(Float laengengrad) {
+        stelleGeoKoordinatenSicher().setLaengengrad(laengengrad);
+    }
+
+    /**
+     * Prüft, ob Koordinaten vollständig gesetzt sind.
+     *
+     * Pre: keine
+     * Post: Rückgabe true nur bei vorhandenen Koordinatenwerten
+     *
+     * @return true wenn Breitengrad und Längengrad gesetzt sind
+     */
+    public boolean hatKoordinaten() {
+        if (geoKoordinaten == null) {
+            return false;
+        }
+        return geoKoordinaten.hatBeideKoordinaten();
+    }
+
+    /**
+     * Stellt sicher, dass eine GeoKoordinaten-Instanz vorhanden ist.
+     *
+     * @return nie null
+     */
+    private GeoKoordinaten stelleGeoKoordinatenSicher() {
+        if (geoKoordinaten == null) {
+            geoKoordinaten = new GeoKoordinaten();
+        }
+        return geoKoordinaten;
     }
 
     /**
@@ -246,6 +300,7 @@ public class Windkraftanlage {
     /**
      * Liefert eine aussagekräftige Textrepräsentation der Windkraftanlage.
      * Null-Werte werden als "unbekannt" dargestellt.
+     * Verwendet Konstanten für alle Textbausteine.
      *
      * Pre: keine
      * Post: Rückgabe nicht-null String mit allen Attributen
@@ -254,20 +309,46 @@ public class Windkraftanlage {
      */
     @Override
     public String toString() {
-        return "Windkraftanlage{" +
-                "objektId=" + objektId +
-                ", name='" + name + '\'' +
-                ", baujahr=" + FeldParser.formatiereFürAnzeige(baujahr) +
-                ", gesamtLeistungMW=" + FeldParser.formatiereFürAnzeige(gesamtLeistungMW) +
-                ", anzahl=" + FeldParser.formatiereFürAnzeige(anzahl) +
-                ", typ='" + typ + '\'' +
-                ", ort='" + ort + '\'' +
-                ", landkreis='" + landkreis + '\'' +
-                ", breitengrad=" + FeldParser.formatiereFürAnzeige(breitengrad) +
-                ", laengengrad=" + FeldParser.formatiereFürAnzeige(laengengrad) +
-                ", betreiber='" + betreiber + '\'' +
-                ", bemerkungen='" + bemerkungen + '\'' +
-                '}';
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append(Konstanten.TOSTRING_PREFIX);
+        builder.append(Konstanten.FELD_OBJEKT_ID).append(Konstanten.TOSTRING_WERTTRENNER).append(objektId);
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_NAME).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(Konstanten.TOSTRING_QUOTE).append(name).append(Konstanten.TOSTRING_QUOTE);
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_BAUJAHR).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(FeldParser.formatiereFuerAnzeige(baujahr));
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_GESAMT_LEISTUNG_MW).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(FeldParser.formatiereFuerAnzeige(gesamtLeistungMW));
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_ANZAHL).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(FeldParser.formatiereFuerAnzeige(anzahl));
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_TYP).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(Konstanten.TOSTRING_QUOTE).append(typ).append(Konstanten.TOSTRING_QUOTE);
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_ORT).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(Konstanten.TOSTRING_QUOTE).append(ort).append(Konstanten.TOSTRING_QUOTE);
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_LANDKREIS).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(Konstanten.TOSTRING_QUOTE).append(landkreis).append(Konstanten.TOSTRING_QUOTE);
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_BREITENGRAD).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(FeldParser.formatiereFuerAnzeige(getBreitengrad()));
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_LAENGENGRAD).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(FeldParser.formatiereFuerAnzeige(getLaengengrad()));
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_BETREIBER).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(Konstanten.TOSTRING_QUOTE).append(betreiber).append(Konstanten.TOSTRING_QUOTE);
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_BEMERKUNGEN).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(Konstanten.TOSTRING_QUOTE).append(bemerkungen).append(Konstanten.TOSTRING_QUOTE);
+        builder.append(Konstanten.TOSTRING_SUFFIX);
+        
+        return builder.toString();
     }
 }
 

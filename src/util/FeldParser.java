@@ -1,12 +1,11 @@
 package util;
 
 /**
- * Utility-Klasse für Parsing und Konvertierung von Feldwerten aus CSV-Daten.
- * Behandelt null, leere Strings und Zahlkonvertierungen robust.
+ * Einfache Klasse zum Umwandeln von Text in Zahlen.
+ * Wandelt CSV-Felder in Integer und Float um.
  *
- * Vertrag:
  * Pre: Methoden können mit null-Werten umgehen
- * Post: Rückgabewerte entsprechen der Dokumentation
+ * Post: Gibt konvertierte Werte oder null zurück
  */
 public class FeldParser {
 
@@ -15,95 +14,150 @@ public class FeldParser {
     }
 
     /**
-     * Konvertiert einen leeren oder Whitespace-String zu null.
+     * Wandelt leeren Text in null um.
      *
-     * Pre: keine
-     * Post: null wenn s null, leer oder nur Whitespace; sonst gekürzt String
-     *
-     * @param wert der zu prüfende String
-     * @return null oder gekürzt String
+     * @param textWert Der zu prüfende Text
+     * @return null wenn leer, sonst den Text ohne Leerzeichen
      */
-    public static String leerZuNull(String wert) {
-        if (wert == null) {
+    public static String leerZuNull(String textWert) {
+        if (textWert == null) {
             return null;
         }
 
-        String gekürzt = wert.trim();
-        return gekürzt.isEmpty() ? null : gekürzt;
+        String textOhneLeerzeichen = textWert.trim();
+        if (textOhneLeerzeichen.isEmpty()) {
+            return null;
+        }
+        
+        return textOhneLeerzeichen;
     }
 
     /**
-     * Parst einen String zu Integer mit Null-Handling.
-     * Ungültige Werte werden als null zurückgegeben.
+     * Wandelt Text in eine Ganzzahl um.
+     * Gibt null zurück wenn Umwandlung nicht möglich.
      *
-     * Pre: keine
-     * Post: null bei ungültiger oder leerer Eingabe; sonst Integer-Wert
-     *
-     * @param wert der zu parsende String
-     * @return Integer oder null
+     * @param textWert Der zu wandelnde Text
+     * @return Ganzzahl oder null
      */
-    public static Integer parseGanzzahlNullbar(String wert) {
-        String gekürzt = leerZuNull(wert);
-        if (gekürzt == null) {
+    public static Integer parseGanzzahlNullbar(String textWert) {
+        String bereinigterText = bereinigeZahlText(textWert);
+        if (bereinigterText == null) {
             return null;
         }
 
         try {
-            return Integer.valueOf(gekürzt);
-        } catch (NumberFormatException e) {
+            return Integer.parseInt(bereinigterText);
+        } catch (NumberFormatException fehler) {
             return null;
         }
     }
 
     /**
-     * Parst einen String zu int mit Default-Wert bei Fehler.
-     * Diese Methode gibt immer einen int zurück (nie null).
+     * Wandelt Text in eine Ganzzahl um.
+     * Gibt -1 zurück wenn Umwandlung nicht möglich.
      *
-     * Pre: keine
-     * Post: Integer-Wert oder UNGÜLTIGE_ID (-1) bei Fehler
-     *
-     * @param wert der zu parsende String
-     * @return int-Wert oder -1 bei Fehler
+     * @param textWert Der zu wandelnde Text
+     * @return Ganzzahl oder -1
      */
-    public static int parseGanzzahlSicher(String wert) {
-        Integer geparst = parseGanzzahlNullbar(wert);
-        return geparst == null ? Konstanten.UNGÜLTIGE_ID : geparst;
+    public static int parseGanzzahlSicher(String textWert) {
+        Integer ergebnis = parseGanzzahlNullbar(textWert);
+        if (ergebnis == null) {
+            return -1;
+        }
+        return ergebnis;
     }
 
     /**
-     * Parst einen String zu Double mit Null-Handling.
-     * Ungültige Werte werden als null zurückgegeben.
+     * Wandelt Text in eine Kommazahl um.
+     * Gibt null zurück wenn Umwandlung nicht möglich.
      *
-     * Pre: keine
-     * Post: null bei ungültiger oder leerer Eingabe; sonst Double-Wert
-     *
-     * @param wert der zu parsende String
-     * @return Double oder null
+     * @param textWert Der zu wandelnde Text
+     * @return Kommazahl oder null
      */
-    public static Double parseGleitkommaZahlNullbar(String wert) {
-        String gekürzt = leerZuNull(wert);
-        if (gekürzt == null) {
+    public static Float parseGleitkommaZahlNullbar(String textWert) {
+        String bereinigterText = bereinigeZahlText(textWert);
+        if (bereinigterText == null) {
             return null;
         }
 
         try {
-            return Double.valueOf(gekürzt);
-        } catch (NumberFormatException e) {
+            return Float.parseFloat(bereinigterText);
+        } catch (NumberFormatException fehler) {
             return null;
         }
     }
 
     /**
-     * Formatiert einen Wert für die Ausgabe.
+     * Wandelt Baujahr-Einträge in eine Ganzzahl um.
+     * Werte mit Spannennotation (z.B. 2023-2024) werden auf das erste Jahr reduziert.
+     *
+     * Pre: keine
+     * Post: Rueckgabe: erstes Jahr als Integer oder null bei Fehlern
+     *
+     * @param textWert Rohtext aus der CSV-Spalte
+     * @return Ganzzahl oder null
+     */
+    public static Integer parseBaujahr(String textWert) {
+        String bereinigterText = leerZuNull(textWert);
+        if (bereinigterText == null) {
+            return null;
+        }
+
+        String erstesJahr = ermittleErstesBaujahr(bereinigterText);
+        return parseGanzzahlNullbar(erstesJahr);
+    }
+
+    /**
+     * Bereitet einen Zahlentext für die Umwandlung vor.
+     * Entfernt Leerzeichen und ersetzt Komma durch Punkt.
+     *
+     * @param textWert Der zu bereinigende Text
+     * @return Bereinigter Text oder null
+     */
+    private static String bereinigeZahlText(String textWert) {
+        if (textWert == null) {
+            return null;
+        }
+
+        String bereinigterText = textWert.trim();
+        if (bereinigterText.isEmpty()) {
+            return null;
+        }
+
+        // Ersetze Komma durch Punkt (deutsches Format)
+        bereinigterText = bereinigterText.replace(',', '.');
+        
+        return bereinigterText;
+    }
+
+    /**
+     * Schneidet ggf. vorhandene Baujahr-Spannen hinter dem Trenner ab.
+     *
+     * @param textMitSpanne Baujahr mit optionaler Spanne
+     * @return Erstes Jahr der Angabe
+     */
+    private static String ermittleErstesBaujahr(String textMitSpanne) {
+        int trennerIndex = textMitSpanne.indexOf(Konstanten.BAUJAHR_SPANNEN_TRENNER);
+        if (trennerIndex >= 0) {
+            return textMitSpanne.substring(0, trennerIndex).trim();
+        }
+        return textMitSpanne;
+    }
+
+    /**
+     * Formatiert einen Wert für die Anzeige.
      * null-Werte werden als "unbekannt" dargestellt.
      *
      * Pre: keine
-     * Post: String-Darstellung, nie null
+     * Post: Rückgabe: Textdarstellung des Wertes
      *
      * @param wert der zu formatierende Wert
-     * @return formatierter String
+     * @return Text-Darstellung
      */
-    public static String formatiereFürAnzeige(Object wert) {
-        return wert != null ? wert.toString() : Konstanten.ANZEIGE_UNBEKANNT;
+    public static String formatiereFuerAnzeige(Object wert) {
+        if (wert == null) {
+            return Konstanten.ANZEIGE_UNBEKANNT;
+        }
+        return wert.toString();
     }
 }

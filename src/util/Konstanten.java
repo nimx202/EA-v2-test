@@ -36,10 +36,13 @@ public final class Konstanten {
     public static final String LEERER_WERT = "";
 
     /** Ungültige ID für fehlerhafte Ganzzahl-Konvertierungen */
-    public static final int UNGÜLTIGE_ID = -1;
+        public static final int UNGUELTIGE_ID = -1;
 
     /** Anzeigetext für unbekannte Werte */
     public static final String ANZEIGE_UNBEKANNT = "unbekannt";
+
+    /** Trenner fuer Baujahr-Spannen wie 2023-2024 */
+    public static final String BAUJAHR_SPANNEN_TRENNER = "-";
 
     // ==================== Main View Konstanten ====================
 
@@ -49,8 +52,17 @@ public final class Konstanten {
     /** Limit für Beispiel-Datensätze */
     public static final int BEISPIEL_LIMIT = 10;
 
+    /**
+     * Standard-Limit für die Ausgabe von Koordinaten-Korrekturen (kann zur Laufzeit angepasst werden)
+     * Default ist gleich BEISPIEL_LIMIT. Bei Bedarf kann dieses Feld im Code gesetzt werden,
+     * um mehr oder weniger Datensätze standardmäßig anzuzeigen.
+     */
+    /* Paket-sichtbares, zur Laufzeit anpassbares Default-Limit für die
+       Ausgabe von Koordinaten-Korrekturen (standard: BEISPIEL_LIMIT) */
+    static int korrekturAusgabeLimit = BEISPIEL_LIMIT;
+
     /** Konvertierung von Nanosekunden zu Millisekunden */
-    public static final double NANOS_ZU_MILLIS = 1_000_000.0;
+    public static final float NANOS_ZU_MILLIS = 1_000_000.0f;
 
     /** Platzhalter für unbekannte Orte */
     public static final String UNBEKANNTER_ORT = "<unbekannt>";
@@ -66,8 +78,8 @@ public final class Konstanten {
     /** Info: Dateipfad */
     public static final String DATEI_INFO = "Datei: ";
 
-    /** Format: Anzahl Datensätze */
-    public static final String DATENSÄTZE_ANZAHL = "Anzahl eingelesener Datensätze: %d%n";
+    /** Format: Anzahl Datensaetze */
+        public static final String DATENSAETZE_ANZAHL = "Anzahl eingelesener Datensaetze: %d%n";
 
     /** Format: Verstrichene Zeit */
     public static final String VERSTRICHENE_ZEIT = "Dauer des Einlesens: %.3f ms%n";
@@ -84,8 +96,8 @@ public final class Konstanten {
     /** Format: Gesamtanzahl Parks */
     public static final String GESAMT_PARKS = "Gesamtanzahl unterschiedlicher Windparks/Anlagen: %d%n";
 
-    /** Überschrift: Beispiel-Datensätze */
-    public static final String BEISPIEL_DATENSÄTZE = "Einige Beispiel-Datensätze:";
+    /** Überschrift: Beispiel-Datensaetze */
+        public static final String BEISPIEL_DATENSAETZE = "Einige Beispiel-Datensaetze:";
 
     /** Fehler-Präfix */
     public static final String FEHLER_PREFIX = "Fehler beim Einlesen: ";
@@ -96,13 +108,13 @@ public final class Konstanten {
     // ==================== CsvParser Konstanten ====================
 
     /** Anführungszeichen-Zeichen */
-    public static final char ANFÜHRUNGSZEICHEN = '\"';
+        public static final char ANFUEHRUNGSZEICHEN = '\"';
 
     /** Komma-Zeichen */
     public static final char KOMMA = ',';
 
     /** Wagenrücklauf-Zeichen */
-    public static final char WAGENRÜCKLAUF = '\r';
+        public static final char WAGENRUECKLAUF = '\r';
 
     /** Zeilenumbruch-Zeichen */
     public static final char ZEILENUMBRUCH = '\n';
@@ -111,105 +123,224 @@ public final class Konstanten {
     public static final int MARKIERUNGSABSTAND = 1;
 
     /** Escaped Anführungszeichen (zwei Anführungszeichen) */
-    public static final String ESCAPED_ANFÜHRUNGSZEICHEN = "\"\"";
+        public static final String ESCAPED_ANFUEHRUNGSZEICHEN = "\"\"";
 
-    /** Einzelnes Anführungszeichen als String */
-    public static final String EINZELNES_ANFÜHRUNGSZEICHEN = "\"";
+        /** Einzelnes Anfuehrungszeichen als String */
+        public static final String EINZELNES_ANFUEHRUNGSZEICHEN = "\"";
 
     // ==================== Koordinaten-Validierung ====================
 
     /** Minimaler gültiger Breitengrad für Deutschland */
-    public static final double MIN_BREITENGRAD_DE = 47.0;
+    public static final float MIN_BREITENGRAD_DE = 47.0f;
 
     /** Maximaler gültiger Breitengrad für Deutschland */
-    public static final double MAX_BREITENGRAD_DE = 55.0;
+    public static final float MAX_BREITENGRAD_DE = 55.0f;
 
     /** Minimaler gültiger Längengrad für Deutschland */
-    public static final double MIN_LÄNGENGRAD_DE = 5.0;
+        public static final float MIN_LAENGENGRAD_DE = 5.0f;
 
-    /** Maximaler gültiger Längengrad für Deutschland */
-    public static final double MAX_LÄNGENGRAD_DE = 16.0;
+        /** Maximaler gueltiger Laengengrad für Deutschland */
+        public static final float MAX_LAENGENGRAD_DE = 16.0f;
 
     /** Fehlerschwelle für Breitengrad-Korrektur (Faktor 1000) */
-    public static final double BREITENGRAD_FEHLERFAKTOR = 1000.0;
+    public static final float BREITENGRAD_FEHLERFAKTOR = 1000.0f;
 
     /** Fehlerschwelle für Längengrad-Korrektur (Faktor 1000) */
-    public static final double LÄNGENGRAD_FEHLERFAKTOR = 1000.0;
-
-    // ==================== Baujahr-Validierung ====================
-
-    /** Minimales gültiges Baujahr (erste Windkraftanlagen in Deutschland) */
-    public static final int MIN_BAUJAHR = 1980;
-
-    /** Maximales gültiges Baujahr (aktuelles Jahr) */
-    public static final int MAX_BAUJAHR = 2026;
-
-    /** Fehlerfaktor für Baujahr-Korrektur (überzählige Ziffer) */
-    public static final int BAUJAHR_FEHLERFAKTOR = 10;
-
-    // ==================== Gesamtleistung-Validierung ====================
-
-    /** Minimale gültige Gesamtleistung in MW (keine negativen Werte) */
-    public static final double MIN_GESAMTLEISTUNG_MW = 0.0;
-
-    /** Maximale gültige Gesamtleistung in MW (realistischer Wert für Einzelanlage) */
-    public static final double MAX_GESAMTLEISTUNG_MW = 200.0;
-
-    /** Fehlerfaktor für Gesamtleistung-Korrektur (fehlendes Komma) */
-    public static final double GESAMTLEISTUNG_FEHLERFAKTOR = 100.0;
+        public static final float LAENGENGRAD_FEHLERFAKTOR = 1000.0f;
 
     // ==================== Ausgabetexte Koordinaten-Korrektur ====================
 
     /** Überschrift: Koordinaten-Validierung */
-    public static final String VALIDIERUNG_ÜBERSCHRIFT = "\n=== Überprüfung und Korrektur der Koordinaten ===";
+    public static final String VALIDIERUNG_UEBERSCHRIFT = "\n=== Ueberpruefung und Korrektur der Koordinaten ===";
 
     /** Format: Validierungszeit */
-    public static final String VALIDIERUNG_ZEIT = "Dauer der Überprüfung: %.3f ms%n";
+    public static final String VALIDIERUNG_ZEIT = "Dauer der Ueberpruefung: %.3f ms%n";
 
     /** Format: Korrekturzeit */
     public static final String KORREKTUR_ZEIT = "Dauer der Korrektur: %.3f ms%n";
 
     /** Format: Anzahl fehlerhafte Koordinaten */
-    public static final String FEHLERHAFTE_KOORDINATEN = "Anzahl Datensätze mit fehlerhaften Koordinaten: %d%n";
+    public static final String FEHLERHAFTE_KOORDINATEN = "Anzahl Datensaetze mit fehlerhaften Koordinaten: %d%n";
 
     /** Format: Anzahl korrigierte Koordinaten */
     public static final String KORRIGIERTE_KOORDINATEN = "Anzahl korrigierte Datensätze: %d%n";
 
-    /** Überschrift: Fehlerhafte Datensätze */
-    public static final String FEHLERHAFTE_DATENSÄTZE = "\nFehlerhafte Datensätze (vor Korrektur):";
+    /** Überschrift: Fehlerhafte Datensaetze */
+    public static final String FEHLERHAFTE_DATENSAETZE = "\nFehlerhafte Datensaetze (vor Korrektur):";
 
     /** Format: Fehlerhafter Datensatz */
-    public static final String FEHLER_DATENSATZ = "ID %d | %s | Breitengrad: %.4f | Längengrad: %.4f%n";
+    public static final String FEHLER_DATENSATZ = "ID %d | %s | Breitengrad: %.4f | Laengengrad: %.4f%n";
 
-    /** Überschrift: Korrigierte Datensätze */
-    public static final String KORRIGIERTE_DATENSÄTZE = "\nKorrigierte Datensätze (nach Korrektur):";
+    /** Überschrift: Korrigierte Datensaetze */
+    public static final String KORRIGIERTE_DATENSAETZE = "\nKorrigierte Datensaetze (nach Korrektur):";
 
     /** Format: Korrigierter Datensatz */
     public static final String KORREKTUR_DATENSATZ = "ID %d | %s | Alt: (%.4f, %.4f) -> Neu: (%.4f, %.4f)%n";
 
-    // ==================== Ausgabetexte Baujahr/Leistung-Korrektur ====================
+    // ==================== AusgabeManager Konstanten ====================
 
-    /** Format: Anzahl fehlerhafte Baujahre */
-    public static final String FEHLERHAFTE_BAUJAHRE = "Anzahl Datensätze mit fehlerhaftem Baujahr: %d%n";
+    /** Trennstrich-Zeichen fuer Ueberschriften */
+    public static final String TRENNSTRICH_ZEICHEN = "=";
 
-    /** Format: Anzahl korrigierte Baujahre */
-    public static final String KORRIGIERTE_BAUJAHRE = "Anzahl korrigierte Baujahre: %d%n";
+    /** Minimale Laenge fuer Ueberschriften */
+    public static final int UEBERSCHRIFT_MIN_LAENGE = 40;
 
-    /** Format: Fehlerhaftes Baujahr */
-    public static final String FEHLER_BAUJAHR = "ID %d | %s | Baujahr: %d%n";
+    // ==================== ZeitStatistiken Konstanten ====================
 
-    /** Format: Korrigiertes Baujahr */
-    public static final String KORREKTUR_BAUJAHR = "ID %d | %s | Alt: %d -> Neu: %s%n";
+    /** Überschrift: Zusammenfassung */
+    public static final String ZUSAMMENFASSUNG_UEBERSCHRIFT = "\n=== Zusammenfassung: Zeiten und Statistiken ===";
 
-    /** Format: Anzahl fehlerhafte Gesamtleistung */
-    public static final String FEHLERHAFTE_LEISTUNGEN = "Anzahl Datensätze mit fehlerhafter Gesamtleistung: %d%n";
+    /** Überschrift: Zeiten */
+    public static final String ZEITEN_UEBERSCHRIFT = "\n-- Zeiten (ms) --";
 
-    /** Format: Anzahl korrigierte Gesamtleistung */
-    public static final String KORRIGIERTE_LEISTUNGEN = "Anzahl korrigierte Gesamtleistungen: %d%n";
+    /** Überschrift: Statistiken */
+    public static final String STATISTIKEN_UEBERSCHRIFT = "\n-- Statistiken --";
 
-    /** Format: Fehlerhafte Gesamtleistung */
-    public static final String FEHLER_LEISTUNG = "ID %d | %s | Gesamtleistung: %.2f MW%n";
+    /** Text: Keine Zeit-Messungen */
+    public static final String KEINE_ZEITMESSUNGEN = "(Keine Zeit-Messungen vorhanden)";
 
-    /** Format: Korrigierte Gesamtleistung */
-    public static final String KORREKTUR_LEISTUNG = "ID %d | %s | Alt: %.2f MW -> Neu: %s%n";
+    /** Text: Keine Statistiken */
+    public static final String KEINE_STATISTIKEN = "(Keine Statistiken vorhanden)";
+
+    /** Format: Zeitanzeige */
+    public static final String ZEIT_FORMAT = "%s: %.3f ms\n";
+
+    /** Format: Gesamtzeit */
+    public static final String GESAMTZEIT_FORMAT = "Gesamt gemessene Zeit (Summe): %.3f ms\n";
+
+    /** Format: Statistik-Zeile */
+    public static final String STATISTIK_FORMAT = "%s: %s\n";
+
+    /** Text: Ende Zusammenfassung */
+    public static final String ENDE_ZUSAMMENFASSUNG = "=== Ende Zusammenfassung ===\n";
+
+    // ==================== Main-View Ausgabetexte ====================
+
+    /** Format: Koordinaten korrigiert */
+    public static final String KOORDINATEN_KORRIGIERT = "Koordinaten korrigiert: %d (%.3f ms)%n";
+
+    /** Name: Laden CSV Operation */
+    public static final String OPERATION_LADEN_CSV = "Laden CSV";
+
+    /** Name: Koordinaten-Korrektur Operation */
+    public static final String OPERATION_KOORDINATEN_KORREKTUR = "Koordinaten-Korrektur";
+
+    /** Statistik: Geladene Datensaetze */
+    public static final String STAT_GELADENE_DATENSAETZE = "Geladene Datensaetze";
+
+    /** Name: gebeStatistikenAus Operation */
+    public static final String OPERATION_STATISTIKEN = "gebeStatistikenAus";
+
+    /** Statistik: Anlagen mit Koordinaten */
+    public static final String STAT_MIT_KOORDINATEN = "Anlagen mit Koordinaten";
+
+    /** Statistik: Anlagen ohne Betreiber */
+    public static final String STAT_OHNE_BETREIBER = "Anlagen ohne Betreiber";
+
+    /** Statistik: Anzahl korrigierte Koordinaten */
+    public static final String STAT_KOORDINATEN_KORRIGIERT = "Koordinaten korrigiert";
+
+    /** Name: gebeTopWindparksAus Operation */
+    public static final String OPERATION_TOP_WINDPARKS = "gebeTopWindparksAus";
+
+    /** Statistik: Anzahl Parks */
+    public static final String STAT_ANZAHL_PARKS = "Anzahl Parks (einzigartig)";
+
+    /** Statistik: Top N Parks Präfix */
+    public static final String STAT_TOP_PARKS_PREFIX = "Top ";
+
+    /** Statistik: Parks Suffix */
+    public static final String STAT_PARKS_SUFFIX = " Parks";
+
+    /** Name: gebeBeispielDatensaetzeAus Operation */
+    public static final String OPERATION_BEISPIEL_DATENSAETZE = "gebeBeispielDatensaetzeAus";
+
+    /** Statistik: Anzahl Beispiel-Datensaetze ausgegeben */
+    public static final String STAT_BEISPIEL_AUSGEGEBEN = "Anzahl Beispiel-Datensaetze ausgegeben";
+
+    /** Format: Anzahl Beispiel-Datensaetze ausgegeben bei Koordinaten-Korrekturen */
+    public static final String KORREKTUR_BEISPIEL_AUSGABE = "Anzahl Beispiel-Datensaetze ausgegeben: %d%n";
+
+    /** Trennzeichen zwischen Parkname und Anzahl */
+    public static final String PARK_ANZAHL_TRENNER = ", ";
+
+    /** Format für Park mit Anzahl */
+    public static final String PARK_FORMAT = "%s(%s)";
+
+    // ==================== Koordinaten-Korrektur Ausgaben ====================
+
+    /** Überschrift: Koordinaten-Korrekturen */
+    public static final String KORREKTUR_UEBERSCHRIFT = "\n=== Koordinaten-Korrekturen ===";
+
+    /** Format: Anzahl Korrekturen */
+    public static final String KORREKTUR_ANZAHL = "Anzahl korrigierter Datensaetze: %d%n";
+
+    /** Format: ID und Name */
+    public static final String KORREKTUR_ID_NAME = "ID: %d | %s%n";
+
+    /** Format: Vorher-Werte */
+    public static final String KORREKTUR_VORHER = "  Vorher: Breitengrad=%s, Laengengrad=%s%n";
+
+    /** Format: Nachher-Werte */
+    public static final String KORREKTUR_NACHHER = "  Nachher: Breitengrad=%s, Laengengrad=%s%n";
+
+    /** Einzeilige Darstellung einer Korrektur (Vorher ----> Nachher) */
+    public static final String KORREKTUR_EINZEILER_FORMAT = "ID: %d | %s: Vorher: Breitengrad=%s, Laengengrad=%s ----> Nachher: Breitengrad=%s, Laengengrad=%s%n";
+
+    /** Format für Koordinaten */
+    public static final String KOORDINATEN_FORMAT = "%.4f";
+
+    // ==================== Windkraftanlage toString Konstanten ====================
+
+    /** toString Präfix */
+    public static final String TOSTRING_PREFIX = "Windkraftanlage{";
+
+    /** toString Suffix */
+    public static final String TOSTRING_SUFFIX = "}";
+
+    /** toString Feldtrenner */
+    public static final String TOSTRING_FELDTRENNER = ", ";
+
+    /** toString Werttrenner */
+    public static final String TOSTRING_WERTTRENNER = "=";
+
+    /** toString String-Anführungszeichen */
+    public static final String TOSTRING_QUOTE = "'";
+
+    /** toString Feld: objektId */
+    public static final String FELD_OBJEKT_ID = "objektId";
+
+    /** toString Feld: name */
+    public static final String FELD_NAME = "name";
+
+    /** toString Feld: baujahr */
+    public static final String FELD_BAUJAHR = "baujahr";
+
+    /** toString Feld: gesamtLeistungMW */
+    public static final String FELD_GESAMT_LEISTUNG_MW = "gesamtLeistungMW";
+
+    /** toString Feld: anzahl */
+    public static final String FELD_ANZAHL = "anzahl";
+
+    /** toString Feld: typ */
+    public static final String FELD_TYP = "typ";
+
+    /** toString Feld: ort */
+    public static final String FELD_ORT = "ort";
+
+    /** toString Feld: landkreis */
+    public static final String FELD_LANDKREIS = "landkreis";
+
+    /** toString Feld: breitengrad */
+    public static final String FELD_BREITENGRAD = "breitengrad";
+
+    /** toString Feld: laengengrad */
+    public static final String FELD_LAENGENGRAD = "laengengrad";
+
+    /** toString Feld: betreiber */
+    public static final String FELD_BETREIBER = "betreiber";
+
+    /** toString Feld: bemerkungen */
+    public static final String FELD_BEMERKUNGEN = "bemerkungen";
+
 }
