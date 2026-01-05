@@ -1,6 +1,7 @@
 package controler;
 
 import model.GeoKoordinaten;
+import model.GeoKoordinaten;
 import model.Windkraftanlage;
 import util.CsvParser;
 import util.FeldParser;

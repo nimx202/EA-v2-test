@@ -63,6 +63,7 @@ public final class Konstanten {
 
     /** Konvertierung von Nanosekunden zu Millisekunden */
     public static final float NANOS_ZU_MILLIS = 1_000_000.0f;
+    public static final float NANOS_ZU_MILLIS = 1_000_000.0f;
 
     /** Platzhalter für unbekannte Orte */
     public static final String UNBEKANNTER_ORT = "<unbekannt>";
@@ -143,6 +144,7 @@ public final class Konstanten {
         public static final float MAX_LAENGENGRAD_DE = 16.0f;
 
     /** Fehlerschwelle für Breitengrad-Korrektur (Faktor 1000) */
+    public static final float BREITENGRAD_FEHLERFAKTOR = 1000.0f;
     public static final float BREITENGRAD_FEHLERFAKTOR = 1000.0f;
 
     /** Fehlerschwelle für Längengrad-Korrektur (Faktor 1000) */
