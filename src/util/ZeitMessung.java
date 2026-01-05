@@ -12,7 +12,7 @@ package util;
  * Verwendung:
  * ZeitMessung timer = ZeitMessung.starte();
  * // ... Code ausführen ...
- * double millis = timer.stoppeUndGibMillis();
+ * float millis = timer.stoppeUndGibMillis();
  */
 public final class ZeitMessung {
 
@@ -53,9 +53,9 @@ public final class ZeitMessung {
      * 
      * @return Verstrichene Zeit in Millisekunden
      */
-    public double stoppeUndGibMillis() {
+    public float stoppeUndGibMillis() {
         if (!laeuft) {
-            return 0.0;
+            return 0.0f;
         }
         endZeit = System.nanoTime();
         laeuft = false;
@@ -70,7 +70,7 @@ public final class ZeitMessung {
      * 
      * @return Dauer in Millisekunden
      */
-    private double berechneDauerInMillis() {
+    private float berechneDauerInMillis() {
         return (endZeit - startZeit) / Konstanten.NANOS_ZU_MILLIS;
     }
 
@@ -108,7 +108,7 @@ public final class ZeitMessung {
      * @param nanos Zeit in Nanosekunden
      * @return Zeit in Millisekunden
      */
-    public static double nanoZuMillis(long nanos) {
+    public static float nanoZuMillis(long nanos) {
         return nanos / Konstanten.NANOS_ZU_MILLIS;
     }
 }

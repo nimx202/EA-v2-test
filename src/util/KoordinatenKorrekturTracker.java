@@ -43,8 +43,8 @@ public class KoordinatenKorrekturTracker {
     * @param neuerLaengengrad Neuer Längengrad (nach Korrektur)
      */
     public void zeichneKorrekturAuf(Windkraftanlage anlage, 
-                                     Double alterBreitengrad, Double alterLaengengrad,
-                                     Double neuerBreitengrad, Double neuerLaengengrad) {
+                                     Float alterBreitengrad, Float alterLaengengrad,
+                                     Float neuerBreitengrad, Float neuerLaengengrad) {
         KorrekturEintrag eintrag = new KorrekturEintrag(
             anlage.getObjektId(),
             anlage.getName(),
@@ -152,7 +152,7 @@ public class KoordinatenKorrekturTracker {
     }
 
     /**
-     * Formatiert einen Double-Wert für die Ausgabe.
+    * Formatiert einen Float-Wert für die Ausgabe.
      * 
      * Pre: keine
      * Post: Rückgabe: formatierter String
@@ -160,7 +160,7 @@ public class KoordinatenKorrekturTracker {
      * @param wert Der zu formatierende Wert
      * @return Formatierter String
      */
-    private String formatiereDoppelWert(Double wert) {
+    private String formatiereDoppelWert(Float wert) {
         if (wert == null) {
             return Konstanten.ANZEIGE_UNBEKANNT;
         }
@@ -174,14 +174,14 @@ public class KoordinatenKorrekturTracker {
     private static class KorrekturEintrag {
         final int objektId;
         final String name;
-        final Double alterBreitengrad;
-        final Double alterLaengengrad;
-        final Double neuerBreitengrad;
-        final Double neuerLaengengrad;
+        final Float alterBreitengrad;
+        final Float alterLaengengrad;
+        final Float neuerBreitengrad;
+        final Float neuerLaengengrad;
 
         KorrekturEintrag(int objektId, String name,
-                        Double alterBreitengrad, Double alterLaengengrad,
-                        Double neuerBreitengrad, Double neuerLaengengrad) {
+                        Float alterBreitengrad, Float alterLaengengrad,
+                        Float neuerBreitengrad, Float neuerLaengengrad) {
             this.objektId = objektId;
             this.name = name;
             this.alterBreitengrad = alterBreitengrad;

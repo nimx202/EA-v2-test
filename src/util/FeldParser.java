@@ -2,7 +2,7 @@ package util;
 
 /**
  * Einfache Klasse zum Umwandeln von Text in Zahlen.
- * Wandelt CSV-Felder in Integer und Double um.
+ * Wandelt CSV-Felder in Integer und Float um.
  *
  * Pre: Methoden können mit null-Werten umgehen
  * Post: Gibt konvertierte Werte oder null zurück
@@ -74,14 +74,14 @@ public class FeldParser {
      * @param textWert Der zu wandelnde Text
      * @return Kommazahl oder null
      */
-    public static Double parseGleitkommaZahlNullbar(String textWert) {
+    public static Float parseGleitkommaZahlNullbar(String textWert) {
         String bereinigterText = bereinigeZahlText(textWert);
         if (bereinigterText == null) {
             return null;
         }
 
         try {
-            return Double.parseDouble(bereinigterText);
+            return Float.parseFloat(bereinigterText);
         } catch (NumberFormatException fehler) {
             return null;
         }

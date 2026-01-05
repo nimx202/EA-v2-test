@@ -59,7 +59,7 @@ public final class Konstanten {
     static int korrekturAusgabeLimit = BEISPIEL_LIMIT;
 
     /** Konvertierung von Nanosekunden zu Millisekunden */
-    public static final double NANOS_ZU_MILLIS = 1_000_000.0;
+    public static final float NANOS_ZU_MILLIS = 1_000_000.0f;
 
     /** Platzhalter für unbekannte Orte */
     public static final String UNBEKANNTER_ORT = "<unbekannt>";
@@ -128,22 +128,22 @@ public final class Konstanten {
     // ==================== Koordinaten-Validierung ====================
 
     /** Minimaler gültiger Breitengrad für Deutschland */
-    public static final double MIN_BREITENGRAD_DE = 47.0;
+    public static final float MIN_BREITENGRAD_DE = 47.0f;
 
     /** Maximaler gültiger Breitengrad für Deutschland */
-    public static final double MAX_BREITENGRAD_DE = 55.0;
+    public static final float MAX_BREITENGRAD_DE = 55.0f;
 
     /** Minimaler gültiger Längengrad für Deutschland */
-        public static final double MIN_LAENGENGRAD_DE = 5.0;
+        public static final float MIN_LAENGENGRAD_DE = 5.0f;
 
         /** Maximaler gueltiger Laengengrad für Deutschland */
-        public static final double MAX_LAENGENGRAD_DE = 16.0;
+        public static final float MAX_LAENGENGRAD_DE = 16.0f;
 
     /** Fehlerschwelle für Breitengrad-Korrektur (Faktor 1000) */
-    public static final double BREITENGRAD_FEHLERFAKTOR = 1000.0;
+    public static final float BREITENGRAD_FEHLERFAKTOR = 1000.0f;
 
     /** Fehlerschwelle für Längengrad-Korrektur (Faktor 1000) */
-        public static final double LAENGENGRAD_FEHLERFAKTOR = 1000.0;
+        public static final float LAENGENGRAD_FEHLERFAKTOR = 1000.0f;
 
     // ==================== Ausgabetexte Koordinaten-Korrektur ====================
 
