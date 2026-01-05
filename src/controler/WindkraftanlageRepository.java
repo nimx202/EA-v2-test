@@ -73,10 +73,16 @@ public class WindkraftanlageRepository {
             String datenZeile;
             while ((datenZeile = CsvParser.leseNaechstenDatensatz(csvLeser)) != null) {
                 String zeileOhneLeerzeichen = datenZeile.trim();
-                
+
                 if (!zeileOhneLeerzeichen.isEmpty()) {
-                    Windkraftanlage neueAnlage = erstelleAnlageAusZeile(datenZeile);
-                    
+                    String[] csvFelder = CsvParser.teileZeileInFelder(datenZeile);
+
+                    if (csvFelder == null || csvFelder.length < Konstanten.ERWARTET_FELDANZAHL) {
+                        continue;
+                    }
+
+                    Windkraftanlage neueAnlage = util.WindkraftanlageErsteller.erstelleAusFelder(csvFelder);
+
                     if (neueAnlage != null) {
                         alleAnlagen.add(neueAnlage);
                     }
@@ -99,51 +105,7 @@ public class WindkraftanlageRepository {
      * @param csvZeile Die CSV-Zeile
      * @return Windkraftanlage oder null bei Fehler
      */
-    private Windkraftanlage erstelleAnlageAusZeile(String csvZeile) {
-        if (csvZeile == null) {
-            return null;
-        }
-
-        // Teile Zeile in Felder
-        String[] csvFelder = CsvParser.teileZeileInFelder(csvZeile);
-        
-        // Prüfe ob genug Felder vorhanden sind
-        if (csvFelder == null || csvFelder.length < Konstanten.ERWARTET_FELDANZAHL) {
-            return null;
-        }
-
-        try {
-            int feldIndex = 0;
-
-            // Parse jedes Feld einzeln
-            int objektId = FeldParser.parseGanzzahlSicher(csvFelder[feldIndex++]);
-            String name = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
-            Integer baujahr = FeldParser.parseBaujahr(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
-            Float gesamtLeistungMW = FeldParser.parseGleitkommaZahlNullbar(
-                CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
-            Integer anzahl = FeldParser.parseGanzzahlNullbar(
-                CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
-            String typ = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
-            String ort = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
-            String landkreis = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
-            Float breitengrad = FeldParser.parseGleitkommaZahlNullbar(
-                CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
-            Float laengengrad = FeldParser.parseGleitkommaZahlNullbar(
-                CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
-            String betreiber = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
-            String bemerkungen = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
-
-            GeoKoordinaten geoKoordinaten = new GeoKoordinaten(breitengrad, laengengrad);
-
-            // Erstelle neue Anlage
-            return new Windkraftanlage(objektId, name, baujahr, gesamtLeistungMW,
-                anzahl, typ, ort, landkreis, geoKoordinaten,
-                betreiber, bemerkungen);
-                
-        } catch (Exception fehler) {
-            return null;
-        }
-    }
+    
 
     /**
      * Liefert alle geladenen Windkraftanlagen.

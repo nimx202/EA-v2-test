@@ -65,10 +65,6 @@ docs/
 *.js
 temp
 save
-<<<<<<< HEAD
 tools
 .js
-save
-=======
-tools
->>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
+
