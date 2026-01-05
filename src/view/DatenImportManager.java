@@ -61,6 +61,16 @@ public class DatenImportManager {
     }
 
     private void ladeCsvDatei(Path csvPfad) throws Exception {
+        /**
+         * Lädt die CSV-Datei über das Repository und protokolliert Dauer und Anzahl.
+         *
+         * Pre: `csvPfad` muss auf eine existierende Datei zeigen.
+         * Post: Daten sind im Repository geladen; Anzahl und Zeit wurden ausgegeben
+         *       und in ZeitStatistiken erfasst.
+         *
+         * @param csvPfad Pfad zur CSV-Datei
+         * @throws Exception wenn beim Laden ein Fehler auftritt
+         */
         ZeitMessung timer = ZeitMessung.starte();
         int anzahlGeladen = datenSpeicher.ladeAusCsv(csvPfad.toString());
         float zeitInMillis = timer.stoppeUndGibMillis();
@@ -75,6 +85,12 @@ public class DatenImportManager {
     }
 
     private void korrigiereKoordinaten() {
+        /**
+         * Führt die Koordinatenkorrektur über das Repository aus und gibt Ergebnisse aus.
+         *
+         * Pre: Repository enthält bereits geladene Datensätze.
+         * Post: Korrekturen (falls vorhanden) wurden durchgeführt und vom Tracker ausgegeben.
+         */
         ZeitMessung timer = ZeitMessung.starte();
         int anzahlKorrigiert = datenSpeicher.korrigiereKoordinaten(korrekturTracker);
         float zeitInMillis = timer.stoppeUndGibMillis();

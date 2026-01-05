@@ -40,6 +40,15 @@ public class AnalyseAusgabeKoordinator {
         ZeitStatistiken.druckeZusammenfassung();
     }
 
+    /**
+     * Zeigt alle Sortierungen an und misst die Laufzeiten.
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Drei verschiedene Sortierausgaben wurden erzeugt und jeweils
+     *       Zeitstatistiken erfasst.
+     *
+     * @param alleAnlagen Liste aller Windkraftanlagen
+     */
     private void zeigeSortierteAnlagen(List<Windkraftanlage> alleAnlagen) {
         AusgabeManager.gebeUeberschriftAus(Konstanten.SORTIERUNGEN_UEBERSCHRIFT);
         zeigeSortierungOrtNameId(alleAnlagen);
@@ -47,24 +56,57 @@ public class AnalyseAusgabeKoordinator {
         zeigeSortierungLandkreisOrtName(alleAnlagen);
     }
 
+    /**
+     * Führt die Sortierung nach Ort, Name und ID aus und zeichnet die Laufzeit auf.
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Sortierte Teilliste wurde ausgegeben; Laufzeit in ZeitStatistiken erfasst.
+     *
+     * @param alleAnlagen Liste aller Windkraftanlagen
+     */
     private void zeigeSortierungOrtNameId(List<Windkraftanlage> alleAnlagen) {
         float zeitInMillis = WindkraftanlagenSortierer.sortiereNachOrtNameIdUndGebeAus(
             alleAnlagen, Konstanten.SORTIER_AUSGABE_LIMIT);
         ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_SORT_ORT_NAME_ID, zeitInMillis);
     }
 
+    /**
+     * Führt die Sortierung nach Leistung, Baujahr und Name aus und zeichnet die Laufzeit auf.
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Sortierte Teilliste wurde ausgegeben; Laufzeit in ZeitStatistiken erfasst.
+     *
+     * @param alleAnlagen Liste aller Windkraftanlagen
+     */
     private void zeigeSortierungLeistungBaujahrName(List<Windkraftanlage> alleAnlagen) {
         float zeitInMillis = WindkraftanlagenSortierer.sortiereNachLeistungBaujahrNameUndGebeAus(
             alleAnlagen, Konstanten.SORTIER_AUSGABE_LIMIT);
         ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_SORT_LEISTUNG_BAUJAHR_NAME, zeitInMillis);
     }
 
+    /**
+     * Führt die Sortierung nach Landkreis, Ort und Name aus und zeichnet die Laufzeit auf.
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Sortierte Teilliste wurde ausgegeben; Laufzeit in ZeitStatistiken erfasst.
+     *
+     * @param alleAnlagen Liste aller Windkraftanlagen
+     */
     private void zeigeSortierungLandkreisOrtName(List<Windkraftanlage> alleAnlagen) {
         float zeitInMillis = WindkraftanlagenSortierer.sortiereNachLandkreisOrtNameUndGebeAus(
             alleAnlagen, Konstanten.SORTIER_AUSGABE_LIMIT);
         ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_SORT_LANDKREIS_ORT_NAME, zeitInMillis);
     }
 
+    /**
+     * Zeigt Kernstatistiken über die gelesenen Anlagen an und protokolliert Laufzeiten.
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Anzahl mit Koordinaten und Anzahl ohne Betreiber wurden ausgegeben
+     *       und in `ZeitStatistiken` vermerkt.
+     *
+     * @param alleAnlagen Liste aller Windkraftanlagen
+     */
     private void zeigeStatistiken(List<Windkraftanlage> alleAnlagen) {
         ZeitMessung timer = ZeitMessung.starte();
         int anlagenMitKoordinaten = StatistikBerechner.zaehleAnlagenMitKoordinaten(alleAnlagen);
@@ -80,6 +122,14 @@ public class AnalyseAusgabeKoordinator {
     }
 
     private void zeigeTopWindparks(List<Windkraftanlage> alleAnlagen) {
+        /**
+         * Zeigt die Top-Windparks und die Gesamtanzahl an.
+         *
+         * Pre: `alleAnlagen` darf nicht null sein.
+         * Post: Top-N Windparks wurden ausgegeben und Laufzeitstatistiken erfasst.
+         *
+         * @param alleAnlagen Liste aller Windkraftanlagen
+         */
         ZeitMessung timer = ZeitMessung.starte();
         List<WindparkEintrag> topWindparks = WindparkAnalysierer.holeTopWindparks(
             alleAnlagen, Konstanten.TOP_LIMIT);
@@ -98,6 +148,15 @@ public class AnalyseAusgabeKoordinator {
     }
 
     private void zeigeBeispielAnlagen(List<Windkraftanlage> alleAnlagen) {
+        /**
+         * Gibt eine kleine Menge der geladenen Anlagen als Beispiele aus.
+         *
+         * Pre: `alleAnlagen` darf nicht null sein.
+         * Post: Bis zu `Konstanten.BEISPIEL_LIMIT` Anlagen wurden ausgegeben
+         *       und die Laufzeit in `ZeitStatistiken` vermerkt.
+         *
+         * @param alleAnlagen Liste aller Windkraftanlagen
+         */
         ZeitMessung timer = ZeitMessung.starte();
         AusgabeManager.gebeAus(Konstanten.BEISPIEL_DATENSAETZE);
 

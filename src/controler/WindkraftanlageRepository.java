@@ -25,7 +25,7 @@ import java.util.List;
  * Pre: CSV-Datei muss existieren und korrekt formatiert sein
  * Post: Liefert Liste aller Windkraftanlagen
  */
-public class WindkraftanlageRepository {
+public class WindkraftanlageRepository implements Repository<Windkraftanlage> {
 
     private final List<Windkraftanlage> alleAnlagen = new ArrayList<>();
 
