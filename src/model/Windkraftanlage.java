@@ -20,8 +20,13 @@ public class Windkraftanlage {
 
     private int objektId;
     private String name;
+<<<<<<< HEAD
     private Integer baujahr;
     private Float gesamtLeistungMW;
+=======
+    private String baujahr;
+    private Double gesamtLeistungMW;
+>>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
     private Integer anzahl;
     private String typ;
     private String ort;
@@ -57,7 +62,11 @@ public class Windkraftanlage {
      * @param betreiber Betreiber der Anlage
      * @param bemerkungen weitere Bemerkungen
      */
+<<<<<<< HEAD
     public Windkraftanlage(int objektId, String name, Integer baujahr, Float gesamtLeistungMW,
+=======
+    public Windkraftanlage(int objektId, String name, String baujahr, Double gesamtLeistungMW,
+>>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
                            Integer anzahl, String typ, String ort, String landkreis,
                            GeoKoordinaten geoKoordinaten, String betreiber, String bemerkungen) {
         this.objektId = objektId;
@@ -126,14 +135,14 @@ public class Windkraftanlage {
     /**
      * @return Baujahr (kann null sein)
      */
-    public Integer getBaujahr() {
+    public String getBaujahr() {
         return baujahr;
     }
 
     /**
      * @param baujahr Baujahr (kann null sein)
      */
-    public void setBaujahr(Integer baujahr) {
+    public void setBaujahr(String baujahr) {
         this.baujahr = baujahr;
     }
 
@@ -335,10 +344,17 @@ public class Windkraftanlage {
                .append(Konstanten.TOSTRING_QUOTE).append(landkreis).append(Konstanten.TOSTRING_QUOTE);
         builder.append(Konstanten.TOSTRING_FELDTRENNER);
         builder.append(Konstanten.FELD_BREITENGRAD).append(Konstanten.TOSTRING_WERTTRENNER)
+<<<<<<< HEAD
                .append(FeldParser.formatiereFuerAnzeige(getBreitengrad()));
         builder.append(Konstanten.TOSTRING_FELDTRENNER);
         builder.append(Konstanten.FELD_LAENGENGRAD).append(Konstanten.TOSTRING_WERTTRENNER)
                .append(FeldParser.formatiereFuerAnzeige(getLaengengrad()));
+=======
+               .append(FeldParser.formatiereFuerAnzeige(breitengrad));
+        builder.append(Konstanten.TOSTRING_FELDTRENNER);
+        builder.append(Konstanten.FELD_LAENGENGRAD).append(Konstanten.TOSTRING_WERTTRENNER)
+               .append(FeldParser.formatiereFuerAnzeige(laengengrad));
+>>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
         builder.append(Konstanten.TOSTRING_FELDTRENNER);
         builder.append(Konstanten.FELD_BETREIBER).append(Konstanten.TOSTRING_WERTTRENNER)
                .append(Konstanten.TOSTRING_QUOTE).append(betreiber).append(Konstanten.TOSTRING_QUOTE);

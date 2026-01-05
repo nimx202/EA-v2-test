@@ -137,16 +137,27 @@ public final class Konstanten {
     public static final float MAX_BREITENGRAD_DE = 55.0f;
 
     /** Minimaler gültiger Längengrad für Deutschland */
+<<<<<<< HEAD
         public static final float MIN_LAENGENGRAD_DE = 5.0f;
 
         /** Maximaler gueltiger Laengengrad für Deutschland */
         public static final float MAX_LAENGENGRAD_DE = 16.0f;
+=======
+        public static final double MIN_LAENGENGRAD_DE = 5.0;
+
+        /** Maximaler gueltiger Laengengrad für Deutschland */
+        public static final double MAX_LAENGENGRAD_DE = 16.0;
+>>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
 
     /** Fehlerschwelle für Breitengrad-Korrektur (Faktor 1000) */
     public static final float BREITENGRAD_FEHLERFAKTOR = 1000.0f;
 
     /** Fehlerschwelle für Längengrad-Korrektur (Faktor 1000) */
+<<<<<<< HEAD
         public static final float LAENGENGRAD_FEHLERFAKTOR = 1000.0f;
+=======
+        public static final double LAENGENGRAD_FEHLERFAKTOR = 1000.0;
+>>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
 
     // ==================== Ausgabetexte Koordinaten-Korrektur ====================
 

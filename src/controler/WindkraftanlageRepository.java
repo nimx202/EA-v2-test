@@ -116,26 +116,43 @@ public class WindkraftanlageRepository {
             // Parse jedes Feld einzeln
             int objektId = FeldParser.parseGanzzahlSicher(csvFelder[feldIndex++]);
             String name = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+<<<<<<< HEAD
             Integer baujahr = FeldParser.parseBaujahr(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
             Float gesamtLeistungMW = FeldParser.parseGleitkommaZahlNullbar(
+=======
+            String baujahr = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            Double gesamtLeistungMW = FeldParser.parseGleitkommaZahlNullbar(
+>>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
                 CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
             Integer anzahl = FeldParser.parseGanzzahlNullbar(
                 CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
             String typ = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
             String ort = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
             String landkreis = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+<<<<<<< HEAD
             Float breitengrad = FeldParser.parseGleitkommaZahlNullbar(
                 CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
             Float laengengrad = FeldParser.parseGleitkommaZahlNullbar(
+=======
+            Double breitengrad = FeldParser.parseGleitkommaZahlNullbar(
+                CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            Double laengengrad = FeldParser.parseGleitkommaZahlNullbar(
+>>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
                 CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
             String betreiber = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
             String bemerkungen = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
 
+<<<<<<< HEAD
             GeoKoordinaten geoKoordinaten = new GeoKoordinaten(breitengrad, laengengrad);
 
             // Erstelle neue Anlage
             return new Windkraftanlage(objektId, name, baujahr, gesamtLeistungMW,
                 anzahl, typ, ort, landkreis, geoKoordinaten,
+=======
+            // Erstelle neue Anlage
+            return new Windkraftanlage(objektId, name, baujahr, gesamtLeistungMW,
+                anzahl, typ, ort, landkreis, breitengrad, laengengrad,
+>>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
                 betreiber, bemerkungen);
                 
         } catch (Exception fehler) {
@@ -176,10 +193,17 @@ public class WindkraftanlageRepository {
         for (Windkraftanlage anlage : alleAnlagen) {
             boolean wurdeKorrigiert = false;
             
+<<<<<<< HEAD
             Float alterBreitengrad = anlage.getBreitengrad();
             Float alterLaengengrad = anlage.getLaengengrad();
             Float neuerBreitengrad = alterBreitengrad;
             Float neuerLaengengrad = alterLaengengrad;
+=======
+            Double alterBreitengrad = anlage.getBreitengrad();
+            Double alterLaengengrad = anlage.getLaengengrad();
+            Double neuerBreitengrad = alterBreitengrad;
+            Double neuerLaengengrad = alterLaengengrad;
+>>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
             
             // Korrigiere Breitengrad wenn ungültig
             if (!KoordinatenValidierer.istBreitengradGueltig(alterBreitengrad)) {

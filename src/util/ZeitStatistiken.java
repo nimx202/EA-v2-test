@@ -53,10 +53,17 @@ public final class ZeitStatistiken {
      */
     public static void druckeZusammenfassung() {
         AusgabeManager.gebeAus(Konstanten.ZUSAMMENFASSUNG_UEBERSCHRIFT);
+<<<<<<< HEAD
         float gesamt = 0.0f;
         if (!ZEITEN.isEmpty()) {
             AusgabeManager.gebeAus(Konstanten.ZEITEN_UEBERSCHRIFT);
             for (Map.Entry<String, Float> e : ZEITEN.entrySet()) {
+=======
+        double gesamt = 0.0;
+        if (!ZEITEN.isEmpty()) {
+            AusgabeManager.gebeAus(Konstanten.ZEITEN_UEBERSCHRIFT);
+            for (Map.Entry<String, Double> e : ZEITEN.entrySet()) {
+>>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
                 AusgabeManager.gebeAusFormat(Konstanten.ZEIT_FORMAT, e.getKey(), e.getValue());
                 gesamt += e.getValue();
             }

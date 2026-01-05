@@ -56,8 +56,11 @@ generate-code-pdf.bat
 <<<<<<< HEAD
 generate-merged-code-pdf.ps1
 *.ps1
+<<<<<<< HEAD
 =======
 *.ps1
+=======
+>>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
 *.txt
 
 
@@ -67,6 +70,10 @@ docs/
 *.js
 temp
 save
+<<<<<<< HEAD
 tools
 .js
 save
+=======
+tools
+>>>>>>> 64a22bc (Implement core utility classes for wind park analysis and coordinate validation)
