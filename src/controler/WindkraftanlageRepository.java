@@ -1,9 +1,7 @@
 package controler;
 
-import model.GeoKoordinaten;
 import model.Windkraftanlage;
 import util.CsvParser;
-import util.FeldParser;
 import util.KoordinatenValidierer;
 import util.KoordinatenKorrekturTracker;
 import util.Konstanten;

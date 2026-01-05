@@ -6,6 +6,7 @@ import model.WindparkEintrag;
 import util.AusgabeManager;
 import util.Konstanten;
 import util.StatistikBerechner;
+import util.WindkraftanlagenSortierer;
 import util.WindparkAnalysierer;
 import util.ZeitMessung;
 import util.ZeitStatistiken;
@@ -34,8 +35,64 @@ public class AnalyseAusgabeKoordinator {
     public void analysiereUndGebeAus(List<Windkraftanlage> alleAnlagen) {
         zeigeStatistiken(alleAnlagen);
         zeigeTopWindparks(alleAnlagen);
+        zeigeSortierteAnlagen(alleAnlagen);
         zeigeBeispielAnlagen(alleAnlagen);
         ZeitStatistiken.druckeZusammenfassung();
+    }
+
+    private void zeigeSortierteAnlagen(List<Windkraftanlage> alleAnlagen) {
+        AusgabeManager.gebeUeberschriftAus(Konstanten.SORTIERUNGEN_UEBERSCHRIFT);
+        zeigeSortierungOrtNameId(alleAnlagen);
+        zeigeSortierungLeistungBaujahrName(alleAnlagen);
+        zeigeSortierungLandkreisOrtName(alleAnlagen);
+    }
+
+    private void zeigeSortierungOrtNameId(List<Windkraftanlage> alleAnlagen) {
+        AusgabeManager.gebeUeberschriftAus(Konstanten.SORTIERUNG_ORT_NAME_ID_UEBERSCHRIFT);
+        ZeitMessung timer = ZeitMessung.starte();
+        List<Windkraftanlage> sortiert = WindkraftanlagenSortierer.sortiereNachOrtNameId(alleAnlagen);
+        float zeitInMillis = timer.stoppeUndGibMillis();
+        AusgabeManager.gebeAusFormat(Konstanten.SORTIERUNG_ZEIT_FORMAT, zeitInMillis);
+        ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_SORT_ORT_NAME_ID, zeitInMillis);
+
+        int limit = Math.min(Konstanten.SORTIER_AUSGABE_LIMIT, sortiert.size());
+        AusgabeManager.gebeAusFormat(Konstanten.SORTIERUNG_ZEIGE_ERSTE_FORMAT, limit);
+        for (int i = 0; i < limit; i++) {
+            AusgabeManager.gebeAus(sortiert.get(i).toString());
+        }
+        AusgabeManager.gebeLeereZeileAus();
+    }
+
+    private void zeigeSortierungLeistungBaujahrName(List<Windkraftanlage> alleAnlagen) {
+        AusgabeManager.gebeUeberschriftAus(Konstanten.SORTIERUNG_LEISTUNG_BAUJAHR_NAME_UEBERSCHRIFT);
+        ZeitMessung timer = ZeitMessung.starte();
+        List<Windkraftanlage> sortiert = WindkraftanlagenSortierer.sortiereNachLeistungBaujahrName(alleAnlagen);
+        float zeitInMillis = timer.stoppeUndGibMillis();
+        AusgabeManager.gebeAusFormat(Konstanten.SORTIERUNG_ZEIT_FORMAT, zeitInMillis);
+        ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_SORT_LEISTUNG_BAUJAHR_NAME, zeitInMillis);
+
+        int limit = Math.min(Konstanten.SORTIER_AUSGABE_LIMIT, sortiert.size());
+        AusgabeManager.gebeAusFormat(Konstanten.SORTIERUNG_ZEIGE_ERSTE_FORMAT, limit);
+        for (int i = 0; i < limit; i++) {
+            AusgabeManager.gebeAus(sortiert.get(i).toString());
+        }
+        AusgabeManager.gebeLeereZeileAus();
+    }
+
+    private void zeigeSortierungLandkreisOrtName(List<Windkraftanlage> alleAnlagen) {
+        AusgabeManager.gebeUeberschriftAus(Konstanten.SORTIERUNG_LANDKREIS_ORT_NAME_UEBERSCHRIFT);
+        ZeitMessung timer = ZeitMessung.starte();
+        List<Windkraftanlage> sortiert = WindkraftanlagenSortierer.sortiereNachLandkreisOrtName(alleAnlagen);
+        float zeitInMillis = timer.stoppeUndGibMillis();
+        AusgabeManager.gebeAusFormat(Konstanten.SORTIERUNG_ZEIT_FORMAT, zeitInMillis);
+        ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_SORT_LANDKREIS_ORT_NAME, zeitInMillis);
+
+        int limit = Math.min(Konstanten.SORTIER_AUSGABE_LIMIT, sortiert.size());
+        AusgabeManager.gebeAusFormat(Konstanten.SORTIERUNG_ZEIGE_ERSTE_FORMAT, limit);
+        for (int i = 0; i < limit; i++) {
+            AusgabeManager.gebeAus(sortiert.get(i).toString());
+        }
+        AusgabeManager.gebeLeereZeileAus();
     }
 
     private void zeigeStatistiken(List<Windkraftanlage> alleAnlagen) {

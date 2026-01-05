@@ -52,6 +52,9 @@ public final class Konstanten {
     /** Limit für Beispiel-Datensätze */
     public static final int BEISPIEL_LIMIT = 10;
 
+    /** Limit fuer Sortier-Ausgabe (Anzahl Datensaetze pro Sortierung) */
+    public static final int SORTIER_AUSGABE_LIMIT = BEISPIEL_LIMIT;
+
     /**
      * Standard-Limit für die Ausgabe von Koordinaten-Korrekturen (kann zur Laufzeit angepasst werden)
      * Default ist gleich BEISPIEL_LIMIT. Bei Bedarf kann dieses Feld im Code gesetzt werden,
@@ -98,6 +101,24 @@ public final class Konstanten {
 
     /** Überschrift: Beispiel-Datensaetze */
         public static final String BEISPIEL_DATENSAETZE = "Einige Beispiel-Datensaetze:";
+
+    /** Überschrift: Sortierungen */
+    public static final String SORTIERUNGEN_UEBERSCHRIFT = "Sortierte Windkraftanlagen";
+
+    /** Überschrift: Sortierung nach Ort/Name/ID */
+    public static final String SORTIERUNG_ORT_NAME_ID_UEBERSCHRIFT = "Sortierung: Ort > Name > ID";
+
+    /** Überschrift: Sortierung nach Leistung/Baujahr/Name */
+    public static final String SORTIERUNG_LEISTUNG_BAUJAHR_NAME_UEBERSCHRIFT = "Sortierung: Leistung (desc) > Baujahr > Name";
+
+    /** Überschrift: Sortierung nach Landkreis/Ort/Name */
+    public static final String SORTIERUNG_LANDKREIS_ORT_NAME_UEBERSCHRIFT = "Sortierung: Landkreis > Ort > Name";
+
+    /** Format: Sortierzeit */
+    public static final String SORTIERUNG_ZEIT_FORMAT = "Sortierzeit: %.3f ms%n";
+
+    /** Format: Hinweis wie viele Eintraege ausgegeben werden */
+    public static final String SORTIERUNG_ZEIGE_ERSTE_FORMAT = "Zeige erste %d Eintraege:%n";
 
     /** Fehler-Präfix */
     public static final String FEHLER_PREFIX = "Fehler beim Einlesen: ";
@@ -254,6 +275,15 @@ public final class Konstanten {
 
     /** Name: gebeBeispielDatensaetzeAus Operation */
     public static final String OPERATION_BEISPIEL_DATENSAETZE = "gebeBeispielDatensaetzeAus";
+
+    /** Name: Sortierung Ort/Name/ID Operation */
+    public static final String OPERATION_SORT_ORT_NAME_ID = "Sortierung Ort/Name/ID";
+
+    /** Name: Sortierung Leistung/Baujahr/Name Operation */
+    public static final String OPERATION_SORT_LEISTUNG_BAUJAHR_NAME = "Sortierung Leistung/Baujahr/Name";
+
+    /** Name: Sortierung Landkreis/Ort/Name Operation */
+    public static final String OPERATION_SORT_LANDKREIS_ORT_NAME = "Sortierung Landkreis/Ort/Name";
 
     /** Statistik: Anzahl Beispiel-Datensaetze ausgegeben */
     public static final String STAT_BEISPIEL_AUSGEGEBEN = "Anzahl Beispiel-Datensaetze ausgegeben";
