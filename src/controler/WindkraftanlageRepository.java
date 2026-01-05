@@ -115,7 +115,7 @@ public class WindkraftanlageRepository {
             // Parse jedes Feld einzeln
             int objektId = FeldParser.parseGanzzahlSicher(csvFelder[feldIndex++]);
             String name = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
-            String baujahr = FeldParser.leerZuNull(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
+            Integer baujahr = FeldParser.parseBaujahr(CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
             Float gesamtLeistungMW = FeldParser.parseGleitkommaZahlNullbar(
                 CsvParser.bereinigesFeld(csvFelder[feldIndex++]));
             Integer anzahl = FeldParser.parseGanzzahlNullbar(

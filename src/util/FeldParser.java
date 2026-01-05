@@ -88,6 +88,26 @@ public class FeldParser {
     }
 
     /**
+     * Wandelt Baujahr-Einträge in eine Ganzzahl um.
+     * Werte mit Spannennotation (z.B. 2023-2024) werden auf das erste Jahr reduziert.
+     *
+     * Pre: keine
+     * Post: Rueckgabe: erstes Jahr als Integer oder null bei Fehlern
+     *
+     * @param textWert Rohtext aus der CSV-Spalte
+     * @return Ganzzahl oder null
+     */
+    public static Integer parseBaujahr(String textWert) {
+        String bereinigterText = leerZuNull(textWert);
+        if (bereinigterText == null) {
+            return null;
+        }
+
+        String erstesJahr = ermittleErstesBaujahr(bereinigterText);
+        return parseGanzzahlNullbar(erstesJahr);
+    }
+
+    /**
      * Bereitet einen Zahlentext für die Umwandlung vor.
      * Entfernt Leerzeichen und ersetzt Komma durch Punkt.
      *
@@ -108,6 +128,20 @@ public class FeldParser {
         bereinigterText = bereinigterText.replace(',', '.');
         
         return bereinigterText;
+    }
+
+    /**
+     * Schneidet ggf. vorhandene Baujahr-Spannen hinter dem Trenner ab.
+     *
+     * @param textMitSpanne Baujahr mit optionaler Spanne
+     * @return Erstes Jahr der Angabe
+     */
+    private static String ermittleErstesBaujahr(String textMitSpanne) {
+        int trennerIndex = textMitSpanne.indexOf(Konstanten.BAUJAHR_SPANNEN_TRENNER);
+        if (trennerIndex >= 0) {
+            return textMitSpanne.substring(0, trennerIndex).trim();
+        }
+        return textMitSpanne;
     }
 
     /**

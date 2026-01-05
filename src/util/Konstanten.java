@@ -41,6 +41,9 @@ public final class Konstanten {
     /** Anzeigetext für unbekannte Werte */
     public static final String ANZEIGE_UNBEKANNT = "unbekannt";
 
+    /** Trenner fuer Baujahr-Spannen wie 2023-2024 */
+    public static final String BAUJAHR_SPANNEN_TRENNER = "-";
+
     // ==================== Main View Konstanten ====================
 
     /** Limit für Top-Windparks Anzeige */
