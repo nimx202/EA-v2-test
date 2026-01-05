@@ -101,6 +101,12 @@ public final class Konstanten {
 
     /** Überschrift: Beispiel-Datensaetze */
         public static final String BEISPIEL_DATENSAETZE = "Einige Beispiel-Datensaetze:";
+    
+    /** Überschrift: Datensaetze ohne Koordinaten */
+    public static final String DATENSAETZE_OHNE_KOORDINATEN_UEBERSCHRIFT = "\nDatensaetze ohne Koordinaten";
+
+    /** Format: Anzahl Datensaetze ohne Koordinaten */
+    public static final String DATENSAETZE_OHNE_KOORDINATEN_FORMAT = "Anzahl Datensaetze ohne Koordinaten: %d%n";
 
     /** Überschrift: Sortierungen */
     public static final String SORTIERUNGEN_UEBERSCHRIFT = "Sortierte Windkraftanlagen";
@@ -379,4 +385,55 @@ public final class Konstanten {
     /** toString Feld: bemerkungen */
     public static final String FELD_BEMERKUNGEN = "bemerkungen";
 
+    // ==================== Erweiterte Statistiken Ausgaben ====================
+
+    /** Überschrift: Erweiterte Statistiken */
+    public static final String ERWEITERTE_STATISTIKEN_UEBERSCHRIFT = "\n=== Erweiterte Statistiken ===";
+
+    /** Format: Südlichste Anlage */
+    public static final String SUEDLICHSTE_ANLAGE_FORMAT = "Suedlichste Anlage (kleinster Breitengrad):%n";
+
+    /** Format: Anlagedetails (ID, Name, Ort) */
+    public static final String ANLAGE_DETAILS_FORMAT = "  ID: %d | Name: %s | Ort: %s%n";
+
+    /** Format: Breitengrad */
+    public static final String BREITENGRAD_FORMAT = "  Breitengrad: %.4f%n";
+
+    /** Format: Längengrad */
+    public static final String LAENGENGRAD_FORMAT = "  Laengengrad: %.4f%n";
+
+    /** Format: Anlage mit höchster Leistung */
+    public static final String HOECHSTE_LEISTUNG_ANLAGE_FORMAT = "Anlage mit hoechster Gesamtleistung:%n";
+
+    /** Format: Gesamtleistung */
+    public static final String GESAMTLEISTUNG_FORMAT = "  Gesamtleistung: %.2f MW%n";
+
+    /** Format: Anlage mit meisten Windrädern */
+    public static final String MEISTE_WINDRAEDER_ANLAGE_FORMAT = "Anlage mit den meisten Windraedern:%n";
+
+    /** Format: Anzahl Windräder */
+    public static final String ANZAHL_WINDRAEDER_FORMAT = "  Anzahl Windraeder: %d%n";
+
+    /** Format: Gesamtleistung aller Anlagen */
+    public static final String GESAMTLEISTUNG_ALLER_FORMAT = "Gesamtleistung aller Windkraftanlagen: %.2f MW%n";
+
+    /** Text: Keine Anlage gefunden */
+    public static final String KEINE_ANLAGE_GEFUNDEN = "  (Keine Anlage gefunden)%n";
+
+    /** Name: Erweiterte Statistiken Operation */
+    public static final String OPERATION_ERWEITERTE_STATISTIKEN = "Erweiterte Statistiken";
+
+    /** Statistik: Südlichste Anlage */
+    public static final String STAT_SUEDLICHSTE_ANLAGE = "Suedlichste Anlage";
+
+    /** Statistik: Anlage mit höchster Leistung */
+    public static final String STAT_HOECHSTE_LEISTUNG = "Anlage mit hoechster Leistung";
+
+    /** Statistik: Anlage mit meisten Windrädern */
+    public static final String STAT_MEISTE_WINDRAEDER = "Anlage mit meisten Windraedern";
+
+    /** Statistik: Gesamtleistung aller Anlagen */
+    public static final String STAT_GESAMTLEISTUNG_ALLER = "Gesamtleistung aller Anlagen";
+
 }
+

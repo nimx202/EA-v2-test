@@ -70,6 +70,7 @@ public final class CsvParser {
         List<String> feldListe = new ArrayList<>();
         StringBuilder aktuellesFeld = new StringBuilder();
         boolean istInAnfuehrungszeichen = false;
+        int klammerTiefe = 0; // depth of parentheses when outside quotes
 
         // Durchlaufe jeden Buchstaben der Zeile
         for (int position = 0; position < csvZeile.length(); position++) {
@@ -91,8 +92,18 @@ public final class CsvParser {
                     istInAnfuehrungszeichen = !istInAnfuehrungszeichen;
                 }
             }
-            // Prüfe ob es ein Komma ist (nur außerhalb von Anführungszeichen)
-            else if (zeichen == Konstanten.KOMMA && !istInAnfuehrungszeichen) {
+            // Prüfe auf Klammer-Öffner/Schließer (nur außerhalb von Anführungszeichen)
+            else if (!istInAnfuehrungszeichen && zeichen == '(') {
+                klammerTiefe++;
+                aktuellesFeld.append(zeichen);
+            } else if (!istInAnfuehrungszeichen && zeichen == ')') {
+                if (klammerTiefe > 0) {
+                    klammerTiefe--;
+                }
+                aktuellesFeld.append(zeichen);
+            }
+            // Prüfe ob es ein Komma ist (nur außerhalb von Anführungszeichen und Klammern)
+            else if (zeichen == Konstanten.KOMMA && !istInAnfuehrungszeichen && klammerTiefe == 0) {
                 // Feld ist komplett, füge zur Liste hinzu
                 feldListe.add(aktuellesFeld.toString());
                 aktuellesFeld = new StringBuilder();

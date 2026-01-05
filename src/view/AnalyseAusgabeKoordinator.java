@@ -34,6 +34,8 @@ public class AnalyseAusgabeKoordinator {
      */
     public void analysiereUndGebeAus(List<Windkraftanlage> alleAnlagen) {
         zeigeStatistiken(alleAnlagen);
+        zeigeAnlagenOhneKoordinaten(alleAnlagen);
+        zeigeErweiterteStatistiken(alleAnlagen);
         zeigeTopWindparks(alleAnlagen);
         zeigeSortierteAnlagen(alleAnlagen);
         zeigeBeispielAnlagen(alleAnlagen);
@@ -169,4 +171,156 @@ public class AnalyseAusgabeKoordinator {
         ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_BEISPIEL_DATENSAETZE, zeitInMillis);
         ZeitStatistiken.zeichneStat(Konstanten.STAT_BEISPIEL_AUSGEGEBEN, String.valueOf(anzahlZeigen));
     }
+
+    /**
+     * Zeigt erweiterte Statistiken: südlichste Anlage, Anlage mit höchster Leistung,
+     * Anlage mit meisten Windrädern und Gesamtleistung aller Anlagen.
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Alle vier erweiterten Statistiken wurden ausgegeben mit Laufzeitmessung.
+     *
+     * @param alleAnlagen Liste aller Windkraftanlagen
+     */
+    private void zeigeErweiterteStatistiken(List<Windkraftanlage> alleAnlagen) {
+        ZeitMessung timer = ZeitMessung.starte();
+        AusgabeManager.gebeUeberschriftAus(Konstanten.ERWEITERTE_STATISTIKEN_UEBERSCHRIFT);
+
+        zeigeSuedlichsteAnlage(alleAnlagen);
+        zeigeAnlageMitHoechsterLeistung(alleAnlagen);
+        zeigeAnlageMitMeistenWindraedern(alleAnlagen);
+        zeigeGesamtleistungAllerAnlagen(alleAnlagen);
+
+        float zeitInMillis = timer.stoppeUndGibMillis();
+        ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_ERWEITERTE_STATISTIKEN, zeitInMillis);
+    }
+
+    /**
+     * Zeigt die südlichste Anlage (kleinster Breitengrad).
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Südlichste Anlage wurde ausgegeben oder "keine Anlage gefunden".
+     *
+     * @param alleAnlagen Liste aller Windkraftanlagen
+     */
+    private void zeigeSuedlichsteAnlage(List<Windkraftanlage> alleAnlagen) {
+        AusgabeManager.gebeAusFormat(Konstanten.SUEDLICHSTE_ANLAGE_FORMAT);
+        Windkraftanlage suedlichste = StatistikBerechner.findeSuedlichsteAnlage(alleAnlagen);
+
+        if (suedlichste == null) {
+            AusgabeManager.gebeAusFormat(Konstanten.KEINE_ANLAGE_GEFUNDEN);
+            ZeitStatistiken.zeichneStat(Konstanten.STAT_SUEDLICHSTE_ANLAGE, Konstanten.ANZEIGE_UNBEKANNT);
+        } else {
+            AusgabeManager.gebeAusFormat(Konstanten.ANLAGE_DETAILS_FORMAT,
+                suedlichste.getObjektId(),
+                suedlichste.getName(),
+                suedlichste.getOrt());
+            AusgabeManager.gebeAusFormat(Konstanten.BREITENGRAD_FORMAT,
+                suedlichste.getGeoKoordinaten().getBreitengrad());
+            AusgabeManager.gebeAusFormat(Konstanten.LAENGENGRAD_FORMAT,
+                suedlichste.getGeoKoordinaten().getLaengengrad());
+            String wert = String.format("ID %d, %s (%s), Breitengrad %.4f",
+                suedlichste.getObjektId(),
+                suedlichste.getName(),
+                suedlichste.getOrt(),
+                suedlichste.getGeoKoordinaten().getBreitengrad());
+            ZeitStatistiken.zeichneStat(Konstanten.STAT_SUEDLICHSTE_ANLAGE, wert);
+        }
+    }
+
+    /**
+     * Zeigt die Anlage mit der höchsten Gesamtleistung.
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Anlage mit höchster Leistung wurde ausgegeben oder "keine Anlage gefunden".
+     *
+     * @param alleAnlagen Liste aller Windkraftanlagen
+     */
+    private void zeigeAnlageMitHoechsterLeistung(List<Windkraftanlage> alleAnlagen) {
+        AusgabeManager.gebeAusFormat(Konstanten.HOECHSTE_LEISTUNG_ANLAGE_FORMAT);
+        Windkraftanlage anlage = StatistikBerechner.findeAnlageMitHoechsterLeistung(alleAnlagen);
+
+        if (anlage == null) {
+            AusgabeManager.gebeAusFormat(Konstanten.KEINE_ANLAGE_GEFUNDEN);
+            ZeitStatistiken.zeichneStat(Konstanten.STAT_HOECHSTE_LEISTUNG, Konstanten.ANZEIGE_UNBEKANNT);
+        } else {
+            AusgabeManager.gebeAusFormat(Konstanten.ANLAGE_DETAILS_FORMAT,
+                anlage.getObjektId(),
+                anlage.getName(),
+                anlage.getOrt());
+            AusgabeManager.gebeAusFormat(Konstanten.GESAMTLEISTUNG_FORMAT,
+                anlage.getGesamtLeistungMW());
+            String wert = String.format("ID %d, %s (%s), %.2f MW",
+                anlage.getObjektId(),
+                anlage.getName(),
+                anlage.getOrt(),
+                anlage.getGesamtLeistungMW());
+            ZeitStatistiken.zeichneStat(Konstanten.STAT_HOECHSTE_LEISTUNG, wert);
+        }
+    }
+
+    /**
+     * Zeigt die Anlage mit den meisten Windrädern (Anzahl).
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Anlage mit meisten Windrädern wurde ausgegeben oder "keine Anlage gefunden".
+     *
+     * @param alleAnlagen Liste aller Windkraftanlagen
+     */
+    private void zeigeAnlageMitMeistenWindraedern(List<Windkraftanlage> alleAnlagen) {
+        AusgabeManager.gebeAusFormat(Konstanten.MEISTE_WINDRAEDER_ANLAGE_FORMAT);
+        Windkraftanlage anlage = StatistikBerechner.findeAnlageMitMeistenWindraedern(alleAnlagen);
+
+        if (anlage == null) {
+            AusgabeManager.gebeAusFormat(Konstanten.KEINE_ANLAGE_GEFUNDEN);
+            ZeitStatistiken.zeichneStat(Konstanten.STAT_MEISTE_WINDRAEDER, Konstanten.ANZEIGE_UNBEKANNT);
+        } else {
+            AusgabeManager.gebeAusFormat(Konstanten.ANLAGE_DETAILS_FORMAT,
+                anlage.getObjektId(),
+                anlage.getName(),
+                anlage.getOrt());
+            AusgabeManager.gebeAusFormat(Konstanten.ANZAHL_WINDRAEDER_FORMAT,
+                anlage.getAnzahl());
+            String wert = String.format("ID %d, %s (%s), %d Windraeder",
+                anlage.getObjektId(),
+                anlage.getName(),
+                anlage.getOrt(),
+                anlage.getAnzahl());
+            ZeitStatistiken.zeichneStat(Konstanten.STAT_MEISTE_WINDRAEDER, wert);
+        }
+    }
+
+    /**
+     * Zeigt die Gesamtleistung aller Windkraftanlagen.
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Gesamtleistung wurde ausgegeben.
+     *
+     * @param alleAnlagen Liste aller Windkraftanlagen
+     */
+    private void zeigeGesamtleistungAllerAnlagen(List<Windkraftanlage> alleAnlagen) {
+        float gesamtleistung = StatistikBerechner.berechneGesamtLeistung(alleAnlagen);
+        AusgabeManager.gebeAusFormat(Konstanten.GESAMTLEISTUNG_ALLER_FORMAT, gesamtleistung);
+        String wert = String.format("%.2f MW", gesamtleistung);
+        ZeitStatistiken.zeichneStat(Konstanten.STAT_GESAMTLEISTUNG_ALLER, wert);
+    }
+
+    /**
+     * Zeigt alle Datensaetze ohne Koordinaten zur Analyse an.
+     * Gibt eine Ueberschrift, die Anzahl und einige Beispiel-Datensaetze aus.
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Ausgabe der Datensaetze ohne Koordinaten erfolgte.
+     */
+    private void zeigeAnlagenOhneKoordinaten(List<Windkraftanlage> alleAnlagen) {
+        AusgabeManager.gebeUeberschriftAus(Konstanten.DATENSAETZE_OHNE_KOORDINATEN_UEBERSCHRIFT);
+
+        java.util.List<Windkraftanlage> ohneKoordinaten = StatistikBerechner.filterAnlagenOhneKoordinaten(alleAnlagen);
+        AusgabeManager.gebeAusFormat(Konstanten.DATENSAETZE_OHNE_KOORDINATEN_FORMAT, ohneKoordinaten.size());
+
+        int anzahlZeigen = Math.min(Konstanten.BEISPIEL_LIMIT, ohneKoordinaten.size());
+        for (int i = 0; i < anzahlZeigen; i++) {
+            AusgabeManager.gebeAus(ohneKoordinaten.get(i).toString());
+        }
+    }
 }
+

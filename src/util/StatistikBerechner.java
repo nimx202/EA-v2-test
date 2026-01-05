@@ -117,4 +117,103 @@ public final class StatistikBerechner {
         
         return gesamt;
     }
+
+    /**
+     * Findet die südlichste Windkraftanlage (kleinster Breitengrad).
+     * Durchläuft alle Anlagen und ermittelt die mit dem kleinsten Breitengrad.
+     * 
+     * Pre: anlagen nicht null
+     * Post: Rückgabe: Anlage mit kleinstem Breitengrad oder null wenn keine gefunden
+     * 
+     * @param anlagen Liste aller Windkraftanlagen
+     * @return Südlichste Anlage oder null
+     */
+    public static Windkraftanlage findeSuedlichsteAnlage(List<Windkraftanlage> anlagen) {
+        Windkraftanlage suedlichste = null;
+        float kleinsterBreitengrad = Float.MAX_VALUE;
+        
+        for (Windkraftanlage anlage : anlagen) {
+            if (anlage.hatKoordinaten()) {
+                float breitengrad = anlage.getGeoKoordinaten().getBreitengrad();
+                if (breitengrad < kleinsterBreitengrad) {
+                    kleinsterBreitengrad = breitengrad;
+                    suedlichste = anlage;
+                }
+            }
+        }
+        
+        return suedlichste;
+    }
+
+    /**
+     * Findet die Windkraftanlage mit der höchsten Gesamtleistung.
+     * Durchläuft alle Anlagen und ermittelt die mit der größten Leistung in MW.
+     * 
+     * Pre: anlagen nicht null
+     * Post: Rückgabe: Anlage mit höchster Leistung oder null wenn keine gefunden
+     * 
+     * @param anlagen Liste aller Windkraftanlagen
+     * @return Anlage mit höchster Leistung oder null
+     */
+    public static Windkraftanlage findeAnlageMitHoechsterLeistung(List<Windkraftanlage> anlagen) {
+        Windkraftanlage anlageMitHoechsterLeistung = null;
+        float hoechsteLeistung = 0.0f;
+        
+        for (Windkraftanlage anlage : anlagen) {
+            Float leistung = anlage.getGesamtLeistungMW();
+            if (leistung != null && leistung > hoechsteLeistung) {
+                hoechsteLeistung = leistung;
+                anlageMitHoechsterLeistung = anlage;
+            }
+        }
+        
+        return anlageMitHoechsterLeistung;
+    }
+
+    /**
+     * Findet die Windkraftanlage mit den meisten Windrädern (Anzahl).
+     * Durchläuft alle Anlagen und ermittelt die mit der größten Anzahl.
+     * 
+     * Pre: anlagen nicht null
+     * Post: Rückgabe: Anlage mit meisten Windrädern oder null wenn keine gefunden
+     * 
+     * @param anlagen Liste aller Windkraftanlagen
+     * @return Anlage mit meisten Windrädern oder null
+     */
+    public static Windkraftanlage findeAnlageMitMeistenWindraedern(List<Windkraftanlage> anlagen) {
+        Windkraftanlage anlageMitMeistenWindraedern = null;
+        int meistenWindraeder = 0;
+        
+        for (Windkraftanlage anlage : anlagen) {
+            Integer anzahl = anlage.getAnzahl();
+            if (anzahl != null && anzahl > meistenWindraeder) {
+                meistenWindraeder = anzahl;
+                anlageMitMeistenWindraedern = anlage;
+            }
+        }
+        
+        return anlageMitMeistenWindraedern;
+    }
+
+    /**
+     * Liefert eine Liste aller Anlagen ohne Koordinaten (Breiten-/Längengrad null oder nicht gesetzt).
+     *
+     * Pre: anlagen nicht null
+     * Post: Rückgabe: Liste der Anlagen ohne Koordinaten (möglicherweise leer)
+     *
+     * @param anlagen Liste aller Windkraftanlagen
+     * @return Liste der Anlagen ohne Koordinaten
+     */
+    public static java.util.List<Windkraftanlage> filterAnlagenOhneKoordinaten(List<Windkraftanlage> anlagen) {
+        java.util.List<Windkraftanlage> ergebnis = new java.util.ArrayList<>();
+
+        for (Windkraftanlage anlage : anlagen) {
+            if (!anlage.hatKoordinaten()) {
+                ergebnis.add(anlage);
+            }
+        }
+
+        return ergebnis;
+    }
 }
+
