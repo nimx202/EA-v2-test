@@ -81,6 +81,11 @@ public final class AusgabeManager {
     public static void gebeAusFormat(String format, Object... args) {
         String formatierterText = String.format(format, args);
         if (istPufferungAktiv) {
+            // Entferne abschließenden Zeilenumbruch wenn vorhanden
+            if (formatierterText.endsWith(System.lineSeparator())) {
+                formatierterText = formatierterText.substring(0, 
+                    formatierterText.length() - System.lineSeparator().length());
+            }
             pufferZeilen.add(formatierterText);
         } else {
             System.out.print(formatierterText);

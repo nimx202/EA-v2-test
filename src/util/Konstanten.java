@@ -461,5 +461,56 @@ public final class Konstanten {
     /** Format: Gesamtleistung (für Statistik-Tracker) */
     public static final String FORMAT_GESAMTLEISTUNG_STAT = FORMAT_LEISTUNG_MW + " MW";
 
+    // ==================== Graph und Distanzberechnung ====================
+
+    /** Erdradius in Kilometern (für Haversine-Formel) */
+    public static final double ERDRADIUS_KM = 6371.0;
+
+    /** Maximale Distanz für Kantenbildung im Graphen (in Kilometern) */
+    public static final double GRAPH_MAX_DISTANZ_KM = 20.0;
+
+    /** Anzahl der Beispiel-Nachbarschaften die ausgegeben werden */
+    public static final int GRAPH_BEISPIEL_ANZAHL = 5;
+
+    // ==================== Graph-Ausgabe ====================
+
+    /** Überschrift: Graph-Zusammenfassung */
+    public static final String GRAPH_UEBERSCHRIFT = "%n=== Windkraftanlagen-Graph ===%n";
+
+    /** Format: Maximale Distanz für Kanten */
+    public static final String GRAPH_MAX_DISTANZ = "Maximale Distanz fuer Kanten: %.1f km%n";
+
+    /** Format: Anzahl Knoten */
+    public static final String GRAPH_ANZAHL_KNOTEN = "Anzahl Knoten: %d%n";
+
+    /** Format: Anzahl Kanten */
+    public static final String GRAPH_ANZAHL_KANTEN = "Anzahl Kanten: %d%n";
+
+    /** Format: Durchschnittlicher Grad */
+    public static final String GRAPH_DURCHSCHNITT_GRAD = "Durchschnittlicher Grad: %.2f%n";
+
+    /** Überschrift: Beispiel-Nachbarschaften */
+    public static final String GRAPH_BEISPIELE_UEBERSCHRIFT = "%nBeispiele von Nachbarschaften:%n";
+
+    /** Format: Knoten-Information */
+    public static final String GRAPH_KNOTEN_INFO = "  %d. %s (%s) - %d Nachbarn%n";
+
+    // ==================== Leistungsschätzung ====================
+
+    /** Überschrift: Schätzungs-Statistiken */
+    public static final String SCHAETZUNG_UEBERSCHRIFT = "%n=== Leistungsschaetzung ===%n";
+
+    /** Format: Anzahl ergänzter Werte */
+    public static final String SCHAETZUNG_ERGAENZT = "Anzahl ergaenzter Gesamtleistungen: %d%n";
+
+    /** Format: Prozent ergänzter Werte */
+    public static final String SCHAETZUNG_PROZENT = "Prozentsatz ergaenzt: %.2f%%%n";
+
+    /** Name: Graph-Aufbau Operation (für Zeitmessung) */
+    public static final String OPERATION_GRAPH_AUFBAU = "Graph-Aufbau";
+
+    /** Name: Leistungsschätzung Operation (für Zeitmessung) */
+    public static final String OPERATION_LEISTUNGSSCHAETZUNG = "Leistungsschaetzung";
+
 }
 

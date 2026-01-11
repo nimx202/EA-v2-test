@@ -4,8 +4,11 @@ import java.util.List;
 import model.Windkraftanlage;
 import model.WindparkEintrag;
 import util.AusgabeManager;
+import util.GraphAusgabe;
 import util.Konstanten;
+import util.LeistungsSchaetzer;
 import util.StatistikBerechner;
+import util.WindkraftanlageGraph;
 import util.WindkraftanlagenSortierer;
 import util.WindparkAnalysierer;
 import util.ZeitMessung;
@@ -39,6 +42,7 @@ public class AnalyseAusgabeKoordinator {
         zeigeTopWindparks(alleAnlagen);
         zeigeSortierteAnlagen(alleAnlagen);
         zeigeBeispielAnlagen(alleAnlagen);
+        zeigeGraphUndLeistungsschaetzung(alleAnlagen);
         ZeitStatistiken.druckeZusammenfassung();
         
         AusgabeManager.gebeGepufferteAusgabenAus();
@@ -367,6 +371,36 @@ public class AnalyseAusgabeKoordinator {
         for (int i = 0; i < anzahlZeigen; i++) {
             AusgabeManager.gebeAus(ohneKoordinaten.get(i).toString());
         }
+    }
+
+    /**
+     * Baut den Windkraftanlagen-Graphen auf und schätzt fehlende Gesamtleistungswerte.
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Graph wurde aufgebaut, Leistungen geschätzt und Statistiken ausgegeben.
+     *
+     * @param alleAnlagen Liste aller Windkraftanlagen
+     */
+    private void zeigeGraphUndLeistungsschaetzung(List<Windkraftanlage> alleAnlagen) {
+        // Graph aufbauen
+        ZeitMessung timerGraph = ZeitMessung.starte();
+        WindkraftanlageGraph graph = new WindkraftanlageGraph(Konstanten.GRAPH_MAX_DISTANZ_KM);
+        graph.baueGraphAuf(alleAnlagen);
+        float zeitGraph = timerGraph.stoppeUndGibMillis();
+        ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_GRAPH_AUFBAU, zeitGraph);
+
+        // Graph-Statistiken ausgeben
+        GraphAusgabe.gebeGraphZusammenfassungAus(graph);
+
+        // Leistungen schätzen
+        ZeitMessung timerSchaetzung = ZeitMessung.starte();
+        int anzahlErgaenzt = LeistungsSchaetzer.ergaenzeFehlendeDaten(graph);
+        float zeitSchaetzung = timerSchaetzung.stoppeUndGibMillis();
+        ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_LEISTUNGSSCHAETZUNG, zeitSchaetzung);
+
+        // Schätzungs-Statistiken ausgeben
+        int gesamtAnzahl = alleAnlagen.size();
+        GraphAusgabe.gebeSchaetzStatistikenAus(anzahlErgaenzt, gesamtAnzahl);
     }
 }
 
