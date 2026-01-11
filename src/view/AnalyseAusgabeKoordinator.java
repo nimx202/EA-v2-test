@@ -8,6 +8,7 @@ import util.GraphAusgabe;
 import util.Konstanten;
 import util.LeistungsSchaetzer;
 import util.StatistikBerechner;
+import util.WartungsRoutenPlaner;
 import util.WindkraftanlageGraph;
 import util.WindkraftanlagenSortierer;
 import util.WindparkAnalysierer;
@@ -43,6 +44,7 @@ public class AnalyseAusgabeKoordinator {
         zeigeSortierteAnlagen(alleAnlagen);
         zeigeBeispielAnlagen(alleAnlagen);
         zeigeGraphUndLeistungsschaetzung(alleAnlagen);
+        zeigeWartungsplanung(alleAnlagen);
         ZeitStatistiken.druckeZusammenfassung();
         
         AusgabeManager.gebeGepufferteAusgabenAus();
@@ -401,6 +403,29 @@ public class AnalyseAusgabeKoordinator {
         // Schätzungs-Statistiken ausgeben
         int gesamtAnzahl = alleAnlagen.size();
         GraphAusgabe.gebeSchaetzStatistikenAus(anzahlErgaenzt, gesamtAnzahl);
+    }
+
+    /**
+     * Zeigt die Wartungsplanung fuer Top-Hersteller an.
+     * Baut pro Hersteller ein Wegenetz auf und berechnet optimierte Wartungsrouten
+     * mit 2-Opt-Algorithmus. Beruecksichtigt isolierte Cluster und gibt Warnungen aus.
+     *
+     * Pre: `alleAnlagen` darf nicht null sein.
+     * Post: Wartungsplaene fuer Top-N Hersteller wurden ausgegeben, Zeiten erfasst.
+     *
+     * @param alleAnlagen Liste aller Windkraftanlagen
+     */
+    private void zeigeWartungsplanung(List<Windkraftanlage> alleAnlagen) {
+        ZeitMessung timer = ZeitMessung.starte();
+        
+        // Plane Wartung fuer Top-Hersteller (Anzahl ueber Konstanten.WARTUNG_TOP_HERSTELLER_ANZAHL)
+        WartungsRoutenPlaner.planeWartungFuerTopHersteller(
+            alleAnlagen, 
+            Konstanten.WARTUNG_TOP_HERSTELLER_ANZAHL
+        );
+        
+        float zeitInMillis = timer.stoppeUndGibMillis();
+        ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_WARTUNGSPLANUNG, zeitInMillis);
     }
 }
 

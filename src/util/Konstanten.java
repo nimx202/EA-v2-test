@@ -464,10 +464,10 @@ public final class Konstanten {
     // ==================== Graph und Distanzberechnung ====================
 
     /** Erdradius in Kilometern (für Haversine-Formel) */
-    public static final double ERDRADIUS_KM = 6371.0;
+    public static final float ERDRADIUS_KM = 6371.0f;
 
     /** Maximale Distanz für Kantenbildung im Graphen (in Kilometern) */
-    public static final double GRAPH_MAX_DISTANZ_KM = 20.0;
+    public static final float GRAPH_MAX_DISTANZ_KM = 20.0f;
 
     /** Anzahl der Beispiel-Nachbarschaften die ausgegeben werden */
     public static final int GRAPH_BEISPIEL_ANZAHL = 5;
@@ -511,6 +511,97 @@ public final class Konstanten {
 
     /** Name: Leistungsschätzung Operation (für Zeitmessung) */
     public static final String OPERATION_LEISTUNGSSCHAETZUNG = "Leistungsschaetzung";
+
+    // ==================== Wartungsplanung ====================
+
+    /** Wartungsdauer pro Anlage in Stunden */
+    public static final float WARTUNG_DAUER_STUNDEN = 2.0f;
+
+    /** Verfuegbare Arbeitsstunden pro Tag (8:00 bis 16:00) */
+    public static final float ARBEITSSTUNDEN_PRO_TAG = 8.0f;
+
+    /** Maximale Anlagen pro Arbeitstag (8h / 2h = 4) */
+    public static final int ANLAGEN_PRO_TAG = (int) (ARBEITSSTUNDEN_PRO_TAG / WARTUNG_DAUER_STUNDEN);
+
+    /** Transportgeschwindigkeit in km/h (Durchschnitt) */
+    public static final float TRANSPORT_GESCHWINDIGKEIT_KMH = 60.0f;
+
+    /** Verfuegbare Transportstunden pro Tag (16:00 bis 18:00) */
+    public static final float TRANSPORTSTUNDEN_PRO_TAG = 2.0f;
+
+    /** Maximale Transportdistanz pro Tag in km (60 km/h * 2h = 120 km) */
+    public static final float MAX_TRANSPORT_DISTANZ_KM = TRANSPORT_GESCHWINDIGKEIT_KMH * TRANSPORTSTUNDEN_PRO_TAG;
+
+    /** Maximale Distanz fuer Wartungsgraph-Kanten in km (= Transportlimit) */
+    public static final float WARTUNG_GRAPH_MAX_DISTANZ_KM = MAX_TRANSPORT_DISTANZ_KM;
+
+    /** Anzahl der Top-Hersteller die analysiert werden (nutzt BEISPIEL_LIMIT) */
+    public static final int WARTUNG_TOP_HERSTELLER_ANZAHL = BEISPIEL_LIMIT;
+
+    /** Platzhalter fuer unbekannte Hersteller */
+    public static final String UNBEKANNTER_HERSTELLER = "<Unbekannt>";
+
+    /** Leerzeichen als Trennzeichen fuer Hersteller-Extraktion */
+    public static final String LEERZEICHEN = " ";
+
+    // ==================== Wartungsplanung Ausgabetexte ====================
+
+    /** Ueberschrift: Wartungsplanung */
+    public static final String WARTUNG_UEBERSCHRIFT = "\n=== Wartungsplanung fuer Hersteller-Wegenetze ===";
+
+    /** Format: Hersteller-Ueberschrift */
+    public static final String WARTUNG_HERSTELLER_UEBERSCHRIFT = "\n--- Hersteller: %s (%d Anlagen) ---%n";
+
+    /** Format: Cluster-Information */
+    public static final String WARTUNG_CLUSTER_INFO = "Erkannte Cluster (zusammenhaengende Bereiche): %d%n";
+
+    /** Format: Cluster-Warnung */
+    public static final String WARTUNG_CLUSTER_WARNUNG = "  WARNUNG: Cluster %d ist isoliert (%d Anlagen, Distanz > %.0f km zum naechsten Cluster)%n";
+
+    /** Format: Cluster-Details */
+    public static final String WARTUNG_CLUSTER_DETAILS = "  Cluster %d: %d Anlagen%n";
+
+    /** Format: Route-Startanlage */
+    public static final String WARTUNG_START_ANLAGE = "Startanlage: ID %d - %s (%s)%n";
+
+    /** Format: Routenlaenge */
+    public static final String WARTUNG_ROUTEN_LAENGE = "Optimierte Routenlaenge: %.2f km%n";
+
+    /** Format: Distanz-Warnung bei Ueberschreitung */
+    public static final String WARTUNG_DISTANZ_WARNUNG = "  WARNUNG: Strecke von ID %d nach ID %d = %.1f km (> %.0f km Transportlimit)%n";
+
+    /** Format: Tage pro Cluster */
+    public static final String WARTUNG_TAGE_CLUSTER = "Wartungsdauer Cluster %d: %d Tage%n";
+
+    /** Format: Gesamttage */
+    public static final String WARTUNG_TAGE_GESAMT = "GESAMTDAUER fuer alle Anlagen dieses Herstellers: %d Tage%n";
+
+    /** Format: Arbeitsplan-Tag */
+    public static final String WARTUNG_TAG_FORMAT = "  Tag %d: Anlagen %s%n";
+
+    /** Name: Wartungsplanung Operation (fuer Zeitmessung) */
+    public static final String OPERATION_WARTUNGSPLANUNG = "Wartungsplanung";
+
+    /** Name: Hersteller-Gruppierung Operation (fuer Zeitmessung) */
+    public static final String OPERATION_HERSTELLER_GRUPPIERUNG = "Hersteller-Gruppierung";
+
+    /** Name: Routen-Optimierung Operation (fuer Zeitmessung) */
+    public static final String OPERATION_ROUTEN_OPTIMIERUNG = "Routen-Optimierung (2-Opt)";
+
+    /** Statistik: Anzahl Hersteller */
+    public static final String STAT_ANZAHL_HERSTELLER = "Anzahl verschiedene Hersteller";
+
+    /** Statistik: Gesamte Wartungstage */
+    public static final String STAT_WARTUNGSTAGE_GESAMT = "Gesamte Wartungstage (Top %d)";
+
+    /** Format: Berechnungszeit */
+    public static final String WARTUNG_BERECHNUNGSZEIT = "Berechnungszeit: %.3f ms%n";
+
+    /** Trennzeichen fuer Anlagen-IDs */
+    public static final String ANLAGEN_ID_TRENNER = ", ";
+
+    /** Prefix fuer Anlagen-ID in Ausgabe */
+    public static final String ANLAGEN_ID_PREFIX = "ID ";
 
 }
 

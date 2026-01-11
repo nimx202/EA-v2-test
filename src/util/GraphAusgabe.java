@@ -40,7 +40,7 @@ public class GraphAusgabe {
 
         int anzahlKnoten = graph.getAnzahlKnoten();
         int anzahlKanten = graph.getAnzahlKanten();
-        double maxDistanz = graph.getMaxDistanzKm();
+        float maxDistanz = graph.getMaxDistanzKm();
 
         AusgabeManager.gebeAusFormat(Konstanten.GRAPH_UEBERSCHRIFT);
         AusgabeManager.gebeAusFormat(Konstanten.GRAPH_MAX_DISTANZ, maxDistanz);
@@ -67,7 +67,7 @@ public class GraphAusgabe {
      * @param graph Der Windkraftanlagen-Graph
      * @return Durchschnittlicher Grad
      */
-    private static double berechneDurchschnittlicherGrad(WindkraftanlageGraph graph) {
+    private static float berechneDurchschnittlicherGrad(WindkraftanlageGraph graph) {
         List<Graphknoten> knoten = graph.getKnoten();
         int summeGrad = 0;
 
@@ -76,7 +76,7 @@ public class GraphAusgabe {
             summeGrad = summeGrad + k.getAnzahlNachbarn();
         }
 
-        return (double) summeGrad / knoten.size();
+        return (float) summeGrad / knoten.size();
     }
 
     /**
@@ -133,7 +133,7 @@ public class GraphAusgabe {
         AusgabeManager.gebeAusFormat(Konstanten.SCHAETZUNG_ERGAENZT, anzahlErgaenzt);
         
         if (gesamtAnzahl > 0) {
-            double prozent = (double) anzahlErgaenzt * 100.0 / gesamtAnzahl;
+            float prozent = (float) anzahlErgaenzt * 100.0f / gesamtAnzahl;
             AusgabeManager.gebeAusFormat(Konstanten.SCHAETZUNG_PROZENT, prozent);
         }
     }

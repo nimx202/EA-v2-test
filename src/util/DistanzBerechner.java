@@ -35,28 +35,26 @@ public final class DistanzBerechner {
      * @param laengengrad2 Längengrad des zweiten Punkts in Dezimalgrad
      * @return Distanz zwischen den beiden Punkten in Kilometern
      */
-    public static double berechneDistanzKm(double breitengrad1, double laengengrad1,
-                                           double breitengrad2, double laengengrad2) {
+    public static float berechneDistanzKm(float breitengrad1, float laengengrad1,
+                                          float breitengrad2, float laengengrad2) {
         // Konvertiere Grad zu Radianten
-        double lat1Rad = gradZuRadianten(breitengrad1);
-        double lon1Rad = gradZuRadianten(laengengrad1);
-        double lat2Rad = gradZuRadianten(breitengrad2);
-        double lon2Rad = gradZuRadianten(laengengrad2);
+        float lat1Rad = gradZuRadianten(breitengrad1);
+        float lon1Rad = gradZuRadianten(laengengrad1);
+        float lat2Rad = gradZuRadianten(breitengrad2);
+        float lon2Rad = gradZuRadianten(laengengrad2);
 
         // Berechne Differenzen
-        double deltaLat = lat2Rad - lat1Rad;
-        double deltaLon = lon2Rad - lon1Rad;
+        float deltaLat = lat2Rad - lat1Rad;
+        float deltaLon = lon2Rad - lon1Rad;
 
         // Haversine-Formel
-        double a = berechneSinusQuadrat(deltaLat / 2.0) 
-                 + Math.cos(lat1Rad) * Math.cos(lat2Rad) * berechneSinusQuadrat(deltaLon / 2.0);
+        float a = berechneSinusQuadrat(deltaLat / 2.0f) 
+                + (float) Math.cos(lat1Rad) * (float) Math.cos(lat2Rad) * berechneSinusQuadrat(deltaLon / 2.0f);
         
-        double c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
+        float c = 2.0f * (float) Math.atan2(Math.sqrt(a), Math.sqrt(1.0f - a));
 
         // Distanz = Radius * Winkel
-        double distanzKm = Konstanten.ERDRADIUS_KM * c;
-
-        return distanzKm;
+        return Konstanten.ERDRADIUS_KM * c;
     }
 
     /**
@@ -68,8 +66,8 @@ public final class DistanzBerechner {
      * @param grad Winkel in Grad
      * @return Winkel in Radianten
      */
-    private static double gradZuRadianten(double grad) {
-        return grad * Math.PI / 180.0;
+    private static float gradZuRadianten(float grad) {
+        return grad * (float) Math.PI / 180.0f;
     }
 
     /**
@@ -81,8 +79,8 @@ public final class DistanzBerechner {
      * @param winkel Winkel in Radianten
      * @return Quadrat des Sinus
      */
-    private static double berechneSinusQuadrat(double winkel) {
-        double sinus = Math.sin(winkel);
+    private static float berechneSinusQuadrat(float winkel) {
+        float sinus = (float) Math.sin(winkel);
         return sinus * sinus;
     }
 }

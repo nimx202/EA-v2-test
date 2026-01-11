@@ -24,7 +24,7 @@ public class WindkraftanlageGraph {
     private final List<Graphknoten> knoten;
 
     /** Maximale Distanz in km für Kantenbildung */
-    private final double maxDistanzKm;
+    private final float maxDistanzKm;
 
     /**
      * Erstellt einen neuen leeren Graphen.
@@ -34,7 +34,7 @@ public class WindkraftanlageGraph {
      * 
      * @param maxDistanzKm Maximale Distanz zwischen Anlagen für Kantenbildung
      */
-    public WindkraftanlageGraph(double maxDistanzKm) {
+    public WindkraftanlageGraph(float maxDistanzKm) {
         if (maxDistanzKm <= 0) {
             throw new IllegalArgumentException("Maximale Distanz muss positiv sein");
         }
@@ -115,7 +115,7 @@ public class WindkraftanlageGraph {
                 Graphknoten knoten2 = knoten.get(j);
                 
                 // Berechne Distanz zwischen den Anlagen
-                double distanz = berechneDistanz(knoten1, knoten2);
+                float distanz = berechneDistanz(knoten1, knoten2);
                 
                 // Füge Kante hinzu wenn Distanz im Bereich
                 if (distanz <= maxDistanzKm) {
@@ -136,14 +136,14 @@ public class WindkraftanlageGraph {
      * @param knoten2 Zweiter Knoten
      * @return Distanz in Kilometern
      */
-    private double berechneDistanz(Graphknoten knoten1, Graphknoten knoten2) {
+    private float berechneDistanz(Graphknoten knoten1, Graphknoten knoten2) {
         Windkraftanlage anlage1 = knoten1.getAnlage();
         Windkraftanlage anlage2 = knoten2.getAnlage();
 
-        double breitengrad1 = anlage1.getBreitengrad();
-        double laengengrad1 = anlage1.getLaengengrad();
-        double breitengrad2 = anlage2.getBreitengrad();
-        double laengengrad2 = anlage2.getLaengengrad();
+        float breitengrad1 = anlage1.getBreitengrad() != null ? anlage1.getBreitengrad().floatValue() : 0f;
+        float laengengrad1 = anlage1.getLaengengrad() != null ? anlage1.getLaengengrad().floatValue() : 0f;
+        float breitengrad2 = anlage2.getBreitengrad() != null ? anlage2.getBreitengrad().floatValue() : 0f;
+        float laengengrad2 = anlage2.getLaengengrad() != null ? anlage2.getLaengengrad().floatValue() : 0f;
 
         return DistanzBerechner.berechneDistanzKm(breitengrad1, laengengrad1,
                                                    breitengrad2, laengengrad2);
@@ -202,7 +202,7 @@ public class WindkraftanlageGraph {
      * 
      * @return Maximale Distanz in km
      */
-    public double getMaxDistanzKm() {
+    public float getMaxDistanzKm() {
         return maxDistanzKm;
     }
 }
