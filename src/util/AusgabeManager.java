@@ -28,25 +28,29 @@ public final class AusgabeManager {
     }
     
     /**
-     * Aktiviert die Pufferung von Ausgaben.
+     * Aktiviert die Pufferung von Ausgaben (wenn durch Konstanten aktiviert).
      * 
      * Pre: Keine
-     * Post: Ausgaben werden gepuffert statt sofort ausgegeben
+     * Post: Ausgaben werden gepuffert statt sofort ausgegeben (falls PUFFERUNG_AKTIVIERT=true)
      */
     public static void aktivierePufferung() {
-        istPufferungAktiv = true;
-        pufferZeilen.clear();
+        if (Konstanten.PUFFERUNG_AKTIVIERT) {
+            istPufferungAktiv = true;
+            pufferZeilen.clear();
+        }
     }
     
     /**
      * Gibt alle gepufferten Ausgaben auf einmal aus.
      * 
      * Pre: Keine
-     * Post: Alle gepufferten Ausgaben wurden ausgegeben
+     * Post: Alle gepufferten Ausgaben wurden ausgegeben (falls Pufferung aktiv war)
      */
     public static void gebeGepufferteAusgabenAus() {
-        for (String zeile : pufferZeilen) {
-            System.out.println(zeile);
+        if (Konstanten.PUFFERUNG_AKTIVIERT) {
+            for (String zeile : pufferZeilen) {
+                System.out.println(zeile);
+            }
         }
         istPufferungAktiv = false;
         pufferZeilen.clear();
