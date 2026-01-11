@@ -42,33 +42,6 @@ public final class WindkraftanlagenSortierer {
     }
 
     /**
-     * Sortiert und gibt die ersten n Einträge sowie die Dauer der Sortierung aus.
-     * 
-     * Pre: anlagen darf nicht null sein, maxAnzeigen >= 0
-     * Post: Gibt formatierte Ausgabe der ersten Elemente und der benötigten Zeit aus
-     * 
-     * @param anlagen Eingabeliste
-     * @param maxAnzeigen Maximale Anzahl der ausgegebenen Einträge
-     * @return Dauer der Sortierung in Millisekunden
-     */
-    public static float sortiereNachOrtNameIdUndGebeAus(List<Windkraftanlage> anlagen, int maxAnzeigen) {
-        util.ZeitMessung timer = util.ZeitMessung.starte();
-        List<Windkraftanlage> sortiert = sortiereNachOrtNameId(anlagen);
-        float dauer = timer.stoppeUndGibMillis();
-
-        util.AusgabeManager.gebeSektionAus(util.Konstanten.SORTIERUNG_ORT_NAME_ID_UEBERSCHRIFT);
-        util.AusgabeManager.gebeKeyValue(util.Konstanten.AUSGABE_ANZAHL, sortiert.size());
-        util.AusgabeManager.gebeKeyValue(util.Konstanten.AUSGABE_DAUER_MS, String.format("%.3f", dauer));
-        util.AusgabeManager.gebeLeereZeileAus();
-
-        int limit = Math.max(0, Math.min(maxAnzeigen, sortiert.size()));
-        for (int i = 0; i < limit; i++) {
-            util.AusgabeManager.gebeAus(sortiert.get(i).toString());
-        }
-        return dauer;
-    }
-
-    /**
      * Sortiert Windkraftanlagen nach Leistung, Baujahr und Name.
      * 
      * Pre: anlagen darf nicht null sein
@@ -85,29 +58,6 @@ public final class WindkraftanlagenSortierer {
     }
 
     /**
-     * Sortiert nach Leistung/Baujahr/Name, gibt ersten n Einträge und Dauer aus.
-     * @param anlagen Eingabeliste
-     * @param maxAnzeigen Maximale Anzahl der ausgegebenen Einträge
-     * @return Dauer in Millisekunden
-     */
-    public static float sortiereNachLeistungBaujahrNameUndGebeAus(List<Windkraftanlage> anlagen, int maxAnzeigen) {
-        util.ZeitMessung timer = util.ZeitMessung.starte();
-        List<Windkraftanlage> sortiert = sortiereNachLeistungBaujahrName(anlagen);
-        float dauer = timer.stoppeUndGibMillis();
-
-        util.AusgabeManager.gebeSektionAus(util.Konstanten.SORTIERUNG_LEISTUNG_BAUJAHR_NAME_UEBERSCHRIFT);
-        util.AusgabeManager.gebeKeyValue(util.Konstanten.AUSGABE_ANZAHL, sortiert.size());
-        util.AusgabeManager.gebeKeyValue(util.Konstanten.AUSGABE_DAUER_MS, String.format("%.3f", dauer));
-        util.AusgabeManager.gebeLeereZeileAus();
-
-        int limit = Math.max(0, Math.min(maxAnzeigen, sortiert.size()));
-        for (int i = 0; i < limit; i++) {
-            util.AusgabeManager.gebeAus(sortiert.get(i).toString());
-        }
-        return dauer;
-    }
-
-    /**
      * Sortiert Windkraftanlagen nach Landkreis, Ort und Name.
      * 
      * Pre: anlagen darf nicht null sein
@@ -121,29 +71,6 @@ public final class WindkraftanlagenSortierer {
         List<Windkraftanlage> kopie = kopiereListe(anlagen);
         bubbleSortLandkreisOrtName(kopie);
         return kopie;
-    }
-
-    /**
-     * Sortiert nach Landkreis/Ort/Name, gibt ersten n Einträge und Dauer aus.
-     * @param anlagen Eingabeliste
-     * @param maxAnzeigen Maximale Anzahl der ausgegebenen Einträge
-     * @return Dauer in Millisekunden
-     */
-    public static float sortiereNachLandkreisOrtNameUndGebeAus(List<Windkraftanlage> anlagen, int maxAnzeigen) {
-        util.ZeitMessung timer = util.ZeitMessung.starte();
-        List<Windkraftanlage> sortiert = sortiereNachLandkreisOrtName(anlagen);
-        float dauer = timer.stoppeUndGibMillis();
-
-        util.AusgabeManager.gebeSektionAus(util.Konstanten.SORTIERUNG_LANDKREIS_ORT_NAME_UEBERSCHRIFT);
-        util.AusgabeManager.gebeKeyValue(util.Konstanten.AUSGABE_ANZAHL, sortiert.size());
-        util.AusgabeManager.gebeKeyValue(util.Konstanten.AUSGABE_DAUER_MS, String.format("%.3f", dauer));
-        util.AusgabeManager.gebeLeereZeileAus();
-
-        int limit = Math.max(0, Math.min(maxAnzeigen, sortiert.size()));
-        for (int i = 0; i < limit; i++) {
-            util.AusgabeManager.gebeAus(sortiert.get(i).toString());
-        }
-        return dauer;
     }
 
     /**
@@ -165,6 +92,7 @@ public final class WindkraftanlagenSortierer {
 
     /**
      * Einfache Bubble-Sort nach Ort, Name, ID.
+     * Optimiert mit Early-Exit wenn bereits sortiert.
      * 
      * Pre: liste darf nicht null sein
      * Post: liste ist sortiert nach Ort, Name, ObjektId
@@ -174,19 +102,25 @@ public final class WindkraftanlagenSortierer {
     private static void bubbleSortOrtNameId(List<Windkraftanlage> liste) {
         int groesse = liste.size();
         for (int i = 0; i < groesse - 1; i++) {
+            boolean hatGetauscht = false;
             for (int j = 0; j < groesse - i - 1; j++) {
                 Windkraftanlage erste = liste.get(j);
                 Windkraftanlage zweite = liste.get(j + 1);
                 if (vergleicheOrtNameId(erste, zweite) > 0) {
                     liste.set(j, zweite);
                     liste.set(j + 1, erste);
+                    hatGetauscht = true;
                 }
+            }
+            if (!hatGetauscht) {
+                break;
             }
         }
     }
 
     /**
      * Einfache Bubble-Sort nach Leistung, Baujahr, Name.
+     * Optimiert mit Early-Exit wenn bereits sortiert.
      * 
      * Pre: liste darf nicht null sein
      * Post: liste ist sortiert nach Leistung (desc), Baujahr, Name
@@ -196,19 +130,25 @@ public final class WindkraftanlagenSortierer {
     private static void bubbleSortLeistungBaujahrName(List<Windkraftanlage> liste) {
         int groesse = liste.size();
         for (int i = 0; i < groesse - 1; i++) {
+            boolean hatGetauscht = false;
             for (int j = 0; j < groesse - i - 1; j++) {
                 Windkraftanlage erste = liste.get(j);
                 Windkraftanlage zweite = liste.get(j + 1);
                 if (vergleicheLeistungBaujahrName(erste, zweite) > 0) {
                     liste.set(j, zweite);
                     liste.set(j + 1, erste);
+                    hatGetauscht = true;
                 }
+            }
+            if (!hatGetauscht) {
+                break;
             }
         }
     }
 
     /**
      * Einfache Bubble-Sort nach Landkreis, Ort, Name.
+     * Optimiert mit Early-Exit wenn bereits sortiert.
      * 
      * Pre: liste darf nicht null sein
      * Post: liste ist sortiert nach Landkreis, Ort, Name
@@ -218,13 +158,18 @@ public final class WindkraftanlagenSortierer {
     private static void bubbleSortLandkreisOrtName(List<Windkraftanlage> liste) {
         int groesse = liste.size();
         for (int i = 0; i < groesse - 1; i++) {
+            boolean hatGetauscht = false;
             for (int j = 0; j < groesse - i - 1; j++) {
                 Windkraftanlage erste = liste.get(j);
                 Windkraftanlage zweite = liste.get(j + 1);
                 if (vergleicheLandkreisOrtName(erste, zweite) > 0) {
                     liste.set(j, zweite);
                     liste.set(j + 1, erste);
+                    hatGetauscht = true;
                 }
+            }
+            if (!hatGetauscht) {
+                break;
             }
         }
     }

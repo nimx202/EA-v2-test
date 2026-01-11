@@ -123,10 +123,10 @@ public final class WindparkAnalysierer {
         List<WindparkEintrag> sortierteListe = sortiereNachAnzahl(windparkZaehler);
         
         // Schneide auf gewünschte Anzahl zu
-        int tatsächlicheAnzahl = Math.min(topAnzahl, sortierteListe.size());
+        int tatsaechlicheAnzahl = Math.min(topAnzahl, sortierteListe.size());
         List<WindparkEintrag> topListe = new ArrayList<>();
         
-        for (int i = 0; i < tatsächlicheAnzahl; i++) {
+        for (int i = 0; i < tatsaechlicheAnzahl; i++) {
             topListe.add(sortierteListe.get(i));
         }
         

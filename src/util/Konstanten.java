@@ -212,6 +212,9 @@ public final class Konstanten {
 
     // ==================== AusgabeManager Konstanten ====================
 
+    /** Leerer String */
+    public static final String LEERSTRING = "";
+
     /** Trennstrich-Zeichen fuer Ueberschriften */
     public static final String TRENNSTRICH_ZEICHEN = "=";
 
@@ -434,6 +437,29 @@ public final class Konstanten {
 
     /** Statistik: Gesamtleistung aller Anlagen */
     public static final String STAT_GESAMTLEISTUNG_ALLER = "Gesamtleistung aller Anlagen";
+
+    // ==================== Format Strings für String.format() ====================
+
+    /** Format: Dauer in Millisekunden mit 3 Nachkommastellen */
+    public static final String FORMAT_DAUER_MS = "%.3f";
+
+    /** Format: Leistung in MW mit 2 Nachkommastellen */
+    public static final String FORMAT_LEISTUNG_MW = "%.2f";
+
+    /** Format: Koordinate mit 4 Nachkommastellen */
+    public static final String FORMAT_KOORDINATE = "%.4f";
+
+    /** Format: Südlichste Anlage (für Statistik-Tracker) */
+    public static final String FORMAT_SUEDLICHSTE_ANLAGE_STAT = "ID %d, %s (%s), Breitengrad " + FORMAT_KOORDINATE;
+
+    /** Format: Anlage mit höchster Leistung (für Statistik-Tracker) */
+    public static final String FORMAT_HOECHSTE_LEISTUNG_STAT = "ID %d, %s (%s), " + FORMAT_LEISTUNG_MW + " MW";
+
+    /** Format: Anlage mit meisten Windrädern (für Statistik-Tracker) */
+    public static final String FORMAT_MEISTE_WINDRAEDER_STAT = "ID %d, %s (%s), %d Windraeder";
+
+    /** Format: Gesamtleistung (für Statistik-Tracker) */
+    public static final String FORMAT_GESAMTLEISTUNG_STAT = FORMAT_LEISTUNG_MW + " MW";
 
 }
 

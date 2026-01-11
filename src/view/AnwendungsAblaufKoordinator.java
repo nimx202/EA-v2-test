@@ -47,8 +47,11 @@ public class AnwendungsAblaufKoordinator {
      */
     public void run() {
         try {
+            AusgabeManager.aktivierePufferung();
+            
             Path csvPfad = csvPfadPruefer.ermittleCsvPfad();
             if (!csvPfadPruefer.pruefeCsvDatei(csvPfad)) {
+                AusgabeManager.gebeGepufferteAusgabenAus();
                 return;
             }
             List<Windkraftanlage> alleAnlagen = datenImportManager.ladeDaten(csvPfad);

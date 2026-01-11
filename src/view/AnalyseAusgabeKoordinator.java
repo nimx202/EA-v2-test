@@ -40,6 +40,8 @@ public class AnalyseAusgabeKoordinator {
         zeigeSortierteAnlagen(alleAnlagen);
         zeigeBeispielAnlagen(alleAnlagen);
         ZeitStatistiken.druckeZusammenfassung();
+        
+        AusgabeManager.gebeGepufferteAusgabenAus();
     }
 
     /**
@@ -67,8 +69,21 @@ public class AnalyseAusgabeKoordinator {
      * @param alleAnlagen Liste aller Windkraftanlagen
      */
     private void zeigeSortierungOrtNameId(List<Windkraftanlage> alleAnlagen) {
-        float zeitInMillis = WindkraftanlagenSortierer.sortiereNachOrtNameIdUndGebeAus(
-            alleAnlagen, Konstanten.SORTIER_AUSGABE_LIMIT);
+        ZeitMessung timer = ZeitMessung.starte();
+        List<Windkraftanlage> sortiert = WindkraftanlagenSortierer.sortiereNachOrtNameId(alleAnlagen);
+        float zeitInMillis = timer.stoppeUndGibMillis();
+
+        AusgabeManager.gebeSektionAus(Konstanten.SORTIERUNG_ORT_NAME_ID_UEBERSCHRIFT);
+        AusgabeManager.gebeKeyValue(Konstanten.AUSGABE_ANZAHL, sortiert.size());
+        AusgabeManager.gebeKeyValue(Konstanten.AUSGABE_DAUER_MS, 
+            String.format(Konstanten.FORMAT_DAUER_MS, zeitInMillis));
+        AusgabeManager.gebeLeereZeileAus();
+
+        int limit = Math.max(0, Math.min(Konstanten.SORTIER_AUSGABE_LIMIT, sortiert.size()));
+        for (int i = 0; i < limit; i++) {
+            AusgabeManager.gebeAus(sortiert.get(i).toString());
+        }
+
         ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_SORT_ORT_NAME_ID, zeitInMillis);
     }
 
@@ -81,8 +96,21 @@ public class AnalyseAusgabeKoordinator {
      * @param alleAnlagen Liste aller Windkraftanlagen
      */
     private void zeigeSortierungLeistungBaujahrName(List<Windkraftanlage> alleAnlagen) {
-        float zeitInMillis = WindkraftanlagenSortierer.sortiereNachLeistungBaujahrNameUndGebeAus(
-            alleAnlagen, Konstanten.SORTIER_AUSGABE_LIMIT);
+        ZeitMessung timer = ZeitMessung.starte();
+        List<Windkraftanlage> sortiert = WindkraftanlagenSortierer.sortiereNachLeistungBaujahrName(alleAnlagen);
+        float zeitInMillis = timer.stoppeUndGibMillis();
+
+        AusgabeManager.gebeSektionAus(Konstanten.SORTIERUNG_LEISTUNG_BAUJAHR_NAME_UEBERSCHRIFT);
+        AusgabeManager.gebeKeyValue(Konstanten.AUSGABE_ANZAHL, sortiert.size());
+        AusgabeManager.gebeKeyValue(Konstanten.AUSGABE_DAUER_MS, 
+            String.format(Konstanten.FORMAT_DAUER_MS, zeitInMillis));
+        AusgabeManager.gebeLeereZeileAus();
+
+        int limit = Math.max(0, Math.min(Konstanten.SORTIER_AUSGABE_LIMIT, sortiert.size()));
+        for (int i = 0; i < limit; i++) {
+            AusgabeManager.gebeAus(sortiert.get(i).toString());
+        }
+
         ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_SORT_LEISTUNG_BAUJAHR_NAME, zeitInMillis);
     }
 
@@ -95,8 +123,21 @@ public class AnalyseAusgabeKoordinator {
      * @param alleAnlagen Liste aller Windkraftanlagen
      */
     private void zeigeSortierungLandkreisOrtName(List<Windkraftanlage> alleAnlagen) {
-        float zeitInMillis = WindkraftanlagenSortierer.sortiereNachLandkreisOrtNameUndGebeAus(
-            alleAnlagen, Konstanten.SORTIER_AUSGABE_LIMIT);
+        ZeitMessung timer = ZeitMessung.starte();
+        List<Windkraftanlage> sortiert = WindkraftanlagenSortierer.sortiereNachLandkreisOrtName(alleAnlagen);
+        float zeitInMillis = timer.stoppeUndGibMillis();
+
+        AusgabeManager.gebeSektionAus(Konstanten.SORTIERUNG_LANDKREIS_ORT_NAME_UEBERSCHRIFT);
+        AusgabeManager.gebeKeyValue(Konstanten.AUSGABE_ANZAHL, sortiert.size());
+        AusgabeManager.gebeKeyValue(Konstanten.AUSGABE_DAUER_MS, 
+            String.format(Konstanten.FORMAT_DAUER_MS, zeitInMillis));
+        AusgabeManager.gebeLeereZeileAus();
+
+        int limit = Math.max(0, Math.min(Konstanten.SORTIER_AUSGABE_LIMIT, sortiert.size()));
+        for (int i = 0; i < limit; i++) {
+            AusgabeManager.gebeAus(sortiert.get(i).toString());
+        }
+
         ZeitStatistiken.zeichneZeitAuf(Konstanten.OPERATION_SORT_LANDKREIS_ORT_NAME, zeitInMillis);
     }
 
@@ -135,7 +176,12 @@ public class AnalyseAusgabeKoordinator {
         ZeitMessung timer = ZeitMessung.starte();
         List<WindparkEintrag> topWindparks = WindparkAnalysierer.holeTopWindparks(
             alleAnlagen, Konstanten.TOP_LIMIT);
-        AusgabeManager.gebeSektionAus(String.format(Konstanten.TOP_PARKS, Konstanten.TOP_LIMIT).trim());
+        String ueberschrift = String.format(Konstanten.TOP_PARKS, Konstanten.TOP_LIMIT);
+        int letztePosition = ueberschrift.length() - 1;
+        if (letztePosition >= 0 && ueberschrift.charAt(letztePosition) == Konstanten.ZEILENUMBRUCH) {
+            ueberschrift = ueberschrift.substring(0, letztePosition);
+        }
+        AusgabeManager.gebeSektionAus(ueberschrift);
 
         for (WindparkEintrag eintrag : topWindparks) {
             AusgabeManager.gebeKeyValue(eintrag.getName(), eintrag.getAnzahl());
@@ -218,7 +264,7 @@ public class AnalyseAusgabeKoordinator {
                 suedlichste.getGeoKoordinaten().getBreitengrad());
             AusgabeManager.gebeAusFormat(Konstanten.LAENGENGRAD_FORMAT,
                 suedlichste.getGeoKoordinaten().getLaengengrad());
-            String wert = String.format("ID %d, %s (%s), Breitengrad %.4f",
+            String wert = String.format(Konstanten.FORMAT_SUEDLICHSTE_ANLAGE_STAT,
                 suedlichste.getObjektId(),
                 suedlichste.getName(),
                 suedlichste.getOrt(),
@@ -249,7 +295,7 @@ public class AnalyseAusgabeKoordinator {
                 anlage.getOrt());
             AusgabeManager.gebeAusFormat(Konstanten.GESAMTLEISTUNG_FORMAT,
                 anlage.getGesamtLeistungMW());
-            String wert = String.format("ID %d, %s (%s), %.2f MW",
+            String wert = String.format(Konstanten.FORMAT_HOECHSTE_LEISTUNG_STAT,
                 anlage.getObjektId(),
                 anlage.getName(),
                 anlage.getOrt(),
@@ -280,7 +326,7 @@ public class AnalyseAusgabeKoordinator {
                 anlage.getOrt());
             AusgabeManager.gebeAusFormat(Konstanten.ANZAHL_WINDRAEDER_FORMAT,
                 anlage.getAnzahl());
-            String wert = String.format("ID %d, %s (%s), %d Windraeder",
+            String wert = String.format(Konstanten.FORMAT_MEISTE_WINDRAEDER_STAT,
                 anlage.getObjektId(),
                 anlage.getName(),
                 anlage.getOrt(),
@@ -300,7 +346,7 @@ public class AnalyseAusgabeKoordinator {
     private void zeigeGesamtleistungAllerAnlagen(List<Windkraftanlage> alleAnlagen) {
         float gesamtleistung = StatistikBerechner.berechneGesamtLeistung(alleAnlagen);
         AusgabeManager.gebeAusFormat(Konstanten.GESAMTLEISTUNG_ALLER_FORMAT, gesamtleistung);
-        String wert = String.format("%.2f MW", gesamtleistung);
+        String wert = String.format(Konstanten.FORMAT_GESAMTLEISTUNG_STAT, gesamtleistung);
         ZeitStatistiken.zeichneStat(Konstanten.STAT_GESAMTLEISTUNG_ALLER, wert);
     }
 

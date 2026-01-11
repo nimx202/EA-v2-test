@@ -1,65 +1,90 @@
 package util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Zentrale Ausgabe-Verwaltung für die gesamte Anwendung.
- * Verantwortlich für formatierte Konsolenausgabe mit Trennzeichen.
+ * Verantwortlich für formatierte Konsolenausgabe mit optionaler Pufferung.
  * 
  * Design-Prinzipien:
- * - Single Responsibility: Nur Ausgabe-Logik
+ * - Single Responsibility: Nur Ausgabe-Logik mit Pufferung
  * - Wiederverwendbarkeit: Alle Ausgaben erfolgen über diese Klasse
  * - Konsistenz: Einheitliche Formatierung
+ * - KISS: Einfache Liste für Pufferung
  * 
  * Verwendung:
  * - AusgabeManager.gebeAus(text) - einfache Ausgabe
  * - AusgabeManager.gebeAusFormat(format, args) - formatierte Ausgabe
- * - AusgabeManager.gebeAusMitTrennzeichen(key, value) - mit Trennzeichen
+ * - AusgabeManager.gebeKeyValue(key, value) - mit Trennzeichen
  */
 public final class AusgabeManager {
 
-    /**
-     * Privater Konstruktor verhindert Instanziierung der Utility-Klasse.
-     */
+    private static final List<String> pufferZeilen = new ArrayList<>();
+    private static boolean istPufferungAktiv = false;
+
     private AusgabeManager() {
         // Utility-Klasse, keine Instanzen
+    }
+    
+    /**
+     * Aktiviert die Pufferung von Ausgaben.
+     * 
+     * Pre: Keine
+     * Post: Ausgaben werden gepuffert statt sofort ausgegeben
+     */
+    public static void aktivierePufferung() {
+        istPufferungAktiv = true;
+        pufferZeilen.clear();
+    }
+    
+    /**
+     * Gibt alle gepufferten Ausgaben auf einmal aus.
+     * 
+     * Pre: Keine
+     * Post: Alle gepufferten Ausgaben wurden ausgegeben
+     */
+    public static void gebeGepufferteAusgabenAus() {
+        for (String zeile : pufferZeilen) {
+            System.out.println(zeile);
+        }
+        istPufferungAktiv = false;
+        pufferZeilen.clear();
     }
 
     /**
      * Gibt einen Text auf der Standardausgabe aus.
      * 
      * Pre: text nicht null
-     * Post: Text wurde auf stdout ausgegeben
+     * Post: Text wurde auf stdout ausgegeben oder gepuffert
      * 
      * @param text Der auszugebende Text
      */
     public static void gebeAus(String text) {
-        System.out.println(text);
+        if (istPufferungAktiv) {
+            String zeile = (text == null) ? Konstanten.LEERSTRING : text;
+            pufferZeilen.add(zeile);
+        } else {
+            System.out.println(text);
+        }
     }
 
     /**
      * Gibt einen formatierten Text auf der Standardausgabe aus.
      * 
      * Pre: format nicht null
-     * Post: Formatierter Text wurde auf stdout ausgegeben
+     * Post: Formatierter Text wurde auf stdout ausgegeben oder gepuffert
      * 
      * @param format Format-String (wie in printf)
      * @param args Argumente für die Formatierung
      */
     public static void gebeAusFormat(String format, Object... args) {
-        System.out.printf(format, args);
-    }
-
-    /**
-     * Gibt einen Schlüssel-Wert-Paar mit Trennzeichen aus.
-     * Format: "schlüssel: wert"
-     * 
-     * Pre: schlüssel und wert nicht null
-     * Post: Formatierter Schlüssel-Wert-Paar auf stdout ausgegeben
-     * 
-    * @param schluessel Der Schlüssel
-     * @param wert Der Wert
-     */
-    public static void gebeAusMitTrennzeichen(String schluessel, Object wert) {
-        System.out.println(AusgabeFormatter.schluesselWert(schluessel, wert));
+        String formatierterText = String.format(format, args);
+        if (istPufferungAktiv) {
+            pufferZeilen.add(formatierterText);
+        } else {
+            System.out.print(formatierterText);
+        }
     }
 
     /**
@@ -78,38 +103,31 @@ public final class AusgabeManager {
      * Gibt eine leere Zeile aus.
      * 
      * Pre: keine
-     * Post: Leere Zeile wurde auf stdout ausgegeben
+     * Post: Leere Zeile wurde auf stdout ausgegeben oder gepuffert
      */
     public static void gebeLeereZeileAus() {
-        System.out.println();
+        if (istPufferungAktiv) {
+            pufferZeilen.add(Konstanten.LEERSTRING);
+        } else {
+            System.out.println();
+        }
     }
 
     /**
      * Gibt einen Trennstrich mit gegebener Länge aus.
      * 
      * Pre: länge >= 0
-     * Post: Trennstrich wurde auf stdout ausgegeben
+     * Post: Trennstrich wurde auf stdout ausgegeben oder gepuffert
      * 
     * @param laenge Länge des Trennstrichs
      */
     public static void gebeTrennstrichAus(int laenge) {
-        System.out.println(Konstanten.TRENNSTRICH_ZEICHEN.repeat(Math.max(0, laenge)));
-    }
-
-    /**
-     * Gibt eine Überschrift mit Trennzeichen aus.
-     * Format:
-     * ===========================
-     * Überschrift
-     * ===========================
-     * 
-     * Pre: überschrift nicht null
-     * Post: Formatierte Überschrift auf stdout ausgegeben
-     * 
-    * @param ueberschrift Der Text der Überschrift
-     */
-    public static void gebeUeberschriftAus(String ueberschrift) {
-        gebeAus(AusgabeFormatter.ueberschrift(ueberschrift));
+        String trennstrich = Konstanten.TRENNSTRICH_ZEICHEN.repeat(Math.max(0, laenge));
+        if (istPufferungAktiv) {
+            pufferZeilen.add(trennstrich);
+        } else {
+            System.out.println(trennstrich);
+        }
     }
 
     /**
