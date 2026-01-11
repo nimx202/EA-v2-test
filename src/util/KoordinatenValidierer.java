@@ -44,10 +44,9 @@ public final class KoordinatenValidierer {
             return true;
         }
         
-        boolean istImBereich = breitengrad >= Konstanten.MIN_BREITENGRAD_DE 
-                    && breitengrad <= Konstanten.MAX_BREITENGRAD_DE;
         
-        return istImBereich;
+        return breitengrad >= Konstanten.MIN_BREITENGRAD_DE 
+                    && breitengrad <= Konstanten.MAX_BREITENGRAD_DE;
     }
 
     /**
@@ -65,10 +64,9 @@ public final class KoordinatenValidierer {
             return true;
         }
         
-        boolean istImBereich = laengengrad >= Konstanten.MIN_LAENGENGRAD_DE 
-                    && laengengrad <= Konstanten.MAX_LAENGENGRAD_DE;
         
-        return istImBereich;
+        return laengengrad >= Konstanten.MIN_LAENGENGRAD_DE 
+                    && laengengrad <= Konstanten.MAX_LAENGENGRAD_DE;
     }
 
     /**

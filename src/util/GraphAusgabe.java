@@ -133,7 +133,7 @@ public class GraphAusgabe {
         AusgabeManager.gebeAusFormat(Konstanten.SCHAETZUNG_ERGAENZT, anzahlErgaenzt);
         
         if (gesamtAnzahl > 0) {
-            float prozent = (float) anzahlErgaenzt * 100.0f / gesamtAnzahl;
+            float prozent =  anzahlErgaenzt * 100.0f / gesamtAnzahl;
             AusgabeManager.gebeAusFormat(Konstanten.SCHAETZUNG_PROZENT, prozent);
         }
     }
