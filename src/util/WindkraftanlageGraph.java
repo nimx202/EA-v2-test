@@ -45,7 +45,7 @@ public class WindkraftanlageGraph {
     /**
      * Baut den Graphen aus einer Liste von Windkraftanlagen auf.
      * Erstellt für jede Anlage mit Koordinaten einen Knoten.
-     * Verbindet Knoten mit Kanten, wenn Distanz <= maxDistanzKm.
+    * Verbindet Knoten mit Kanten, wenn Distanz {@code <=} maxDistanzKm.
      * 
      * Pre: anlagen darf nicht null sein
      * Post: Graph enthält Knoten und Kanten für alle Anlagen mit Koordinaten

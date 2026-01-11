@@ -54,7 +54,6 @@ public class Windkraftanlage {
      * @param ort Ortschaft
      * @param landkreis Landkreis/Bezirk
     * @param geoKoordinaten Objekt mit Breitengrad/Längengrad (kann null sein)
-    * @param geoKoordinaten Objekt mit Breitengrad/Längengrad (kann null sein)
      * @param betreiber Betreiber der Anlage
      * @param bemerkungen weitere Bemerkungen
      */
