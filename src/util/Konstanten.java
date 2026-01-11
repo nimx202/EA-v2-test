@@ -212,6 +212,13 @@ public final class Konstanten {
 
     // ==================== AusgabeManager Konstanten ====================
 
+    /** 
+     * Aktiviert oder deaktiviert die Pufferung von Ausgaben.
+     * True: Alle Ausgaben werden gepuffert und gemeinsam am Ende ausgegeben (Standard).
+     * False: Ausgaben werden sofort ausgegeben (passthrough-Modus, nützlich für Debugging).
+     */
+    public static final boolean PUFFERUNG_AKTIVIERT = false;
+
     /** Leerer String */
     public static final String LEERSTRING = "";
 
