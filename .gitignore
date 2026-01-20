@@ -71,3 +71,4 @@ tools
 ### py ###
 venv
 *.py
+*.log
